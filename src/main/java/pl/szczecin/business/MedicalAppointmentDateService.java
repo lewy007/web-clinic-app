@@ -1,6 +1,7 @@
 package pl.szczecin.business;
 
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,9 +20,10 @@ public class MedicalAppointmentDateService {
 
     private final MedicalAppointmentDateDAO medicalAppointmentDateDAO;
 
-    public List<MedicalAppointmentDate> findAvailableDates() {
-        List<MedicalAppointmentDate> availableDates = medicalAppointmentDateDAO.findAvailableDates();
-        log.info("Available dates: [{}]", availableDates.size());
+
+    public List<MedicalAppointmentDate> findAvailableMedicalAppointmentDates() {
+        List<MedicalAppointmentDate> availableDates = medicalAppointmentDateDAO.findAvailableMedicalAppointmentDates();
+        log.info("Available medicalAppointmentDates: [{}]", availableDates.size());
         return availableDates;
     }
 
@@ -34,4 +36,16 @@ public class MedicalAppointmentDateService {
         return date.get();
     }
 
+    public List<MedicalAppointmentDate> getAvailableDatesForDoctor(String doctorPesel) {
+        List<MedicalAppointmentDate> availableDatesForDoctor =
+                medicalAppointmentDateDAO.findAvailableDatesForDoctor(doctorPesel);
+        log.info("Available dates for Doctor: [{}]", availableDatesForDoctor.size());
+        return availableDatesForDoctor;
+    }
+
+
+    @Transactional
+    public MedicalAppointmentDate saveMedicalAppointmentDate(MedicalAppointmentDate medicalAppointmentDate) {
+        return medicalAppointmentDateDAO.saveMedicalAppointmentDate(medicalAppointmentDate);
+    }
 }

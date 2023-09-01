@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MedicalAppointmentDTO {
+public class MedicalAppointmentRequestDTO {
 
     // jesli klient przychodzi kolejny raz to mamy go w bazie danych i wystarczy tylko email
     @Email
@@ -35,12 +35,12 @@ public class MedicalAppointmentDTO {
 
     // jaki samochod i kto sprzedal
     private String doctorPesel;
-    private OffsetDateTime medicalAppointmentDate;
+    private String medicalAppointmentDate;
 
 
     // metoda zbedna w praktyce, napisana, zeby za kazdym razem nie wklikiwac nowego usera od zera
-    public static MedicalAppointmentDTO buildDefaultData() {
-        return MedicalAppointmentDTO.builder()
+    public static MedicalAppointmentRequestDTO buildDefaultData() {
+        return MedicalAppointmentRequestDTO.builder()
                 .patientName("Alfred")
                 .patientSurname("Samochodowy")
                 .patientPhone("+48 754 552 234")

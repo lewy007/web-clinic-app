@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 public class MedicalAppointmentDateDTO {
 
-    private OffsetDateTime dateTime;
+    private String dateTime;
     private Boolean status;
 
 }

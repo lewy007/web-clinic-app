@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+          crossorigin="anonymous">
+    <title>Web Clinic Application</title>
+</head>
+
+<body>
+<div class="container">
+    <h1>Web Clinic Application!</h1>
+</div>
+
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-md-4">
+            <a th:href="@{/}" class="btn btn-info" role="button">Go back to the main page</a>
+        </div>
+        <div class="col-md-4">
+            <a th:href="@{/patient}" class="btn btn-info" role="button">Go back to the patient page</a>
+        </div>
+    </div>
+
+    <br>
+    <br>
+
+    <h2>Display patient history</h2>
+    <form action="#" th:action="@{/patient/history}" method="GET">
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <label for="patientEmails">Patient email:</label>
+                        <select id="patientEmails" name="patientEmail">
+                            <option th:each="patientEmail : ${allPatientEmails}" th:value="${patientEmail}" th:text="${patientEmail}"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="submit" value="Find!" class="btn btn-success">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="row mt-3">
+        <div>
+            <p>Patient history for email: <b><span th:if="${patientHistoryDTO.patientEmail}" th:text="${patientHistoryDTO.patientEmail}">PATIENT_EMAIL</span></b></p>
+            <table class="table">
+                <thead class="table-dark">
+                <tr>
+                    <th>dateTime</th>
+                    <th>doctorName</th>
+                    <th>doctorSurname</th>
+                    <th>doctorNote</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="medicalAppointment : ${patientHistoryDTO.medicalAppointments}">
+                    <td th:text="${medicalAppointment.dateTime}"></td>
+                    <td th:text="${medicalAppointment.doctorName}"></td>
+                    <td th:text="${medicalAppointment.doctorSurname}"></td>
+                    <td th:text="${medicalAppointment.doctorNote}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

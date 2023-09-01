@@ -50,21 +50,41 @@
     <br>
 
     <div class="container">
-        <h2>Do what You want!</h2>
+        <h2>Please, choose your doctor and click the button!</h2>
         <div class="row mt-3">
             <div class="col-md-4">
-                <a th:href="@{/appointment}" class="btn btn-success" role="button">Make a medical appointment</a>
+                <a th:href="@{/patient/doctor/1}" class="btn btn-success" role="button">Agata Torbe</a>
             </div>
             <div class="col-md-4">
-                <a th:href="@{/service/new}" class="btn btn-success" role="button">Cancel a  medical appointment</a>
+                <a th:href="@{/patient/doctor/2}" class="btn btn-success" role="button">Renata Kruk</a>
             </div>
             <div class="col-md-4">
-                <a th:href="@{/car/history}" class="btn btn-success" role="button">Medical appointment history</a>
+                <a th:href="@{/patient/doctor/3}" class="btn btn-success" role="button">Danuta Wasilewska</a>
             </div>
         </div>
     </div>
+
     <br>
     <br>
+
+    <div class="container">
+        <h2>Your additional options!</h2>
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <a th:href="@{/patient/cancel}" class="btn btn-danger" role="button">Cancel a medical appointment</a>
+            </div>
+            <div class="col-md-4">
+                <a th:href="@{/appointment/new}" class="btn btn-dark" role="button">Change the date of medical appointment</a>
+            </div>
+            <div class="col-md-4">
+                <a th:href="@{/patient/history}" class="btn btn-warning" role="button">Medical appointment history</a>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <br>
+
 </body>
 
 </html>

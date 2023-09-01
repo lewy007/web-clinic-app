@@ -28,5 +28,4 @@ public class Doctor {
         return Objects.isNull(appointmentsDate) ? new HashSet<>() : appointmentsDate;
     }
 
-
 }

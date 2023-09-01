@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import pl.szczecin.infrastructure.database.entity.MedicalAppointmentDateEntity;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -18,10 +19,34 @@ public interface MedicalAppointmentDateJpaRepository extends JpaRepository<Medic
             WHERE mad.dateTime = :dateTime
             """)
     Optional<MedicalAppointmentDateEntity> findByDateTime(final @Param("dateTime") OffsetDateTime medicalAppointmentDate);
+
+
+    @Query("""
+            SELECT mad FROM MedicalAppointmentDateEntity mad 
+            WHERE mad.status = true 
+            AND mad.doctor.pesel = :doctorPesel 
+            AND NOT EXISTS (SELECT ma FROM MedicalAppointmentEntity ma 
+                           WHERE ma.medicalAppointmentDateEntity = mad)
+                           """)
+    List<MedicalAppointmentDateEntity> findByDoctorPesel(final @Param("doctorPesel") String doctorPesel);
+
+
 //    @Query("""
-//            SELECT csr FROM CarServiceRequestEntity csr
-//            WHERE csr.completedDateTime IS NULL
-//            AND csr.car.vin = :vin
+//            SELECT
+//                mad.dateTime,
+//                mad.status
+//            FROM
+//                MedicalAppointmentDateEntity mad
+//            LEFT JOIN FETCH
+//                MedicalAppointment mad.medicalAppointmentDateId medicalAppointmentDateId
+//            WHERE
+//                mad.dateTime = :dateTime
+//                mad.status = true
+//                AND (ma.medicalAppointmentId IS NULL OR ma.medicalAppointmentDateId IS NULL)
+//            ORDER BY mad.dateTime
 //            """)
-//    Optional<MedicalAppointmentDateEntity> findByDateTime(String medicalAppointmentDate);
+//    Optional<MedicalAppointmentDateEntity> findByDateTimeAndStatus(
+//            final @Param("dateTime") OffsetDateTime dateTime);
+
+
 }

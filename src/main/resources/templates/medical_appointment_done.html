@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+          crossorigin="anonymous">
+    <title>Web Clinic Application</title>
+</head>
+
+<body>
+    <div class="container">
+      <h1>Web Clinic Application!</h1>
+    </div>
+
+    <div class="container">
+      <h2>You made a medical appointment!</h2>
+      <p>Congratulations:
+        <b>
+          <span th:if="${patientName}" th:text="${patientName}">NAME</span>
+          <span th:if="${patientSurname}" th:text="${patientSurname}">SURNAME</span>
+          <span th:if="${existingPatientEmail}" th:text="${existingPatientEmail}">EXISTING_PATIENT_EMAIL</span>
+        </b>
+        Thank you for your trust! Your Doctor is:
+        <b>
+          <span th:if="${doctorName}" th:text="${doctorName}">DOCTOR_NAME</span>
+          <span th:if="${doctorSurname}" th:text="${doctorSurname}">DOCTOR_SURNAME</span>
+        </b>
+          Your medical appointment date is:
+        <b>
+          <span th:if="${medicalAppointmentDate}" th:text="${medicalAppointmentDate}">DATE</span>
+        </b>
+      </p>
+    </div>
+
+    <div class="container">
+      <div class="row mt-3">
+        <div class="col-md-4">
+          <a th:href="@{/}" class="btn btn-info" role="button">Go back to the main page</a>
+        </div>
+          <div class="col-md-4">
+              <a th:href="@{/patient}" class="btn btn-info" role="button">Go back to the patient page</a>
+          </div>
+      </div>
+    </div>
+</body>
+
+</html>

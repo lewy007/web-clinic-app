@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import pl.szczecin.business.dao.MedicalAppointmentDateDAO;
 import pl.szczecin.domain.MedicalAppointmentDate;
+import pl.szczecin.infrastructure.database.entity.MedicalAppointmentDateEntity;
 import pl.szczecin.infrastructure.database.repository.jpa.MedicalAppointmentDateJpaRepository;
 import pl.szczecin.infrastructure.database.repository.mapper.MedicalAppointmentDateEntityMapper;
 
@@ -19,11 +20,20 @@ public class MedicalAppointmentDateRepository implements MedicalAppointmentDateD
     private final MedicalAppointmentDateEntityMapper medicalAppointmentDateEntityMapper;
 
     @Override
-    public List<MedicalAppointmentDate> findAvailableDates() {
+    public List<MedicalAppointmentDate> findAvailableMedicalAppointmentDates() {
         return medicalAppointmentDateJpaRepository.findAll().stream()
                 .map(medicalAppointmentDateEntityMapper::mapFromEntity)
                 .toList();
     }
+
+
+    @Override
+    public List<MedicalAppointmentDate> findAvailableDatesForDoctor(String doctorPesel) {
+        return medicalAppointmentDateJpaRepository.findByDoctorPesel(doctorPesel).stream()
+                .map(medicalAppointmentDateEntityMapper::mapFromEntity)
+                .toList();
+    }
+
 
     @Override
     public Optional<MedicalAppointmentDate> findMedicalAppointmentDateByDate(OffsetDateTime medicalAppointmentDate) {
@@ -31,5 +41,11 @@ public class MedicalAppointmentDateRepository implements MedicalAppointmentDateD
                 .map(medicalAppointmentDateEntityMapper::mapFromEntity);
     }
 
+    @Override
+    public MedicalAppointmentDate saveMedicalAppointmentDate(MedicalAppointmentDate medicalAppointmentDate) {
+        MedicalAppointmentDateEntity toSave = medicalAppointmentDateEntityMapper.mapToEntity(medicalAppointmentDate);
+        MedicalAppointmentDateEntity saved = medicalAppointmentDateJpaRepository.save(toSave);
+        return medicalAppointmentDateEntityMapper.mapFromEntity(saved);
+    }
 
 }
