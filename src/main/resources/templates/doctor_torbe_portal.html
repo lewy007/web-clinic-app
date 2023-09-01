@@ -20,38 +20,35 @@
         <div class="col-md-4">
             <a th:href="@{/}" class="btn btn-info" role="button">Go back to the main page</a>
         </div>
+        <div class="col-md-4">
+            <a th:href="@{/patient}" class="btn btn-info" role="button">Go back to the patient page</a>
+        </div>
     </div>
 
     <br>
     <br>
+    <img th:src="@{/images/doctor_woman.png}" alt="DOCTOR_W_PICTURE" width="auto" height="300px"/>
+    <h2>Dr. Agata Torbe</h2>
+    <p>Dr. Agata Torbe is a dedicated family physician with a passion for providing compassionate and
+        comprehensive healthcare to individuals and families. With years of experience in the field,
+        Dr. Torbe has earned a reputation for her commitment to patient well-being.
+        She believes in the importance of building strong doctor-patient relationships
+        and takes the time to listen to her patients' concerns. Dr. Torbe is known for her expertise
+        in preventive care, chronic disease management, and health education.
+        Her goal is to empower her patients to make informed decisions about their health
+        and lead fulfilling lives. When not practicing medicine, Dr. Torbe enjoys staying active,
+        exploring new cuisines, and spending quality time with her family.
+        Her dedication to healthcare and genuine care for her patients make her a trusted and valued member
+        of the medical community. Patients can rely on Dr. Anna Torbe for personalized and attentive healthcare
+        that prioritizes their well-being and promotes a healthier life.</p>
 
-    <h2>Want to make a medical appointment?</h2>
-    <p>We have a good qualified doctors!</p>
-    <p>Please take a look at available doctors!</p>
-
-    <div>
-        <table class="table">
-            <thead class="table-dark">
-            <tr>
-                <th>name</th>
-                <th>surname</th>
-                <th>pesel</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="doctor : ${availableDoctorDTOs}">
-                <td th:text="${doctor.name}"></td>
-                <td th:text="${doctor.surname}"></td>
-                <td th:text="${doctor.pesel}"></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <br>
+    <br>
 </div>
 
 <div class="container">
-    <h2>Are You new or existing patient?</h2>
-    <form action="#" th:action="@{/appointment}" method="POST" th:object="${medicalAppointmentRequestDTO}">
+    <h2 style="text-align: center;">Are You new or existing patient?</h2>
+    <form action="#" th:action="@{/patient/doctor/1}" method="POST" th:object="${medicalAppointmentRequestDTO}">
         <div class="row mt-3">
             <div class="col-md-6">
                 <h3>If you are existing patient - please give us your email and choose the doctor!</h3>
@@ -136,13 +133,12 @@
                 </div>
             </div>
         </div>
+
+        <br>
+        <br>
+
+        <h5>Please choose an available date and click button to make an appointment:</h5>
         <div class="row mt-3">
-            <div class="col-md-6">
-                <label for="doctorPesel">Doctor PESEL:</label>
-                <select id="doctorPesel" th:field="*{doctorPesel}">
-                    <option th:each="availableDoctorPesel : ${availableDoctorPesels}" th:value="${availableDoctorPesel}" th:text="${availableDoctorPesel}"></option>
-                </select>
-            </div>
             <div class="col-md-6">
                 <label for="medicalAppointmentDate">Date:</label>
                 <select id="medicalAppointmentDate" th:field="*{medicalAppointmentDate}">

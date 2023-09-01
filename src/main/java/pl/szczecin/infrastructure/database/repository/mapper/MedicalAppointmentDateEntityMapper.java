@@ -12,4 +12,5 @@ public interface MedicalAppointmentDateEntityMapper {
     @Mapping(target = "doctor", ignore = true)
     MedicalAppointmentDate mapFromEntity(MedicalAppointmentDateEntity medicalAppointmentDateEntity);
 
+    MedicalAppointmentDateEntity mapToEntity(MedicalAppointmentDate medicalAppointmentDate);
 }

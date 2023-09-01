@@ -18,6 +18,7 @@ public class MedicalAppointmentRepository implements MedicalAppointmentDAO {
 
     @Override
     public void makeAppointment(MedicalAppointment medicalAppointment) {
+
         MedicalAppointmentEntity medicalAppointmentToSave =
                 medicalAppointmentEntityMapper.mapToEntity(medicalAppointment);
 
@@ -25,18 +26,16 @@ public class MedicalAppointmentRepository implements MedicalAppointmentDAO {
 
     }
 
+    @Override
+    public void cancelMedicalAppointment(Integer medicalAppointmentDateId) {
 
-//    @Override
-//    public void issueInvoice(Customer customer) {
-//        CustomerEntity customerToSave = customerEntityMapper.mapToEntity(customer);
-//        CustomerEntity customerSaved = customerJpaRepository.saveAndFlush(customerToSave);
+//        MedicalAppointmentEntity medicalAppointmentToDelete =
+//                medicalAppointmentEntityMapper.mapToEntity(medicalAppointmentDate);
 //
-//        customer.getInvoices().stream()
-//                .filter(invoice -> Objects.isNull(invoice.getInvoiceId()))
-//                .map(invoiceEntityMapper::mapToEntity)
-//                .forEach(invoiceEntity -> {
-//                    invoiceEntity.setCustomer(customerSaved);
-//                    invoiceJpaRepository.saveAndFlush(invoiceEntity);
-//                });
-//    }
+        MedicalAppointmentEntity medicalAppointmentEntityToDelete
+                = medicalAppointmentJpaRepository.findByMedicalAppointmentDateId(medicalAppointmentDateId);
+
+        medicalAppointmentJpaRepository.delete(medicalAppointmentEntityToDelete);
+    }
+
 }

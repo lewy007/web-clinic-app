@@ -27,7 +27,7 @@ public class PatientController {
                 .map(doctorMapper::map)
                 .toList();
 
-        // do modelu przekazujmey samochody typu CarDTO, dzieki temy ja ustalam jaki typ danych wychodzi na zewnatrz
+        // do modelu przekazujmey lekarzy typu DoctorDTO, dzieki temu ja ustalam jaki typ danych wychodzi na zewnatrz
         // i ograniczam w ten sposob mozliwosc wycieku danych, ktore nie chcialbym zeby wyszly z backendu
         model.addAttribute("availableDoctorsDTOs", availableDoctors);
 

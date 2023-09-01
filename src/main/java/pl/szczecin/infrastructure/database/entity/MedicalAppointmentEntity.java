@@ -41,8 +41,8 @@ public class MedicalAppointmentEntity {
     @JoinColumn(name = "patient_id")
     private PatientEntity patient;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "medical_appointment_date_id")
-    private MedicalAppointmentDateEntity medicalAppointmentDateId;
+    private MedicalAppointmentDateEntity medicalAppointmentDateEntity;
 
 }

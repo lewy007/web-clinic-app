@@ -3,8 +3,10 @@ package pl.szczecin.api.dto.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
@@ -20,4 +22,15 @@ public interface OffsetDateTimeMapper {
                 .map(odt -> odt.format(DATE_FORMAT))
                 .orElse(null);
     }
+
+    @Named("mapStringToOffsetDateTime")
+    default OffsetDateTime mapStringToOffsetDateTime(String dateTimeString) {
+        if (dateTimeString != null) {
+            LocalDateTime dateTime = LocalDateTime.parse(dateTimeString,DATE_FORMAT);
+            ZonedDateTime zonedDateTime = dateTime.atZone(ZoneOffset.UTC);
+            return zonedDateTime.toOffsetDateTime();
+        }
+        return null;
+    }
+
 }

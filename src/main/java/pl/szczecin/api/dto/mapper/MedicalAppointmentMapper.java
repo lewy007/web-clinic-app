@@ -1,10 +1,14 @@
 package pl.szczecin.api.dto.mapper;
 
 import org.mapstruct.Mapper;
-import pl.szczecin.api.dto.MedicalAppointmentDTO;
+import org.mapstruct.Mapping;
+import pl.szczecin.api.dto.MedicalAppointmentRequestDTO;
 import pl.szczecin.domain.MedicalAppointmentRequest;
 
 @Mapper(componentModel = "spring")
-public interface MedicalAppointmentMapper {
-    MedicalAppointmentRequest map(MedicalAppointmentDTO medicalAppointmentDTO);
+public interface MedicalAppointmentMapper extends OffsetDateTimeMapper {
+
+    @Mapping(source = "medicalAppointmentDate", target = "medicalAppointmentDate", qualifiedByName = "mapStringToOffsetDateTime")
+    MedicalAppointmentRequest map(MedicalAppointmentRequestDTO medicalAppointmentRequestDTO);
+
 }

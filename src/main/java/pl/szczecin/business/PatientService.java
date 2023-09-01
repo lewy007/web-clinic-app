@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.szczecin.business.dao.PatientDAO;
 import pl.szczecin.domain.Patient;
+import pl.szczecin.domain.PatientHistory;
 import pl.szczecin.domain.exception.NotFoundException;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class PatientService {
         return patientDAO.savePatient(patient);
     }
 
+    @Transactional
     public List<Patient> findAvailablePatients() {
         List<Patient> availablePatients = patientDAO.findAvailablePatients();
         log.info("Available patients: [{}]", availablePatients.size());
@@ -37,5 +39,14 @@ public class PatientService {
             throw new NotFoundException("Could not find patient by email: [%s]".formatted(email));
         }
         return patient.get();
+    }
+
+    public PatientHistory findPatientHistoryByEmail(String patientEmail) {
+        return patientDAO.findPatientHistoryByEmail(patientEmail);
+
+    }
+
+    public PatientHistory findCurrentPatientAppointmentsByEmail(String patientEmail) {
+        return patientDAO.findCurrentPatientAppointmentsByEmail(patientEmail);
     }
 }
