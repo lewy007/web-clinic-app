@@ -69,6 +69,7 @@ public class PatientRepository implements PatientDAO {
         PatientHistory patientHistoryAll = patientEntityMapper.mapFromEntity(entity, patientEmail);
 
         return patientHistoryAll.withMedicalAppointments(futureAppointments);
+
     }
 
 }

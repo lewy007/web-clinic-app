@@ -13,6 +13,9 @@ public interface MedicalAppointmentDateDAO {
     List<MedicalAppointmentDate> findAvailableDatesForDoctor(String doctorPesel);
 
     Optional<MedicalAppointmentDate> findMedicalAppointmentDateByDate(OffsetDateTime medicalAppointmentDate);
+    Optional<MedicalAppointmentDate> findMedicalAppointmentDateByDateAndDoctor(
+            OffsetDateTime medicalAppointmentDate,
+            String doctorSurname);
 
     MedicalAppointmentDate saveMedicalAppointmentDate(MedicalAppointmentDate medicalAppointmentDate);
 }

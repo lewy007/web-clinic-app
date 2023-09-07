@@ -8,8 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.OffsetDateTime;
-
 @Data
 @Builder
 @NoArgsConstructor
@@ -20,7 +18,7 @@ public class MedicalAppointmentRequestDTO {
     @Email
     private String existingPatientEmail;
 
-    // jesli przychodzi pierwszy raz to potrzebujmey wszytskich danych
+    // jesli przychodzi pierwszy raz to potrzebujmey wszystkich danych
     private String patientName;
     private String patientSurname;
     @Size()
@@ -33,8 +31,9 @@ public class MedicalAppointmentRequestDTO {
     private String patientAddressPostalCode;
     private String patientAddressStreet;
 
-    // jaki samochod i kto sprzedal
+    // jaki doktor i data wizyty
     private String doctorPesel;
+    private String doctorSurname;
     private String medicalAppointmentDate;
 
 

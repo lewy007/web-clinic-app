@@ -10,4 +10,6 @@ public interface DoctorDAO {
     List<Doctor> findAvailableDoctors();
 
     Optional<Doctor> findDoctorByPesel(String pesel);
+
+    Optional<Doctor> findDoctorBySurname(String surname);
 }

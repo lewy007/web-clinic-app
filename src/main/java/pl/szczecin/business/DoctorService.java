@@ -32,4 +32,12 @@ public class DoctorService {
         }
         return doctor.get();
     }
+
+    public Doctor findDoctorBySurname(String surname) {
+        Optional<Doctor> doctor = doctorDAO.findDoctorBySurname(surname);
+        if (doctor.isEmpty()) {
+            throw new NotFoundException("Could not find doctor by surname: [%s]".formatted(surname));
+        }
+        return doctor.get();
+    }
 }

@@ -66,6 +66,7 @@
                         <form th:action="@{/patient/cancel}" method="POST">
                             <input type="hidden" name="patientEmail" th:value="${patientHistoryDTO.patientEmail}">
                             <input type="hidden" name="appointmentDate" th:value="${medicalAppointment.dateTime}">
+                            <input type="hidden" name="doctorSurname" th:value="${medicalAppointment.doctorSurname}">
                             <button type="submit" class="btn btn-danger">CANCEL</button>
                         </form>
                     </td>

@@ -11,6 +11,7 @@ import pl.szczecin.api.dto.PatientDTO;
 import pl.szczecin.api.dto.PatientHistoryDTO;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentMapper;
 import pl.szczecin.api.dto.mapper.PatientMapper;
+import pl.szczecin.business.DoctorService;
 import pl.szczecin.business.MedicalAppointmentService;
 import pl.szczecin.business.PatientService;
 import pl.szczecin.domain.MedicalAppointment;
@@ -29,6 +30,7 @@ public class PatientCancelledController {
     private final MedicalAppointmentMapper medicalAppointmentMapper;
     private final PatientService patientService;
     private final PatientMapper patientMapper;
+    private final DoctorService doctorService;
 
     @GetMapping(value = PATIENT_CANCELLED)
     public String patientHistory(
@@ -56,6 +58,7 @@ public class PatientCancelledController {
     public String cancelAppointment(
             @RequestParam(value = "patientEmail", required = false) String patientEmail,
             @RequestParam("appointmentDate") String appointmentDate,
+            @RequestParam("doctorSurname") String doctorSurname,
             Model model
     ) {
 
@@ -64,10 +67,16 @@ public class PatientCancelledController {
                 MedicalAppointmentRequestDTO.builder()
                         .patientEmail(patientEmail)
                         .medicalAppointmentDate(appointmentDate)
+                        .doctorSurname(doctorSurname)
                         .build()
         );
 
         // Tu dodaj logikę do odwołania wizyty na podstawie patientEmail i appointmentDate
+        var patientByEmail = patientService.findPatientByEmail(patientEmail);
+
+        var doctorBySurname = doctorService.findDoctorBySurname(doctorSurname);
+
+
 //        var allPatients = patientService.findAvailablePatients().stream()
 //                .map(patientMapper::map).toList();
 //        var allPatientEmails = allPatients.stream().map(PatientDTO::getEmail).toList();
@@ -86,11 +95,11 @@ public class PatientCancelledController {
         model.addAttribute("medicalAppointmentDate", appointmentDate);
 
         // Logika zostanie dopisana
-        model.addAttribute("doctorName", "nameDoctor");
-        model.addAttribute("doctorSurname", "surnameDoctor");
-        model.addAttribute("patientName", "patientName");
-        model.addAttribute("patientSurname", "patientSurname");
-//
+        model.addAttribute("doctorName", doctorBySurname.getName());
+        model.addAttribute("doctorSurname", doctorBySurname.getSurname());
+        model.addAttribute("patientName", patientByEmail.getName());
+        model.addAttribute("patientSurname", patientByEmail.getSurname());
+
         return "patient_cancelled_done";
     }
 }

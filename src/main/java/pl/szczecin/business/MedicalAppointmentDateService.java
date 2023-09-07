@@ -27,11 +27,24 @@ public class MedicalAppointmentDateService {
         return availableDates;
     }
 
-    public MedicalAppointmentDate findMedicalAppointmentDateByDate(OffsetDateTime medicalAppointmentDate) {
+    public MedicalAppointmentDate findMedicalAppointmentDateByDate(
+            OffsetDateTime medicalAppointmentDate) {
         Optional<MedicalAppointmentDate> date =
                 medicalAppointmentDateDAO.findMedicalAppointmentDateByDate(medicalAppointmentDate);
         if (date.isEmpty()) {
             throw new NotFoundException("Could not find medicalAppointmentDate by date: [%s]".formatted(date));
+        }
+        return date.get();
+    }
+    public MedicalAppointmentDate findMedicalAppointmentDateByDateAndDoctor(
+            OffsetDateTime medicalAppointmentDate,
+            String doctorSurname) {
+        Optional<MedicalAppointmentDate> date =
+                medicalAppointmentDateDAO.findMedicalAppointmentDateByDateAndDoctor(
+                        medicalAppointmentDate,
+                        doctorSurname);
+        if (date.isEmpty()) {
+            throw new NotFoundException("Could not find medicalAppointmentDate by date and Doctor: [%s]".formatted(date));
         }
         return date.get();
     }

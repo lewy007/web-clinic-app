@@ -11,4 +11,5 @@ public interface DoctorJpaRepository extends JpaRepository<DoctorEntity, Integer
 
     Optional<DoctorEntity> findByPesel(String pesel);
 
+    Optional<DoctorEntity> findBySurname(String surname);
 }
