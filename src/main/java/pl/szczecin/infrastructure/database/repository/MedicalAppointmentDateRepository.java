@@ -36,8 +36,16 @@ public class MedicalAppointmentDateRepository implements MedicalAppointmentDateD
 
 
     @Override
-    public Optional<MedicalAppointmentDate> findMedicalAppointmentDateByDate(OffsetDateTime medicalAppointmentDate) {
+    public Optional<MedicalAppointmentDate> findMedicalAppointmentDateByDate(
+            OffsetDateTime medicalAppointmentDate) {
         return medicalAppointmentDateJpaRepository.findByDateTime(medicalAppointmentDate)
+                .map(medicalAppointmentDateEntityMapper::mapFromEntity);
+    }
+    @Override
+    public Optional<MedicalAppointmentDate> findMedicalAppointmentDateByDateAndDoctor(
+            OffsetDateTime medicalAppointmentDate,
+            String doctorSurname) {
+        return medicalAppointmentDateJpaRepository.findByDateTimeAndDoctor(medicalAppointmentDate, doctorSurname)
                 .map(medicalAppointmentDateEntityMapper::mapFromEntity);
     }
 

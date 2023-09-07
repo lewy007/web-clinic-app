@@ -30,4 +30,10 @@ public class DoctorRepository implements DoctorDAO {
         return doctorJpaRepository.findByPesel(pesel)
                 .map(doctorEntityMapper::mapFromEntity);
     }
+
+    @Override
+    public Optional<Doctor> findDoctorBySurname(String surname) {
+        return doctorJpaRepository.findBySurname(surname)
+                .map(doctorEntityMapper::mapFromEntity);
+    }
 }
