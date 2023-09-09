@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import pl.szczecin.api.dto.DoctorDTO;
-import pl.szczecin.api.dto.MedicalAppointmentRequestDTO;
 import pl.szczecin.api.dto.MedicalAppointmentDateDTO;
+import pl.szczecin.api.dto.MedicalAppointmentRequestDTO;
 import pl.szczecin.api.dto.mapper.DoctorMapper;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentDateMapper;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentMapper;
@@ -25,9 +25,9 @@ import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
-public class DoctorTorbeController {
+public class DoctorWasilewskaController {
 
-    private static final String DOCTOR = "/patient/doctor/1";
+    private static final String DOCTOR = "/patient/doctor/3";
 
     private final MedicalAppointmentService medicalAppointmentService;
     private final MedicalAppointmentMapper medicalAppointmentMapper;
@@ -41,25 +41,25 @@ public class DoctorTorbeController {
 
         Map<String, ?> model = prepareMedicalAppointmentData();
 
-        return new ModelAndView("doctor_torbe_portal", model);
+        return new ModelAndView("doctor_wasilewska_portal", model);
     }
 
     private Map<String, ?> prepareMedicalAppointmentData() {
 
         var availableDoctors = doctorService.findAvailableDoctors().stream()
                 .map(doctorMapper::map)
-                .filter(doctor -> doctor.getSurname().equals("Torbe"))
+                .filter(doctor -> doctor.getSurname().equals("Wasilewska"))
                 .toList();
 
         // wyciagamy pesel z jednoelemntowej listy
-        var doctorTorbePesel = availableDoctors.stream()
+        var doctorWasilewskaPesel = availableDoctors.stream()
                 .map(DoctorDTO::getPesel)
                 .toList()
                 .get(0);
 
         // wyciagamy wolne terminy dla danego lekarza
         var availableMedicalAppointmentDatesForDoctor =
-                medicalAppointmentDateService.getAvailableDatesForDoctor(doctorTorbePesel).stream()
+                medicalAppointmentDateService.getAvailableDatesForDoctor(doctorWasilewskaPesel).stream()
                         .map(medicalAppointmentDateMapper::map)
                         .toList();
 
@@ -70,7 +70,7 @@ public class DoctorTorbeController {
 
         return Map.of(
                 "availableDoctorDTOs", availableDoctors,
-                "doctorTorbePesel",doctorTorbePesel,
+                "doctorWasilewskaPesel",doctorWasilewskaPesel,
                 "availableDates", availableDates,
                 "medicalAppointmentRequestDTO", MedicalAppointmentRequestDTO.buildDefaultData()
         );
@@ -84,15 +84,14 @@ public class DoctorTorbeController {
     ) {
         MedicalAppointmentRequest request = medicalAppointmentMapper.map(medicalAppointmentRequestDTO);
 
-        // wyciagamy doktora po nazwisku i jego pesel z jednoelemntowej listy
-        var doctorTorbePesel = doctorService.findAvailableDoctors().stream()
+        var doctorWasilewskaPesel = doctorService.findAvailableDoctors().stream()
                 .map(doctorMapper::map)
-                .filter(doctor -> doctor.getSurname().equals("Torbe"))
+                .filter(doctor -> doctor.getSurname().equals("Wasilewska"))
                 .map(DoctorDTO::getPesel)
                 .toList()
                 .get(0);
 
-        MedicalAppointmentRequest requestWithDoctorPesel = request.withDoctorPesel(doctorTorbePesel);
+        MedicalAppointmentRequest requestWithDoctorPesel = request.withDoctorPesel(doctorWasilewskaPesel);
 
         MedicalAppointment medicalAppointment = medicalAppointmentService.makeAppointment(requestWithDoctorPesel);
 

@@ -10,6 +10,7 @@ import pl.szczecin.domain.MedicalAppointmentDate;
 import pl.szczecin.domain.exception.NotFoundException;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,14 +28,13 @@ public class MedicalAppointmentDateService {
         return availableDates;
     }
 
-    public MedicalAppointmentDate findMedicalAppointmentDateByDate(
+    public List<MedicalAppointmentDate> findMedicalAppointmentDateByDate(
             OffsetDateTime medicalAppointmentDate) {
-        Optional<MedicalAppointmentDate> date =
+        List <MedicalAppointmentDate> date =
                 medicalAppointmentDateDAO.findMedicalAppointmentDateByDate(medicalAppointmentDate);
-        if (date.isEmpty()) {
-            throw new NotFoundException("Could not find medicalAppointmentDate by date: [%s]".formatted(date));
-        }
-        return date.get();
+        log.info("Available medicalAppointmentDates: [{}]", date.size());
+        // lista z takimi samymi datami dla roznych lekarzy, wiec nas interesuje data
+        return date;
     }
     public MedicalAppointmentDate findMedicalAppointmentDateByDateAndDoctor(
             OffsetDateTime medicalAppointmentDate,

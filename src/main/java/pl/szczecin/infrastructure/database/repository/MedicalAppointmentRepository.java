@@ -29,9 +29,6 @@ public class MedicalAppointmentRepository implements MedicalAppointmentDAO {
     @Override
     public void cancelMedicalAppointment(Integer medicalAppointmentDateId) {
 
-//        MedicalAppointmentEntity medicalAppointmentToDelete =
-//                medicalAppointmentEntityMapper.mapToEntity(medicalAppointmentDate);
-//
         MedicalAppointmentEntity medicalAppointmentEntityToDelete
                 = medicalAppointmentJpaRepository.findByMedicalAppointmentDateId(medicalAppointmentDateId);
 

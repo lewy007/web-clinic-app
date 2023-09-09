@@ -18,7 +18,7 @@ public interface MedicalAppointmentDateJpaRepository extends JpaRepository<Medic
             SELECT mad FROM MedicalAppointmentDateEntity mad
             WHERE mad.dateTime = :dateTime
             """)
-    Optional<MedicalAppointmentDateEntity> findByDateTime(
+    List<MedicalAppointmentDateEntity> findByDateTime(
             final @Param("dateTime") OffsetDateTime medicalAppointmentDate);
 
 
