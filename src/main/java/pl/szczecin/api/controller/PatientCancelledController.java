@@ -45,6 +45,7 @@ public class PatientCancelledController {
         model.addAttribute("allPatientEmails", allPatientEmails);
 
         if (Objects.nonNull(patientEmail)) {
+            // szukamy
             PatientHistory patientHistory = patientService.findCurrentPatientAppointmentsByEmail(patientEmail);
             model.addAttribute("patientHistoryDTO", patientMapper.map(patientHistory));
         } else {
@@ -71,22 +72,9 @@ public class PatientCancelledController {
                         .build()
         );
 
-        // Tu dodaj logikę do odwołania wizyty na podstawie patientEmail i appointmentDate
         var patientByEmail = patientService.findPatientByEmail(patientEmail);
 
         var doctorBySurname = doctorService.findDoctorBySurname(doctorSurname);
-
-
-//        var allPatients = patientService.findAvailablePatients().stream()
-//                .map(patientMapper::map).toList();
-//        var allPatientEmails = allPatients.stream().map(PatientDTO::getEmail).toList();
-//
-//        var allFuturePatientMedicalAppointments =
-//                patientService.findCurrentPatientAppointmentsByEmail(patientEmail);
-//        var allFuturePatientDates =
-//                allFuturePatientMedicalAppointments.getMedicalAppointments().stream()
-//                        .map(PatientHistory.MedicalAppointment::getDateTime).toList();
-
 
         MedicalAppointment medicalAppointment =
                 medicalAppointmentService.cancelAppointment(request);

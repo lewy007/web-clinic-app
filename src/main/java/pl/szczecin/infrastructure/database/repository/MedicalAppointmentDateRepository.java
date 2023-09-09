@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import pl.szczecin.business.dao.MedicalAppointmentDateDAO;
 import pl.szczecin.domain.MedicalAppointmentDate;
+import pl.szczecin.domain.PatientHistory;
 import pl.szczecin.infrastructure.database.entity.MedicalAppointmentDateEntity;
 import pl.szczecin.infrastructure.database.repository.jpa.MedicalAppointmentDateJpaRepository;
 import pl.szczecin.infrastructure.database.repository.mapper.MedicalAppointmentDateEntityMapper;
@@ -30,16 +31,19 @@ public class MedicalAppointmentDateRepository implements MedicalAppointmentDateD
     @Override
     public List<MedicalAppointmentDate> findAvailableDatesForDoctor(String doctorPesel) {
         return medicalAppointmentDateJpaRepository.findByDoctorPesel(doctorPesel).stream()
+                .filter(appointmentDate -> appointmentDate
+                        .getDateTime().isAfter(OffsetDateTime.now().plusHours(1)))
                 .map(medicalAppointmentDateEntityMapper::mapFromEntity)
                 .toList();
     }
 
 
     @Override
-    public Optional<MedicalAppointmentDate> findMedicalAppointmentDateByDate(
+    public List<MedicalAppointmentDate> findMedicalAppointmentDateByDate(
             OffsetDateTime medicalAppointmentDate) {
-        return medicalAppointmentDateJpaRepository.findByDateTime(medicalAppointmentDate)
-                .map(medicalAppointmentDateEntityMapper::mapFromEntity);
+        return medicalAppointmentDateJpaRepository.findByDateTime(medicalAppointmentDate).stream()
+                .map(medicalAppointmentDateEntityMapper::mapFromEntity)
+                .toList();
     }
     @Override
     public Optional<MedicalAppointmentDate> findMedicalAppointmentDateByDateAndDoctor(

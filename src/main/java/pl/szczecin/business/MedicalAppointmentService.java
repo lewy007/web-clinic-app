@@ -34,12 +34,13 @@ public class MedicalAppointmentService {
         // wyciagamy doktora, ktorego pacjent wybral
         Doctor doctor = doctorService.findDoctorByPesel(request.getDoctorPesel());
 
-        // wyciagamy date, ktora pacjent wybral
-        MedicalAppointmentDate medicalAppointmentDate =
-                medicalAppointmentDateService.findMedicalAppointmentDateByDate(
-                        request.getMedicalAppointmentDate());
+        // wyciagamy date przypisana do lekarza, ktora pacjent wybral
+        MedicalAppointmentDate medicalAppointmentDate = medicalAppointmentDateService
+                .findMedicalAppointmentDateByDateAndDoctor(
+                        request.getMedicalAppointmentDate(),
+                        doctor.getSurname());
 
-        // dodajemy do MedicalAppointmentDate Pole Doctor i Status, ktore nie moga byc nullem
+        // dodajemy do MedicalAppointmentDate Pole Doctor, ktore nie moze byc nullem
         MedicalAppointmentDate medicalAppointmentDateToSave = medicalAppointmentDate.withDoctor(doctor);
 
         Patient newPatient = buildPatient(request);
@@ -57,9 +58,17 @@ public class MedicalAppointmentService {
         // pobieramy pacjenta, doktora oraz date
         Patient existingPatient = patientService.findPatientByEmail(request.getExistingPatientEmail());
         Doctor doctor = doctorService.findDoctorByPesel(request.getDoctorPesel());
-        MedicalAppointmentDate medicalAppointmentDate =
-                medicalAppointmentDateService.findMedicalAppointmentDateByDate(
-                        request.getMedicalAppointmentDate());
+
+        MedicalAppointmentDate medicalAppointmentDate = medicalAppointmentDateService
+                .findMedicalAppointmentDateByDateAndDoctor(
+                        request.getMedicalAppointmentDate(),
+                        doctor.getSurname());
+//        var medicalAppointmentDate =
+//                medicalAppointmentDateService.findMedicalAppointmentDateByDate(
+//                                request.getMedicalAppointmentDate()).stream()
+//                        .filter(elem -> elem.getDoctor().equals(doctor))
+//                        .toList()
+//                        .get(0);
 
         // dodajemy do MedicalAppointmentDate Pole Doctor
         MedicalAppointmentDate medicalAppointmentDateToSave = medicalAppointmentDate.withDoctor(doctor);
@@ -76,8 +85,7 @@ public class MedicalAppointmentService {
 
         var patient = patientService.findPatientByEmail(request.getPatientEmail());
 
-        // tutaj szukam na podstawie daty, ale trzeba tez dodac parametr okreslajacy lekarza,
-        // bo moze byc kilku lekarzy przyjmujacych na te sama godzine
+        // tutaj szukam na podstawie daty i lekarza, bo moze byc kilku lekarzy przyjmujacych na te sama godzine
         var medicalAppointmentDateId =
                 medicalAppointmentDateService
                         .findMedicalAppointmentDateByDateAndDoctor(
