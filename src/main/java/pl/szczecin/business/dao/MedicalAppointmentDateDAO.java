@@ -12,7 +12,10 @@ public interface MedicalAppointmentDateDAO {
 
     List<MedicalAppointmentDate> findAvailableDatesForDoctor(String doctorPesel);
 
+    List<MedicalAppointmentDate> findAllDatesForDoctor(String doctorPesel);
+
     List<MedicalAppointmentDate> findMedicalAppointmentDateByDate(OffsetDateTime medicalAppointmentDate);
+
     Optional<MedicalAppointmentDate> findMedicalAppointmentDateByDateAndDoctor(
             OffsetDateTime medicalAppointmentDate,
             String doctorSurname);

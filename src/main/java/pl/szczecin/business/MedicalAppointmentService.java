@@ -2,6 +2,7 @@ package pl.szczecin.business;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.szczecin.business.dao.MedicalAppointmentDAO;
 import pl.szczecin.domain.Address;
@@ -11,8 +12,10 @@ import pl.szczecin.domain.MedicalAppointmentDate;
 import pl.szczecin.domain.MedicalAppointmentRequest;
 import pl.szczecin.domain.Patient;
 
+import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class MedicalAppointmentService {
@@ -21,6 +24,22 @@ public class MedicalAppointmentService {
     private final DoctorService doctorService;
     private final PatientService patientService;
     private final MedicalAppointmentDateService medicalAppointmentDateService;
+
+
+    public List<MedicalAppointment> findAllMedicalAppointment() {
+        List<MedicalAppointment> allMedicalAppointments = medicalAppointmentDAO.findAllMedicalAppointment();
+        log.info("Available doctors: [{}]", allMedicalAppointments.size());
+        return allMedicalAppointments;
+    }
+
+    public List<MedicalAppointment> findAllMedicalAppointmentByMADateID(
+            List<Integer> allMedicalAppointmentDateIdForDoctor
+    ) {
+        List<MedicalAppointment> allMedicalAppointments =
+                medicalAppointmentDAO.findAllMedicalAppointmentByMADateID(allMedicalAppointmentDateIdForDoctor);
+        log.info("Available doctors: [{}]", allMedicalAppointments.size());
+        return allMedicalAppointments;
+    }
 
     @Transactional
     public MedicalAppointment makeAppointment(MedicalAppointmentRequest request) {
@@ -81,9 +100,8 @@ public class MedicalAppointmentService {
     }
 
     @Transactional
-    public MedicalAppointment cancelAppointment(MedicalAppointmentRequest request) {
+    public void cancelAppointment(MedicalAppointmentRequest request) {
 
-        var patient = patientService.findPatientByEmail(request.getPatientEmail());
 
         // tutaj szukam na podstawie daty i lekarza, bo moze byc kilku lekarzy przyjmujacych na te sama godzine
         var medicalAppointmentDateId =
@@ -97,7 +115,6 @@ public class MedicalAppointmentService {
         // szukamy medicalAppointment w bazie na podstawie podanych parametrow
         medicalAppointmentDAO.cancelMedicalAppointment(medicalAppointmentDateId);
 
-        return null;
     }
 
 

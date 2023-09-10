@@ -22,7 +22,7 @@ public class PatientController {
 
 
     @GetMapping(value = PATIENT)
-    public String homePage(Model model) {
+    public String patientPage(Model model) {
         var availableDoctors = doctorService.findAvailableDoctors().stream()
                 .map(doctorMapper::map)
                 .toList();

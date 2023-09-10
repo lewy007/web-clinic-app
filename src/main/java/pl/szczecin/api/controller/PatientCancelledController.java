@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pl.szczecin.api.dto.MedicalAppointmentRequestDTO;
 import pl.szczecin.api.dto.PatientDTO;
 import pl.szczecin.api.dto.PatientHistoryDTO;
-import pl.szczecin.api.dto.mapper.MedicalAppointmentMapper;
+import pl.szczecin.api.dto.mapper.MedicalAppointmentRequestMapper;
 import pl.szczecin.api.dto.mapper.PatientMapper;
 import pl.szczecin.business.DoctorService;
 import pl.szczecin.business.MedicalAppointmentService;
 import pl.szczecin.business.PatientService;
-import pl.szczecin.domain.MedicalAppointment;
 import pl.szczecin.domain.MedicalAppointmentRequest;
 import pl.szczecin.domain.PatientHistory;
 
@@ -27,7 +26,7 @@ public class PatientCancelledController {
     private static final String PATIENT_CANCELLED = "/patient/cancel";
 
     private final MedicalAppointmentService medicalAppointmentService;
-    private final MedicalAppointmentMapper medicalAppointmentMapper;
+    private final MedicalAppointmentRequestMapper medicalAppointmentRequestMapper;
     private final PatientService patientService;
     private final PatientMapper patientMapper;
     private final DoctorService doctorService;
@@ -64,7 +63,7 @@ public class PatientCancelledController {
     ) {
 
         // tworze request z parametrow
-        MedicalAppointmentRequest request = medicalAppointmentMapper.map(
+        MedicalAppointmentRequest request = medicalAppointmentRequestMapper.map(
                 MedicalAppointmentRequestDTO.builder()
                         .patientEmail(patientEmail)
                         .medicalAppointmentDate(appointmentDate)
@@ -76,8 +75,7 @@ public class PatientCancelledController {
 
         var doctorBySurname = doctorService.findDoctorBySurname(doctorSurname);
 
-        MedicalAppointment medicalAppointment =
-                medicalAppointmentService.cancelAppointment(request);
+        medicalAppointmentService.cancelAppointment(request);
 
         model.addAttribute("existingPatientEmail", patientEmail);
         model.addAttribute("medicalAppointmentDate", appointmentDate);
