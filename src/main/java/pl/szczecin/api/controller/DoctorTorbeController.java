@@ -13,7 +13,7 @@ import pl.szczecin.api.dto.MedicalAppointmentRequestDTO;
 import pl.szczecin.api.dto.MedicalAppointmentDateDTO;
 import pl.szczecin.api.dto.mapper.DoctorMapper;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentDateMapper;
-import pl.szczecin.api.dto.mapper.MedicalAppointmentMapper;
+import pl.szczecin.api.dto.mapper.MedicalAppointmentRequestMapper;
 import pl.szczecin.business.DoctorService;
 import pl.szczecin.business.MedicalAppointmentDateService;
 import pl.szczecin.business.MedicalAppointmentService;
@@ -30,7 +30,7 @@ public class DoctorTorbeController {
     private static final String DOCTOR = "/patient/doctor/1";
 
     private final MedicalAppointmentService medicalAppointmentService;
-    private final MedicalAppointmentMapper medicalAppointmentMapper;
+    private final MedicalAppointmentRequestMapper medicalAppointmentRequestMapper;
     private final MedicalAppointmentDateService medicalAppointmentDateService;
     private final MedicalAppointmentDateMapper medicalAppointmentDateMapper;
     private final DoctorService doctorService;
@@ -82,7 +82,7 @@ public class DoctorTorbeController {
             @Valid @ModelAttribute("medicalAppointmentDTO") MedicalAppointmentRequestDTO medicalAppointmentRequestDTO,
             ModelMap model
     ) {
-        MedicalAppointmentRequest request = medicalAppointmentMapper.map(medicalAppointmentRequestDTO);
+        MedicalAppointmentRequest request = medicalAppointmentRequestMapper.map(medicalAppointmentRequestDTO);
 
         // wyciagamy doktora po nazwisku i jego pesel z jednoelemntowej listy
         var doctorTorbePesel = doctorService.findAvailableDoctors().stream()

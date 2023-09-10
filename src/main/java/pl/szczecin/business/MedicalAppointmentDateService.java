@@ -56,9 +56,17 @@ public class MedicalAppointmentDateService {
         return availableDatesForDoctor;
     }
 
+    public List<MedicalAppointmentDate> getAllDatesForDoctor(String doctorPesel) {
+        List<MedicalAppointmentDate> allDatesForDoctor =
+                medicalAppointmentDateDAO.findAllDatesForDoctor(doctorPesel);
+        log.info("All dates for Doctor: [{}]", allDatesForDoctor.size());
+        return allDatesForDoctor;
+    }
 
     @Transactional
     public MedicalAppointmentDate saveMedicalAppointmentDate(MedicalAppointmentDate medicalAppointmentDate) {
         return medicalAppointmentDateDAO.saveMedicalAppointmentDate(medicalAppointmentDate);
     }
+
+
 }

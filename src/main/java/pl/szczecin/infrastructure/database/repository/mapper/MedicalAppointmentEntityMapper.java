@@ -10,6 +10,14 @@ import pl.szczecin.infrastructure.database.entity.MedicalAppointmentEntity;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MedicalAppointmentEntityMapper {
 
+
+    // zwracany medicalAppointment mial wartosc nullowa medicalAppointmentDateId, wiec
+    // trzeba powiazac mapowanie z medicalAppointmentDateEntity na medicalAppointmentDate
+    // oraz zablokowac pozostale mapowania bo dostajemy stack overflow error
+    @Mapping(target = "medicalAppointmentDate", source = "medicalAppointmentDateEntity")
+    @Mapping(target = "patient.address", ignore = true)
+    @Mapping(target = "doctor.appointmentsDate", ignore = true)
+    @Mapping(target = "medicalAppointmentDate.doctor", ignore = true)
     MedicalAppointment mapFromEntity(MedicalAppointmentEntity medicalAppointmentEntity);
 
 
@@ -24,7 +32,6 @@ public interface MedicalAppointmentEntityMapper {
                 .doctorSurname(medicalAppointmentEntity.getMedicalAppointmentDateEntity().getDoctor().getSurname())
                 .build();
     }
-
 
 
     // nie bylo zaleznosci miedzy tymi dwoma klasami, MapStruct nie umial powiazac mapowania

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+          crossorigin="anonymous">
+    <title>Web Clinic Application</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Web Clinic Application!</h1>
+    </div>
+
+    <div class="container">
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <a th:href="@{/}" class="btn btn-info" role="button">Go back to the main page</a>
+            </div>
+        </div>
+        <br>
+        <form action="#" th:action="@{/doctor}" method="GET">
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <label for="doctorPesels">Doctor pesel:</label>
+                            <select id="doctorPesels" name="doctorPesel">
+                                <option th:each="doctorPesel : ${allDoctorPesels}" th:value="${doctorPesel}" th:text="${doctorPesel}"></option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="submit" value="Find!" class="btn btn-success">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <br>
+        <br>
+
+        <h2>This is your schedule!</h2>
+        <div>
+            <table class="table">
+                <thead class="table-dark">
+                <tr>
+                    <th>dateTime</th>
+                    <th>patient name</th>
+                    <th>patient surname</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="medicalAppointment : ${allMedicalAppointment}">
+                    <td th:text="${medicalAppointment.medicalAppointmentDate.dateTime}"></td>
+                    <td th:text="${medicalAppointment.patient.name}"></td>
+                    <td th:text="${medicalAppointment.patient.surname}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <br>
+    <br>
+
+    <div class="container">
+        <h2>Your additional options!</h2>
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <a th:href="@{/patient/cancel}" class="btn btn-danger" role="button">Cancel a medical appointment</a>
+            </div>
+            <div class="col-md-4">
+                <a th:href="@{/appointment/new}" class="btn btn-dark" role="button">Change the date of medical appointment</a>
+            </div>
+            <div class="col-md-4">
+                <a th:href="@{/patient/history}" class="btn btn-warning" role="button">Medical appointment history</a>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <br>
+
+</body>
+</html>
