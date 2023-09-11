@@ -25,7 +25,7 @@ public interface MedicalAppointmentJpaRepository extends JpaRepository<MedicalAp
     @Query("""
             SELECT ma FROM MedicalAppointmentEntity ma 
             WHERE ma.medicalAppointmentDateEntity.medicalAppointmentDateId IN :dateIds
-            ORDER BY ma.medicalAppointmentDateEntity.dateTime ASC
+            ORDER BY ma.medicalAppointmentDateEntity.dateTime ASC 
             """)
     List<MedicalAppointmentEntity> findAllMedicalAppointmentByMADateID(
             @Param("dateIds") List<Integer> dateIds

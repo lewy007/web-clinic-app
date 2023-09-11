@@ -58,7 +58,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="medicalAppointment : ${patientHistoryDTO.medicalAppointments}">
+                <tr th:each="medicalAppointment : ${#lists.sort(patientHistoryDTO.medicalAppointments)}">
                     <td th:text="${medicalAppointment.dateTime}"></td>
                     <td th:text="${medicalAppointment.doctorName}"></td>
                     <td th:text="${medicalAppointment.doctorSurname}"></td>

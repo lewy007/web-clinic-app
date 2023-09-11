@@ -11,6 +11,8 @@ import pl.szczecin.api.dto.mapper.PatientMapper;
 import pl.szczecin.domain.PatientHistory;
 import pl.szczecin.business.PatientService;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Objects;
 
 @Controller
@@ -36,11 +38,14 @@ public class PatientHistoryController {
 
         if (Objects.nonNull(patientEmail)) {
             PatientHistory patientHistory = patientService.findPatientHistoryByEmail(patientEmail);
-            model.addAttribute("patientHistoryDTO", patientMapper.map(patientHistory));
+            PatientHistoryDTO patientHistoryDTO = patientMapper.map(patientHistory);
+
+            model.addAttribute("patientHistoryDTO", patientHistoryDTO);
         } else {
             model.addAttribute("patientHistoryDTO", PatientHistoryDTO.buildDefault());
         }
 
         return "patient_history";
+
     }
 }
