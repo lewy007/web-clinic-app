@@ -36,30 +36,28 @@ public class DoctorController {
     ) {
 
         // pesele lakarzy do rozwijanej listy na stronie
-        var availableDoctors = doctorService.findAvailableDoctors().stream()
+        var allDoctorPesels = doctorService.findAvailableDoctors().stream()
                 .map(doctorMapper::map)
+                .map(DoctorDTO::getPesel)
                 .toList();
-        var allDoctorPesels = availableDoctors.stream().map(DoctorDTO::getPesel).toList();
 
 
-        var allMedicalAppointmentDateForDoctorDTO =
+        // wyciagamy wszystkie daty (dokladnie ich id) powiazane z lekarzem
+        var allMedicalAppointmentDateIdsByDoctorPesel =
                 medicalAppointmentDateService.getAllDatesForDoctor(doctorPesel).stream()
-//                        .map(medicalAppointmentDateMapper::map)
-                        .toList();
-        var allMedicalAppointmentDateIdForDoctor =
-                allMedicalAppointmentDateForDoctorDTO.stream()
                         .map(MedicalAppointmentDate::getMedicalAppointmentDateId)
                         .toList();
 
-        var allMedicalAppointment = medicalAppointmentService
-                .findAllMedicalAppointmentByMADateID(allMedicalAppointmentDateIdForDoctor).stream()
+        // wyszukujemy wszystkie wykorzystane daty wizyt (medical_appointment_date) w medical_appointment
+        // dla danego lekarza
+        var medicalAppointmentDTOs = medicalAppointmentService
+                .findAllMedicalAppointmentByMADateID(allMedicalAppointmentDateIdsByDoctorPesel).stream()
                 .map(medicalAppointmentMapper::map)
                 .toList();
 
 
-//        model.addAttribute("availableDoctorsDTOs", availableDoctors);
         model.addAttribute("allDoctorPesels", allDoctorPesels);
-        model.addAttribute("allMedicalAppointment", allMedicalAppointment);
+        model.addAttribute("medicalAppointmentDTOs", medicalAppointmentDTOs);
 
         return "doctor_portal";
     }

@@ -11,7 +11,4 @@ public interface MedicalAppointmentRequestMapper extends OffsetDateTimeMapper {
     @Mapping(source = "medicalAppointmentDate", target = "medicalAppointmentDate", qualifiedByName = "mapStringToOffsetDateTime")
     MedicalAppointmentRequest map(MedicalAppointmentRequestDTO medicalAppointmentRequestDTO);
 
-//    @Mapping(source = "medicalAppointmentDate", target = "medicalAppointmentDate", qualifiedByName = "mapOffsetDateTimeToString")
-//    MedicalAppointmentRequestDTO mapFromMedicalAppointmentToMedicalAppointmentRequestDTO(
-//            MedicalAppointment medicalAppointment);
 }

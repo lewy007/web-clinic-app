@@ -1,6 +1,7 @@
 package pl.szczecin.infrastructure.database.repository;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import pl.szczecin.business.dao.PatientDAO;
 import pl.szczecin.domain.Patient;
@@ -46,10 +47,18 @@ public class PatientRepository implements PatientDAO {
 
     @Override
     public PatientHistory findPatientHistoryByEmail(String patientEmail) {
+
         PatientEntity entity = patientJpaRepository.findByEmail(patientEmail);
 
         return patientEntityMapper.mapFromEntity(entity, patientEmail);
     }
+
+//    public void sortingExample() {
+//        Sort sort = Sort.by("name").ascending()
+//                .and(Sort.by("dateOfBirth").ascending());
+//        customerRepository.findAll(sort)
+//                .forEach(customer -> System.out.println("###Customer: " + customer));
+//    }
 
     @Override
     public PatientHistory findCurrentPatientAppointmentsByEmail(String patientEmail) {

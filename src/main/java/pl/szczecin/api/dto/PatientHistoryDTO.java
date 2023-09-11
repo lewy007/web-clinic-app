@@ -28,10 +28,15 @@ public class PatientHistoryDTO {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class MedicalAppointmentDTO {
+    public static class MedicalAppointmentDTO implements Comparable<MedicalAppointmentDTO> {
         private String doctorNote;
         private String dateTime;
         private String doctorName;
         private String doctorSurname;
+
+        @Override
+        public int compareTo(MedicalAppointmentDTO o) {
+            return this.dateTime.compareTo(o.dateTime);
+        }
     }
 }
