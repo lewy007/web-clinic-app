@@ -3,6 +3,9 @@ package pl.szczecin.business;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import pl.szczecin.business.dao.PatientDAO;
 import pl.szczecin.domain.Patient;
@@ -48,5 +51,15 @@ public class PatientService {
 
     public PatientHistory findCurrentPatientAppointmentsByEmail(String patientEmail) {
         return patientDAO.findCurrentPatientAppointmentsByEmail(patientEmail);
+    }
+
+    // wyciagamy z security emaila zalogowanego pacjenta
+    public String getLoggedInPatientEmail() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            return userDetails.getUsername();
+        }
+        return null;
     }
 }

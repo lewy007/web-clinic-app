@@ -32,7 +32,7 @@ public class MedicalAppointmentRequestDTO {
     private String patientAddressStreet;
 
     // jaki doktor i data wizyty
-    private String doctorPesel;
+    private String doctorEmail;
     private String doctorSurname;
     private String medicalAppointmentDate;
 

@@ -49,16 +49,16 @@ public class MedicalAppointmentDateService {
         return date.get();
     }
 
-    public List<MedicalAppointmentDate> getAvailableDatesForDoctor(String doctorPesel) {
+    public List<MedicalAppointmentDate> getAvailableDatesForDoctor(String doctorEmail) {
         List<MedicalAppointmentDate> availableDatesForDoctor =
-                medicalAppointmentDateDAO.findAvailableDatesForDoctor(doctorPesel);
+                medicalAppointmentDateDAO.findAvailableDatesForDoctor(doctorEmail);
         log.info("Available dates for Doctor: [{}]", availableDatesForDoctor.size());
         return availableDatesForDoctor;
     }
 
-    public List<MedicalAppointmentDate> getAllDatesForDoctor(String doctorPesel) {
+    public List<MedicalAppointmentDate> getAllDatesForDoctor(String doctorEmail) {
         List<MedicalAppointmentDate> allDatesForDoctor =
-                medicalAppointmentDateDAO.findAllDatesForDoctor(doctorPesel);
+                medicalAppointmentDateDAO.findAllDatesForDoctor(doctorEmail);
         log.info("All dates for Doctor: [{}]", allDatesForDoctor.size());
         return allDatesForDoctor;
     }

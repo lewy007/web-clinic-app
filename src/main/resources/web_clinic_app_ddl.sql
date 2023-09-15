@@ -3,6 +3,9 @@ DROP TABLE IF EXISTS medical_appointment_date CASCADE;
 DROP TABLE IF EXISTS patient CASCADE;
 DROP TABLE IF EXISTS address CASCADE;
 DROP TABLE IF EXISTS doctor CASCADE;
+DROP TABLE IF EXISTS web_clinic_user_role CASCADE;
+DROP TABLE IF EXISTS web_clinic_role CASCADE;
+DROP TABLE IF EXISTS web_clinic_user CASCADE;
 DROP TABLE IF EXISTS flyway_schema_history CASCADE;
 
 CREATE TABLE doctor
@@ -10,9 +13,9 @@ CREATE TABLE doctor
     doctor_id 	    SERIAL 		    NOT NULL,
     name			VARCHAR(32)	    NOT NULL,
     surname			VARCHAR(32)		NOT NULL,
-    pesel		    VARCHAR(32)	    NOT NULL,
+    email		    VARCHAR(32)	    NOT NULL,
     PRIMARY KEY (doctor_id),
-    UNIQUE (pesel)
+    UNIQUE (email)
 );
 
 CREATE TABLE address

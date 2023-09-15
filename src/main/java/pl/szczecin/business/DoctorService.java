@@ -3,6 +3,9 @@ package pl.szczecin.business;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import pl.szczecin.business.dao.DoctorDAO;
 import pl.szczecin.domain.Doctor;
@@ -25,10 +28,10 @@ public class DoctorService {
     }
 
     @Transactional
-    public Doctor findDoctorByPesel(String pesel) {
-        Optional<Doctor> doctor = doctorDAO.findDoctorByPesel(pesel);
+    public Doctor findDoctorByEmail(String email) {
+        Optional<Doctor> doctor = doctorDAO.findDoctorByEmail(email);
         if (doctor.isEmpty()) {
-            throw new NotFoundException("Could not find doctor by pesel: [%s]".formatted(pesel));
+            throw new NotFoundException("Could not find doctor by email: [%s]".formatted(email));
         }
         return doctor.get();
     }
@@ -39,5 +42,15 @@ public class DoctorService {
             throw new NotFoundException("Could not find doctor by surname: [%s]".formatted(surname));
         }
         return doctor.get();
+    }
+
+    // wyciagamy z security emaila zalogowanego doctora
+    public String getLoggedInDoctorEmail() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            return userDetails.getUsername();  // Załóżmy, że email lekarza jest przechowywany jako username
+        }
+        return null;
     }
 }

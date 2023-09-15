@@ -40,8 +40,8 @@ public class MedicalAppointmentController {
         var availableDoctors = doctorService.findAvailableDoctors().stream()
                 .map(doctorMapper::map)
                 .toList();
-        var availableDoctorPesels = availableDoctors.stream()
-                .map(DoctorDTO::getPesel)
+        var availableDoctorEmails = availableDoctors.stream()
+                .map(DoctorDTO::getEmail)
                 .toList();
 
 
@@ -56,7 +56,7 @@ public class MedicalAppointmentController {
 
         return Map.of(
                 "availableDoctorDTOs", availableDoctors,
-                "availableDoctorPesels", availableDoctorPesels,
+                "availableDoctorEmails", availableDoctorEmails,
                 "availableDates", availableDates,
                 "medicalAppointmentDTO", MedicalAppointmentRequestDTO.buildDefaultData()
         );

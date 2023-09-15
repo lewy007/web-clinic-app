@@ -33,19 +33,23 @@ public class PatientCancelledController {
 
     @GetMapping(value = PATIENT_CANCELLED)
     public String patientHistory(
-            @RequestParam(value = "patientEmail", required = false) String patientEmail,
+//            @RequestParam(value = "patientEmail", required = false) String patientEmail,
             Model model
     ) {
-        var allPatients = patientService.findAvailablePatients().stream()
-                .map(patientMapper::map).toList();
-        var allPatientEmails = allPatients.stream().map(PatientDTO::getEmail).toList();
 
-        model.addAttribute("allPatientDTOs", allPatients);
-        model.addAttribute("allPatientEmails", allPatientEmails);
+        // email zalogowanego pacjenta
+        String loggedInDoctorEmail = patientService.getLoggedInPatientEmail();
 
-        if (Objects.nonNull(patientEmail)) {
+//        var allPatients = patientService.findAvailablePatients().stream()
+//                .map(patientMapper::map).toList();
+//        var allPatientEmails = allPatients.stream().map(PatientDTO::getEmail).toList();
+//
+//        model.addAttribute("allPatientDTOs", allPatients);
+//        model.addAttribute("allPatientEmails", allPatientEmails);
+
+        if (Objects.nonNull(loggedInDoctorEmail)) {
             // szukamy
-            PatientHistory patientHistory = patientService.findCurrentPatientAppointmentsByEmail(patientEmail);
+            PatientHistory patientHistory = patientService.findCurrentPatientAppointmentsByEmail(loggedInDoctorEmail);
             model.addAttribute("patientHistoryDTO", patientMapper.map(patientHistory));
         } else {
             model.addAttribute("patientHistoryDTO", PatientHistoryDTO.buildDefault());

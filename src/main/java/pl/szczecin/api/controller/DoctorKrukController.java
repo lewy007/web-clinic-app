@@ -51,15 +51,15 @@ public class DoctorKrukController {
                 .filter(doctor -> doctor.getSurname().equals("Kruk"))
                 .toList();
 
-        // wyciagamy pesel z jednoelemntowej listy
-        var doctorKrukPesel = availableDoctors.stream()
-                .map(DoctorDTO::getPesel)
+        // wyciagamy email z jednoelemntowej listy
+        var doctorKrukEmail = availableDoctors.stream()
+                .map(DoctorDTO::getEmail)
                 .toList()
                 .get(0);
 
         // wyciagamy wolne terminy dla danego lekarza
         var availableMedicalAppointmentDatesForDoctor =
-                medicalAppointmentDateService.getAvailableDatesForDoctor(doctorKrukPesel).stream()
+                medicalAppointmentDateService.getAvailableDatesForDoctor(doctorKrukEmail).stream()
                         .map(medicalAppointmentDateMapper::map)
                         .toList();
 
@@ -70,7 +70,7 @@ public class DoctorKrukController {
 
         return Map.of(
                 "availableDoctorDTOs", availableDoctors,
-                "doctorKrukPesel",doctorKrukPesel,
+                "doctorKrukEmail",doctorKrukEmail,
                 "availableDates", availableDates,
                 "medicalAppointmentRequestDTO", MedicalAppointmentRequestDTO.buildDefaultData()
         );
@@ -84,16 +84,16 @@ public class DoctorKrukController {
     ) {
         MedicalAppointmentRequest request = medicalAppointmentRequestMapper.map(medicalAppointmentRequestDTO);
 
-        var doctorKrukPesel = doctorService.findAvailableDoctors().stream()
+        var doctorKrukEmail = doctorService.findAvailableDoctors().stream()
                 .map(doctorMapper::map)
                 .filter(doctor -> doctor.getSurname().equals("Kruk"))
-                .map(DoctorDTO::getPesel)
+                .map(DoctorDTO::getEmail)
                 .toList()
                 .get(0);
 
-        MedicalAppointmentRequest requestWithDoctorPesel = request.withDoctorPesel(doctorKrukPesel);
+        MedicalAppointmentRequest requestWithDoctorEmail = request.withDoctorEmail(doctorKrukEmail);
 
-        MedicalAppointment medicalAppointment = medicalAppointmentService.makeAppointment(requestWithDoctorPesel);
+        MedicalAppointment medicalAppointment = medicalAppointmentService.makeAppointment(requestWithDoctorEmail);
 
         if (existingCustomerEmailExists(medicalAppointmentRequestDTO.getExistingPatientEmail())) {
             model.addAttribute("existingPatientEmail", medicalAppointmentRequestDTO.getExistingPatientEmail());

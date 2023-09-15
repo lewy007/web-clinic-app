@@ -26,18 +26,22 @@ public class PatientHistoryController {
 
     @GetMapping(value = PATIENT_HISTORY)
     public String patientHistory(
-            @RequestParam(value = "patientEmail", required = false) String patientEmail,
+//            @RequestParam(value = "patientEmail", required = false) String patientEmail,
             Model model
     ) {
-        var allPatients = patientService.findAvailablePatients().stream()
-                .map(patientMapper::map).toList();
-        var allPatientEmails = allPatients.stream().map(PatientDTO::getEmail).toList();
 
-        model.addAttribute("allPatientDTOs", allPatients);
-        model.addAttribute("allPatientEmails", allPatientEmails);
+        // email zalogowanego pacjenta
+        String loggedInDoctorEmail = patientService.getLoggedInPatientEmail();
 
-        if (Objects.nonNull(patientEmail)) {
-            PatientHistory patientHistory = patientService.findPatientHistoryByEmail(patientEmail);
+//        var allPatients = patientService.findAvailablePatients().stream()
+//                .map(patientMapper::map).toList();
+//        var allPatientEmails = allPatients.stream().map(PatientDTO::getEmail).toList();
+
+//        model.addAttribute("allPatientDTOs", allPatients);
+//        model.addAttribute("loggedInDoctorEmail", loggedInDoctorEmail);
+
+        if (Objects.nonNull(loggedInDoctorEmail)) {
+            PatientHistory patientHistory = patientService.findPatientHistoryByEmail(loggedInDoctorEmail);
             PatientHistoryDTO patientHistoryDTO = patientMapper.map(patientHistory);
 
             model.addAttribute("patientHistoryDTO", patientHistoryDTO);

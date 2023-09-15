@@ -52,15 +52,9 @@ public class MedicalAppointmentRepository implements MedicalAppointmentDAO {
                 = medicalAppointmentJpaRepository
                 .findByMedicalAppointmentDateId(medicalAppointmentDateId).getMedicalAppointmentId();
 
-        System.out.println("To sie wyswietla przed usunieciem");
-//        System.out.println("Usuwamy medicalAppointmentEntityToDelete: " + medicalAppointmentEntityToDelete);
-
         if (medicalAppointmentJpaRepository.existsById(medicalAppointmentEntityIdToDelete)) {
-            System.out.println("wejscie w ifa do usuniecia");
             medicalAppointmentJpaRepository.deleteById(medicalAppointmentEntityIdToDelete);
         }
-
-        System.out.println("To sie wyswietla po usunieciu");
 
     }
 

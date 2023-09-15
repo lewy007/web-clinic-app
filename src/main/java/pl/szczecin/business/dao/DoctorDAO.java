@@ -9,7 +9,7 @@ public interface DoctorDAO {
 
     List<Doctor> findAvailableDoctors();
 
-    Optional<Doctor> findDoctorByPesel(String pesel);
+    Optional<Doctor> findDoctorByEmail(String email);
 
     Optional<Doctor> findDoctorBySurname(String surname);
 }

@@ -39,7 +39,7 @@
                 <tr th:each="doctor : ${availableDoctorsDTOs}">
                     <td th:text="${doctor.name}"></td>
                     <td th:text="${doctor.surname}"></td>
-                    <td th:text="${doctor.pesel}"></td>
+                    <td th:text="${doctor.getEmail}"></td>
                 </tr>
                 </tbody>
             </table>
