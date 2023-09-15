@@ -36,7 +36,7 @@
                     <div class="col-md-6">
                         <label for="patientEmails">Patient email:</label>
                         <select id="patientEmails" name="patientEmail">
-                            <option th:each="patientEmail : ${allPatientEmails}" th:value="${patientEmail}" th:text="${patientEmail}"></option>
+                            <option th:each="patientEmail : ${loggedInDoctorEmail}" th:value="${patientEmail}" th:text="${patientEmail}"></option>
                         </select>
                     </div>
                     <div class="col-md-6">

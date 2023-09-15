@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import pl.szczecin.api.dto.DoctorDTO;
 import pl.szczecin.api.dto.mapper.*;
 import pl.szczecin.business.DoctorService;
 import pl.szczecin.business.MedicalAppointmentDateService;
@@ -31,32 +29,35 @@ public class DoctorController {
 
     @GetMapping(value = DOCTOR)
     public String doctorPage(
-            @RequestParam(value = "doctorPesel", required = false) String doctorPesel,
             Model model
     ) {
 
+        // email zalogowanego doctora
+        String loggedInDoctorEmail = doctorService.getLoggedInDoctorEmail();
+
         // pesele lakarzy do rozwijanej listy na stronie
-        var allDoctorPesels = doctorService.findAvailableDoctors().stream()
-                .map(doctorMapper::map)
-                .map(DoctorDTO::getPesel)
-                .toList();
+//        String doctorEmail = doctorService.findDoctorByEmail(loggedInDoctorEmail);
+//        var allDoctorPesels = doctorService.findAvailableDoctors().stream()
+//                .map(doctorMapper::map)
+//                .map(DoctorDTO::getPesel)
+//                .toList();
 
 
         // wyciagamy wszystkie daty (dokladnie ich id) powiazane z lekarzem
-        var allMedicalAppointmentDateIdsByDoctorPesel =
-                medicalAppointmentDateService.getAllDatesForDoctor(doctorPesel).stream()
+        var allMedicalAppointmentDateIdsByDoctorEmail =
+                medicalAppointmentDateService.getAllDatesForDoctor(loggedInDoctorEmail).stream()
                         .map(MedicalAppointmentDate::getMedicalAppointmentDateId)
                         .toList();
 
         // wyszukujemy wszystkie wykorzystane daty wizyt (medical_appointment_date) w medical_appointment
         // dla danego lekarza
         var medicalAppointmentDTOs = medicalAppointmentService
-                .findAllMedicalAppointmentByMADateID(allMedicalAppointmentDateIdsByDoctorPesel).stream()
+                .findAllMedicalAppointmentByMADateID(allMedicalAppointmentDateIdsByDoctorEmail).stream()
                 .map(medicalAppointmentMapper::map)
                 .toList();
 
 
-        model.addAttribute("allDoctorPesels", allDoctorPesels);
+        model.addAttribute("loggedInDoctorEmail", loggedInDoctorEmail);
         model.addAttribute("medicalAppointmentDTOs", medicalAppointmentDTOs);
 
         return "doctor_portal";

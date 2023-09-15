@@ -1,5 +1,5 @@
 -- Wprowadzenie przykładowych danych dla tabeli doctor
-INSERT INTO doctor (name, surname, pesel)
+INSERT INTO doctor (name, surname, email)
 VALUES
     ('Agata', 'Torbe', '78011211111'),
     ('Renata', 'Kruk', '72011522222'),

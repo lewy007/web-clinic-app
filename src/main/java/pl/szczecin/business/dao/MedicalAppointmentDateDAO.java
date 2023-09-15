@@ -10,9 +10,9 @@ public interface MedicalAppointmentDateDAO {
 
     List<MedicalAppointmentDate> findAvailableMedicalAppointmentDates();
 
-    List<MedicalAppointmentDate> findAvailableDatesForDoctor(String doctorPesel);
+    List<MedicalAppointmentDate> findAvailableDatesForDoctor(String doctorEmail);
 
-    List<MedicalAppointmentDate> findAllDatesForDoctor(String doctorPesel);
+    List<MedicalAppointmentDate> findAllDatesForDoctor(String doctorEmail);
 
     List<MedicalAppointmentDate> findMedicalAppointmentDateByDate(OffsetDateTime medicalAppointmentDate);
 

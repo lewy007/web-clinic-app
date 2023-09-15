@@ -35,17 +35,17 @@ public interface MedicalAppointmentDateJpaRepository extends JpaRepository<Medic
     @Query("""
             SELECT mad FROM MedicalAppointmentDateEntity mad 
             WHERE mad.status = true 
-            AND mad.doctor.pesel = :doctorPesel 
+            AND mad.doctor.email = :doctorEmail 
             AND NOT EXISTS (SELECT ma FROM MedicalAppointmentEntity ma 
                            WHERE ma.medicalAppointmentDateEntity = mad)
                            """)
-    List<MedicalAppointmentDateEntity> findAvailableByDoctorPesel(final @Param("doctorPesel") String doctorPesel);
+    List<MedicalAppointmentDateEntity> findAvailableByDoctorEmail(final @Param("doctorEmail") String doctorEmail);
 
     @Query("""
             SELECT mad FROM MedicalAppointmentDateEntity mad 
-            WHERE mad.doctor.pesel = :doctorPesel 
+            WHERE mad.doctor.email = :doctorEmail 
                            """)
-    List<MedicalAppointmentDateEntity> findAllByDoctorPesel(final @Param("doctorPesel") String doctorPesel);
+    List<MedicalAppointmentDateEntity> findAllByDoctorEmail(final @Param("doctorEmail") String doctorEmail);
 
 
 //    @Query("""

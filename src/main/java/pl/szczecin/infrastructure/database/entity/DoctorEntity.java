@@ -21,7 +21,7 @@ import java.util.Set;
 @Getter
 @Setter
 @EqualsAndHashCode(of = "doctorId")
-@ToString(of = {"doctorId", "name", "surname", "pesel"})
+@ToString(of = {"doctorId", "name", "surname", "email"})
 @Entity
 @Builder
 @NoArgsConstructor
@@ -40,8 +40,8 @@ public class DoctorEntity {
     @Column(name = "surname")
     private String surname;
 
-    @Column(name = "pesel")
-    private String pesel;
+    @Column(name = "email")
+    private String email;
 
     @OneToMany(mappedBy = "doctor", fetch = FetchType.EAGER)
     private Set<MedicalAppointmentDateEntity> appointmentsDate;

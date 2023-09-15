@@ -27,9 +27,9 @@
                 <div class="col-md-6">
                     <div class="row mt-3">
                         <div class="col-md-6">
-                            <label for="doctorPesels">Doctor pesel:</label>
-                            <select id="doctorPesels" name="doctorPesel">
-                                <option th:each="doctorPesel : ${allDoctorPesels}" th:value="${doctorPesel}" th:text="${doctorPesel}"></option>
+                            <label for="doctorEmails">Doctor email:</label>
+                            <select id="doctorEmails" name="doctorEmail">
+                                <option th:each="doctorEmail : ${loggedInDoctorEmail}" th:value="${doctorEmail}" th:text="${doctorEmail}"></option>
                             </select>
                         </div>
                         <div class="col-md-6">

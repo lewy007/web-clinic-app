@@ -51,7 +51,7 @@ public class MedicalAppointmentService {
     private MedicalAppointment processFirstTimeToMakeAnAppointment(MedicalAppointmentRequest request) {
 
         // wyciagamy doktora, ktorego pacjent wybral
-        Doctor doctor = doctorService.findDoctorByPesel(request.getDoctorPesel());
+        Doctor doctor = doctorService.findDoctorByEmail(request.getDoctorEmail());
 
         // wyciagamy date przypisana do lekarza, ktora pacjent wybral
         MedicalAppointmentDate medicalAppointmentDate = medicalAppointmentDateService
@@ -76,7 +76,7 @@ public class MedicalAppointmentService {
 
         // pobieramy pacjenta, doktora oraz date
         Patient existingPatient = patientService.findPatientByEmail(request.getExistingPatientEmail());
-        Doctor doctor = doctorService.findDoctorByPesel(request.getDoctorPesel());
+        Doctor doctor = doctorService.findDoctorByEmail(request.getDoctorEmail());
 
         MedicalAppointmentDate medicalAppointmentDate = medicalAppointmentDateService
                 .findMedicalAppointmentDateByDateAndDoctor(

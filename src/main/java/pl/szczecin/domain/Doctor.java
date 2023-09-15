@@ -13,14 +13,14 @@ import java.util.Set;
 @With
 @Value
 @Builder
-@EqualsAndHashCode(of = "pesel")
-@ToString(of = {"doctorId", "name", "surname", "pesel"})
+@EqualsAndHashCode(of = "email")
+@ToString(of = {"doctorId", "name", "surname", "email"})
 public class Doctor {
 
     Integer doctorId;
     String name;
     String surname;
-    String pesel;
+    String email;
     Set<MedicalAppointmentDate> appointmentsDate;
 
     // dodajemy getter z palca, zeby uchronic sie przed NullPointerException

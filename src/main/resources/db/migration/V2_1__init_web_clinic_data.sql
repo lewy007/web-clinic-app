@@ -1,9 +1,9 @@
 -- Wprowadzenie przykładowych danych dla tabeli doctor
-INSERT INTO doctor (name, surname, pesel)
+INSERT INTO doctor (name, surname, email)
 VALUES
-    ('Agata', 'Torbe', '78011211111'),
-    ('Renata', 'Kruk', '72011522222'),
-    ('Danuta', 'Wasilewska', '60022133333');
+    ('Agata', 'Torbe', 'agata_torbe@clinic.pl'),
+    ('Renata', 'Kruk', 'renata_kruk@clinic.pl'),
+    ('Danuta', 'Wasilewska', 'danuta_wasilewska@clinic.pl');
 
 -- Wprowadzenie przykładowych danych dla tabeli address
 INSERT INTO address (country, city, postal_code, address)
@@ -12,12 +12,7 @@ VALUES
     ('Polska', 'Kraków', '30-001', 'ul. Krakowska 2'),
     ('Polska', 'Gdańsk', '80-001', 'ul. Gdańska 3'),
     ('Polska', 'Wrocław', '50-001', 'ul. Wrocławska 4'),
-    ('Polska', 'Poznań', '60-001', 'ul. Poznańska 5'),
-    ('Polska', 'Łódź', '90-001', 'ul. Łódzka 6'),
-    ('Polska', 'Katowice', '40-001', 'ul. Katowicka 7'),
-    ('Polska', 'Szczecin', '70-001', 'ul. Szczecińska 8'),
-    ('Polska', 'Gdynia', '81-001', 'ul. Gdyńska 9'),
-    ('Polska', 'Bydgoszcz', '85-001', 'ul. Bydgoska 10');
+    ('Polska', 'Poznań', '60-001', 'ul. Poznańska 5');
 
 -- Wprowadzenie przykładowych danych dla tabeli patient
 INSERT INTO patient (name, surname, phone, email, address_id)
@@ -26,12 +21,7 @@ VALUES
     ('Michał', 'Kowalski', '987654321', 'michal@example.com', 2),
     ('Magdalena', 'Szymańska', '555666777', 'magdalena@example.com', 3),
     ('Kamil', 'Wójcik', '111222333', 'kamil@example.com', 4),
-    ('Monika', 'Zając', '999888777', 'monika@example.com', 5),
-    ('Paweł', 'Lewandowski', '333222111', 'pawel@example.com', 6),
-    ('Natalia', 'Kwiatkowska', '444555666', 'natalia@example.com', 7),
-    ('Krzysztof', 'Dąbrowski', '777888999', 'krzysztof@example.com', 8),
-    ('Weronika', 'Pawlak', '666555444', 'weronika@example.com', 9),
-    ('Marcin', 'Wiśniewski', '222333444', 'marcin@example.com', 10);
+    ('Monika', 'Zając', '999888777', 'monika@example.com', 5);
 
 -- Wprowadzenie przykładowych danych dla tabeli medical_appointment_date
 INSERT INTO medical_appointment_date (date_time, status, doctor_id)
@@ -114,8 +104,8 @@ VALUES
     ('Skierowanie na dodatkowe badania.', 3, 3),
     ('Konsultacja dermatologiczna.', 4, 4),
     ('Badanie okulistyczne.', 5, 5),
-    ('Badanie kardiologiczne.', 6, 6),
-    ('Konsultacja neurologiczna.', 7, 7),
-    ('Skierowanie na rehabilitację.', 8, 8),
-    ('Badanie ginekologiczne.', 9, 9),
-    ('Skierowanie na badania hormonalne.', 10, 10);
+    ('Badanie kardiologiczne.', 1, 6),
+    ('Konsultacja neurologiczna.', 2, 7),
+    ('Skierowanie na rehabilitację.', 3, 8),
+    ('Badanie ginekologiczne.', 4, 9),
+    ('Skierowanie na badania hormonalne.', 5, 10);
