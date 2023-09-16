@@ -35,14 +35,6 @@ public class DoctorController {
         // email zalogowanego doctora
         String loggedInDoctorEmail = doctorService.getLoggedInDoctorEmail();
 
-        // pesele lakarzy do rozwijanej listy na stronie
-//        String doctorEmail = doctorService.findDoctorByEmail(loggedInDoctorEmail);
-//        var allDoctorPesels = doctorService.findAvailableDoctors().stream()
-//                .map(doctorMapper::map)
-//                .map(DoctorDTO::getPesel)
-//                .toList();
-
-
         // wyciagamy wszystkie daty (dokladnie ich id) powiazane z lekarzem
         var allMedicalAppointmentDateIdsByDoctorEmail =
                 medicalAppointmentDateService.getAllDatesForDoctor(loggedInDoctorEmail).stream()

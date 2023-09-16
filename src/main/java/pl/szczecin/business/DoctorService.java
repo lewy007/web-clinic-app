@@ -44,12 +44,11 @@ public class DoctorService {
         return doctor.get();
     }
 
-    // wyciagamy z security emaila zalogowanego doctora
+    // wyciagamy z securityContext emaila zalogowanego doctora
     public String getLoggedInDoctorEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            return userDetails.getUsername();  // Załóżmy, że email lekarza jest przechowywany jako username
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
+            return userDetails.getUsername();
         }
         return null;
     }

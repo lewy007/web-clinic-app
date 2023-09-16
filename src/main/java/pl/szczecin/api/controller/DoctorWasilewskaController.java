@@ -17,6 +17,7 @@ import pl.szczecin.api.dto.mapper.MedicalAppointmentRequestMapper;
 import pl.szczecin.business.DoctorService;
 import pl.szczecin.business.MedicalAppointmentDateService;
 import pl.szczecin.business.MedicalAppointmentService;
+import pl.szczecin.business.PatientService;
 import pl.szczecin.domain.MedicalAppointment;
 import pl.szczecin.domain.MedicalAppointmentRequest;
 
@@ -35,6 +36,7 @@ public class DoctorWasilewskaController {
     private final MedicalAppointmentDateMapper medicalAppointmentDateMapper;
     private final DoctorService doctorService;
     private final DoctorMapper doctorMapper;
+    private final PatientService patientService;
 
     @GetMapping(value = DOCTOR)
     public ModelAndView medicalAppointmentPage() {
@@ -45,6 +47,9 @@ public class DoctorWasilewskaController {
     }
 
     private Map<String, ?> prepareMedicalAppointmentData() {
+
+        // email zalogowanego pacjenta
+        String loggedInPatientEmail = patientService.getLoggedInPatientEmail();
 
         var availableDoctors = doctorService.findAvailableDoctors().stream()
                 .map(doctorMapper::map)
@@ -69,6 +74,7 @@ public class DoctorWasilewskaController {
 
 
         return Map.of(
+                "loggedInPatientEmail", loggedInPatientEmail,
                 "availableDoctorDTOs", availableDoctors,
                 "doctorWasilewskaEmail",doctorWasilewskaEmail,
                 "availableDates", availableDates,

@@ -4,15 +4,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import pl.szczecin.api.dto.PatientDTO;
 import pl.szczecin.api.dto.PatientHistoryDTO;
 import pl.szczecin.api.dto.mapper.PatientMapper;
-import pl.szczecin.domain.PatientHistory;
 import pl.szczecin.business.PatientService;
+import pl.szczecin.domain.PatientHistory;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Objects;
 
 @Controller
@@ -26,25 +22,18 @@ public class PatientHistoryController {
 
     @GetMapping(value = PATIENT_HISTORY)
     public String patientHistory(
-//            @RequestParam(value = "patientEmail", required = false) String patientEmail,
             Model model
     ) {
 
         // email zalogowanego pacjenta
-        String loggedInDoctorEmail = patientService.getLoggedInPatientEmail();
+        String loggedInPatientEmail = patientService.getLoggedInPatientEmail();
 
-//        var allPatients = patientService.findAvailablePatients().stream()
-//                .map(patientMapper::map).toList();
-//        var allPatientEmails = allPatients.stream().map(PatientDTO::getEmail).toList();
-
-//        model.addAttribute("allPatientDTOs", allPatients);
-//        model.addAttribute("loggedInDoctorEmail", loggedInDoctorEmail);
-
-        if (Objects.nonNull(loggedInDoctorEmail)) {
-            PatientHistory patientHistory = patientService.findPatientHistoryByEmail(loggedInDoctorEmail);
+        if (Objects.nonNull(loggedInPatientEmail)) {
+            PatientHistory patientHistory = patientService.findPatientHistoryByEmail(loggedInPatientEmail);
             PatientHistoryDTO patientHistoryDTO = patientMapper.map(patientHistory);
 
             model.addAttribute("patientHistoryDTO", patientHistoryDTO);
+            model.addAttribute("loggedInPatientEmail", loggedInPatientEmail);
         } else {
             model.addAttribute("patientHistoryDTO", PatientHistoryDTO.buildDefault());
         }

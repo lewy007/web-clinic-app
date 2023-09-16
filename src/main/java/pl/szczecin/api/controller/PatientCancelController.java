@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.szczecin.api.dto.MedicalAppointmentRequestDTO;
-import pl.szczecin.api.dto.PatientDTO;
 import pl.szczecin.api.dto.PatientHistoryDTO;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentRequestMapper;
 import pl.szczecin.api.dto.mapper.PatientMapper;
@@ -21,7 +20,7 @@ import java.util.Objects;
 
 @Controller
 @AllArgsConstructor
-public class PatientCancelledController {
+public class PatientCancelController {
 
     private static final String PATIENT_CANCELLED = "/patient/cancel";
 
@@ -33,29 +32,21 @@ public class PatientCancelledController {
 
     @GetMapping(value = PATIENT_CANCELLED)
     public String patientHistory(
-//            @RequestParam(value = "patientEmail", required = false) String patientEmail,
             Model model
     ) {
 
         // email zalogowanego pacjenta
-        String loggedInDoctorEmail = patientService.getLoggedInPatientEmail();
+        String loggedInPatientEmail = patientService.getLoggedInPatientEmail();
 
-//        var allPatients = patientService.findAvailablePatients().stream()
-//                .map(patientMapper::map).toList();
-//        var allPatientEmails = allPatients.stream().map(PatientDTO::getEmail).toList();
-//
-//        model.addAttribute("allPatientDTOs", allPatients);
-//        model.addAttribute("allPatientEmails", allPatientEmails);
-
-        if (Objects.nonNull(loggedInDoctorEmail)) {
-            // szukamy
-            PatientHistory patientHistory = patientService.findCurrentPatientAppointmentsByEmail(loggedInDoctorEmail);
+        if (Objects.nonNull(loggedInPatientEmail)) {
+            PatientHistory patientHistory = patientService.findCurrentPatientAppointmentsByEmail(loggedInPatientEmail);
             model.addAttribute("patientHistoryDTO", patientMapper.map(patientHistory));
+            model.addAttribute("loggedInPatientEmail", loggedInPatientEmail);
         } else {
             model.addAttribute("patientHistoryDTO", PatientHistoryDTO.buildDefault());
         }
 
-        return "patient_cancelled";
+        return "patient_cancel";
     }
 
     @PostMapping(value = PATIENT_CANCELLED)
@@ -66,7 +57,7 @@ public class PatientCancelledController {
             Model model
     ) {
 
-        // tworze request z parametrow
+        // tworzymy request z parametrow
         MedicalAppointmentRequest request = medicalAppointmentRequestMapper.map(
                 MedicalAppointmentRequestDTO.builder()
                         .patientEmail(patientEmail)
@@ -84,12 +75,11 @@ public class PatientCancelledController {
         model.addAttribute("existingPatientEmail", patientEmail);
         model.addAttribute("medicalAppointmentDate", appointmentDate);
 
-        // Logika zostanie dopisana
         model.addAttribute("doctorName", doctorBySurname.getName());
         model.addAttribute("doctorSurname", doctorBySurname.getSurname());
         model.addAttribute("patientName", patientByEmail.getName());
         model.addAttribute("patientSurname", patientByEmail.getSurname());
 
-        return "patient_cancelled_done";
+        return "patient_cancel_done";
     }
 }

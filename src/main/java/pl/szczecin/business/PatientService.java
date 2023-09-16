@@ -53,11 +53,10 @@ public class PatientService {
         return patientDAO.findCurrentPatientAppointmentsByEmail(patientEmail);
     }
 
-    // wyciagamy z security emaila zalogowanego pacjenta
+    // wyciagamy z securityContext emaila zalogowanego pacjenta
     public String getLoggedInPatientEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
             return userDetails.getUsername();
         }
         return null;
