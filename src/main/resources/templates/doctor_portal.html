@@ -12,33 +12,31 @@
 
 <body>
     <div class="container">
-        <h1>Web Clinic Application!</h1>
+        <div class="row mt-3 justify-content-center">
+            <div class="col-md-4">
+                <h1>Web Clinic Application!</h1>
+            </div>
+        </div>
     </div>
+
+    <br>
 
     <div class="container">
         <div class="row mt-3">
             <div class="col-md-4">
                 <a th:href="@{/}" class="btn btn-info" role="button">Go back to the main page</a>
             </div>
-        </div>
-        <br>
-        <form action="#" th:action="@{/doctor}" method="GET">
-            <div class="row mt-3">
-                <div class="col-md-6">
-                    <div class="row mt-3">
-                        <div class="col-md-6">
-                            <label for="doctorEmails">Doctor email:</label>
-                            <select id="doctorEmails" name="doctorEmail">
-                                <option th:each="doctorEmail : ${loggedInDoctorEmail}" th:value="${doctorEmail}" th:text="${doctorEmail}"></option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <input type="submit" value="Find!" class="btn btn-success">
-                        </div>
-                    </div>
-                </div>
+            <div class="col-md-4">
+                <a th:href="@{/logout}" class="btn btn-danger" role="button">Logout</a>
             </div>
-        </form>
+            <div class="col-md-4">
+                <p>Logged-in user:
+                    <b>
+                        <span th:if="${loggedInDoctorEmail}" th:text="${loggedInDoctorEmail}">DOCTOR EMAIL</span>
+                    </b>
+                </p>
+            </div>
+        </div>
 
         <br>
         <br>

@@ -19,6 +19,8 @@
         </div>
     </div>
 
+    <br>
+
     <div class="container">
         <div class="row mt-3">
             <div class="col-md-3">
@@ -42,17 +44,19 @@
         <br>
         <br>
 
-        <h2>This is your appointment history:</h2>
+        <h3>These are your scheduled appointments. Remember, You can only cancel appointment 24 hours before the target date!</h3>
+        <br>
+        <h3>Select the date of your appointment and press the button to CANCEL!</h3>
+
         <div class="row mt-3">
             <div>
-                <p>Patient history for email: <b><span th:if="${patientHistoryDTO.patientEmail}" th:text="${patientHistoryDTO.patientEmail}">PATIENT_EMAIL</span></b></p>
+                <p>Booked appointments for patient with email: <b><span th:if="${patientHistoryDTO.patientEmail}" th:text="${patientHistoryDTO.patientEmail}">PATIENT_EMAIL</span></b></p>
                 <table class="table">
                     <thead class="table-dark">
                     <tr>
-                        <th>appointment date</th>
-                        <th>doctor name</th>
-                        <th>doctor surname</th>
-                        <th>doctor note</th>
+                        <th>dateTime</th>
+                        <th>doctorName</th>
+                        <th>doctorSurname</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -60,10 +64,21 @@
                         <td th:text="${medicalAppointment.dateTime}"></td>
                         <td th:text="${medicalAppointment.doctorName}"></td>
                         <td th:text="${medicalAppointment.doctorSurname}"></td>
-                        <td th:text="${medicalAppointment.doctorNote}"></td>
+                        <td>
+                            <form th:action="@{/patient/cancel}" method="POST">
+                                <input type="hidden" name="patientEmail" th:value="${patientHistoryDTO.patientEmail}">
+                                <input type="hidden" name="appointmentDate" th:value="${medicalAppointment.dateTime}">
+                                <input type="hidden" name="doctorSurname" th:value="${medicalAppointment.doctorSurname}">
+                                <button type="submit" class="btn btn-danger">CANCEL</button>
+                            </form>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
+
+                <br>
+                <br>
+
             </div>
         </div>
     </div>

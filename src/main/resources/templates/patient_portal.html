@@ -12,16 +12,34 @@
 
 <body>
     <div class="container">
-        <h1>Web Clinic Application!</h1>
+        <div class="row mt-3 justify-content-center">
+            <div class="col-md-4">
+                <h1>Web Clinic Application!</h1>
+            </div>
+        </div>
     </div>
+
+    <br>
 
     <div class="container">
         <div class="row mt-3">
             <div class="col-md-4">
                 <a th:href="@{/}" class="btn btn-info" role="button">Go back to the main page</a>
             </div>
+            <div class="col-md-4">
+                <a th:href="@{/logout}" class="btn btn-danger" role="button">Logout</a>
+            </div>
+            <div class="col-md-4">
+                <p>Logged-in user:
+                    <b>
+                        <span th:if="${loggedInPatientEmail}" th:text="${loggedInPatientEmail}">PATIENT EMAIL</span>
+                    </b>
+                </p>
+            </div>
         </div>
+
         <br>
+
         <h2>Do you want to book a doctor's appointment?</h2>
         <p>We have qualified doctors!</p>
         <p>Please take a look at available doctors!</p>
@@ -32,7 +50,7 @@
                 <tr>
                     <th>name</th>
                     <th>surname</th>
-                    <th>pesel</th>
+                    <th>email</th>
                 </tr>
                 </thead>
                 <tbody>

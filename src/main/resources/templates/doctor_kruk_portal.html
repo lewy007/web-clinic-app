@@ -11,150 +11,166 @@
 </head>
 
 <body>
-<div class="container">
-    <h1>Web Clinic Application!</h1>
-</div>
-
-<div class="container">
-    <div class="row mt-3">
-        <div class="col-md-4">
-            <a th:href="@{/}" class="btn btn-info" role="button">Go back to the main page</a>
-        </div>
-        <div class="col-md-4">
-            <a th:href="@{/patient}" class="btn btn-info" role="button">Go back to the patient page</a>
+    <div class="container">
+        <div class="row mt-3 justify-content-center">
+            <div class="col-md-4">
+                <h1>Web Clinic Application!</h1>
+            </div>
         </div>
     </div>
 
     <br>
-    <br>
-    <img th:src="@{/images/doctor_woman.png}" alt="DOCTOR_W_PICTURE" width="auto" height="300px"/>
-    <h2>Dr. Renata Kruk</h2>
-    <p>Dr. Agata Torbe is a dedicated family physician with a passion for providing compassionate and
-        comprehensive healthcare to individuals and families. With years of experience in the field,
-        Dr. Torbe has earned a reputation for her commitment to patient well-being.
-        She believes in the importance of building strong doctor-patient relationships
-        and takes the time to listen to her patients' concerns. Dr. Torbe is known for her expertise
-        in preventive care, chronic disease management, and health education.
-        Her goal is to empower her patients to make informed decisions about their health
-        and lead fulfilling lives. When not practicing medicine, Dr. Torbe enjoys staying active,
-        exploring new cuisines, and spending quality time with her family.
-        Her dedication to healthcare and genuine care for her patients make her a trusted and valued member
-        of the medical community. Patients can rely on Dr. Anna Torbe for personalized and attentive healthcare
-        that prioritizes their well-being and promotes a healthier life.</p>
 
-    <br>
-    <br>
-</div>
-
-<div class="container">
-    <h2 style="text-align: center;">Are You new or existing patient?</h2>
-    <form action="#" th:action="@{/patient/doctor/2}" method="POST" th:object="${medicalAppointmentRequestDTO}">
+    <div class="container">
         <div class="row mt-3">
-            <div class="col-md-6">
-                <h3>If you are existing patient - please give us your email and choose the doctor!</h3>
-                <div class="row mt-3">
-                    <div class="col-md-3">
-                        <label for="existingPatientEmail">Your email:</label>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="text" id="existingPatientEmail" th:field="*{existingPatientEmail}">
-                    </div>
-                </div>
+            <div class="col-md-3">
+                <a th:href="@{/}" class="btn btn-info" role="button">Go back to the main page</a>
             </div>
-            <div class="col-md-6">
-                <h3>If you are new patient - please fill out every input in the form!</h3>
-                <br>
-                <p>Please enter patient data:</p>
-                <div class="row mt-3">
-                    <div class="col-md-3">
-                        <label for="patientName">Patient name:</label>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="text" id="patientName" th:field="*{patientName}">
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-md-3">
-                        <label for="patientSurname">Patient surname:</label>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="text" id="patientSurname" th:field="*{patientSurname}">
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-md-3">
-                        <label for="patientEmail">Patient email:</label>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="text" id="patientEmail" th:field="*{patientEmail}">
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-md-3">
-                        <label for="patientPhone">Phone number:</label>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="text" id="patientPhone" th:field="*{patientPhone}">
-                    </div>
-                </div>
-                <br>
-                <p>Please provide patient address:</p>
-                <div class="row mt-3">
-                    <div class="col-md-3">
-                        <label for="patientAddressCountry">Country:</label>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="text" id="patientAddressCountry" th:field="*{patientAddressCountry}">
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-md-3">
-                        <label for="patientAddressCity">City:</label>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="text" id="patientAddressCity" th:field="*{patientAddressCity}">
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-md-3">
-                        <label for="patientAddressPostalCode">Postal code:</label>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="text" id="patientAddressPostalCode" th:field="*{patientAddressPostalCode}">
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-md-3">
-                        <label for="patientAddressStreet">Street:</label>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="text" id="patientAddressStreet" th:field="*{patientAddressStreet}">
-                    </div>
-                </div>
+            <div class="col-md-3">
+                <a th:href="@{/patient}" class="btn btn-info" role="button">Go back to the patient page</a>
+            </div>
+            <div class="col-md-3">
+                <a th:href="@{/logout}" class="btn btn-danger" role="button">Logout</a>
+            </div>
+            <div class="col-md-3">
+                <p>Logged-in user:
+                    <b>
+                        <span th:if="${loggedInPatientEmail}" th:text="${loggedInPatientEmail}">PATIENT EMAIL</span>
+                    </b>
+                </p>
             </div>
         </div>
 
         <br>
         <br>
+        <img th:src="@{/images/doctor_woman.png}" alt="DOCTOR_W_PICTURE" width="auto" height="300px"/>
+        <h2>Dr. Renata Kruk</h2>
+        <p>Dr. Agata Torbe is a dedicated family physician with a passion for providing compassionate and
+            comprehensive healthcare to individuals and families. With years of experience in the field,
+            Dr. Torbe has earned a reputation for her commitment to patient well-being.
+            She believes in the importance of building strong doctor-patient relationships
+            and takes the time to listen to her patients' concerns. Dr. Torbe is known for her expertise
+            in preventive care, chronic disease management, and health education.
+            Her goal is to empower her patients to make informed decisions about their health
+            and lead fulfilling lives. When not practicing medicine, Dr. Torbe enjoys staying active,
+            exploring new cuisines, and spending quality time with her family.
+            Her dedication to healthcare and genuine care for her patients make her a trusted and valued member
+            of the medical community. Patients can rely on Dr. Anna Torbe for personalized and attentive healthcare
+            that prioritizes their well-being and promotes a healthier life.</p>
 
-        <h5>Please choose an available date and click button to make an appointment:</h5>
-        <div class="row mt-3">
-            <div class="col-md-6">
-                <label for="medicalAppointmentDate">Date:</label>
-                <select id="medicalAppointmentDate" th:field="*{medicalAppointmentDate}">
-                    <option th:each="availableDate : ${availableDates}" th:value="${availableDate}" th:text="${availableDate}"></option>
-                </select>
+        <br>
+        <br>
+    </div>
+
+    <div class="container">
+        <h2 style="text-align: center;">Are You new or existing patient?</h2>
+        <form action="#" th:action="@{/patient/doctor/2}" method="POST" th:object="${medicalAppointmentRequestDTO}">
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <h3>If you are existing patient - please give us your email and choose the doctor!</h3>
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <label for="existingPatientEmail">Your email:</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="existingPatientEmail" th:field="*{existingPatientEmail}">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h3>If you are new patient - please fill out every input in the form!</h3>
+                    <br>
+                    <p>Please enter patient data:</p>
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <label for="patientName">Patient name:</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="patientName" th:field="*{patientName}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <label for="patientSurname">Patient surname:</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="patientSurname" th:field="*{patientSurname}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <label for="patientEmail">Patient email:</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="patientEmail" th:field="*{patientEmail}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <label for="patientPhone">Phone number:</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="patientPhone" th:field="*{patientPhone}">
+                        </div>
+                    </div>
+                    <br>
+                    <p>Please provide patient address:</p>
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <label for="patientAddressCountry">Country:</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="patientAddressCountry" th:field="*{patientAddressCountry}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <label for="patientAddressCity">City:</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="patientAddressCity" th:field="*{patientAddressCity}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <label for="patientAddressPostalCode">Postal code:</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="patientAddressPostalCode" th:field="*{patientAddressPostalCode}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <label for="patientAddressStreet">Street:</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" id="patientAddressStreet" th:field="*{patientAddressStreet}">
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-md-6">
-                <input type="submit" value="Appointment!" class="btn btn-success">
+
+            <br>
+            <br>
+
+            <h5>Please choose an available date and click button to make an appointment:</h5>
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <label for="medicalAppointmentDate">Date:</label>
+                    <select id="medicalAppointmentDate" th:field="*{medicalAppointmentDate}">
+                        <option th:each="availableDate : ${availableDates}" th:value="${availableDate}" th:text="${availableDate}"></option>
+                    </select>
+                </div>
             </div>
-        </div>
-    </form>
-</div>
-<br>
-<br>
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <input type="submit" value="Appointment!" class="btn btn-success">
+                </div>
+            </div>
+        </form>
+    </div>
+    <br>
+    <br>
 </body>
 
 </html>
