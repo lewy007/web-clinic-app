@@ -31,7 +31,7 @@ public class PatientCancelController {
     private final DoctorService doctorService;
 
     @GetMapping(value = PATIENT_CANCELLED)
-    public String patientHistory(
+    public String getPatientCancelAppointment(
             Model model
     ) {
 

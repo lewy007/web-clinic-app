@@ -34,6 +34,7 @@ public class MedicalAppointmentRequestDTO {
     // jaki doktor i data wizyty
     private String doctorEmail;
     private String doctorSurname;
+    private String doctorNote;
     private String medicalAppointmentDate;
 
 

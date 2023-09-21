@@ -64,7 +64,7 @@ public class DoctorTorbeController {
 
         // wyciagamy wolne terminy dla danego lekarza
         var availableMedicalAppointmentDatesForDoctor =
-                medicalAppointmentDateService.getAvailableDatesForDoctor(doctorTorbeEmail).stream()
+                medicalAppointmentDateService.getAvailableDatesByDoctorEmail(doctorTorbeEmail).stream()
                         .map(medicalAppointmentDateMapper::map)
                         .toList();
 

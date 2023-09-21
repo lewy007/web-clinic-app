@@ -1,18 +1,19 @@
 ## WEB CLINIC APPLICATION
-### Aplikacja sluzy do rejestrowania sie na wizyty lekarskie. Skierowana jest do dwoch grup: pacjentow i lekarzy.
+### Aplikacja dla przychodni internetowej przeznaczona do rejestrowania się na wizyty lekarskie. Skierowana jest do dwóch grup: pacjentów i lekarzy.Każda z grup ma dostęp do innego obszaru aplikacji.
 ### Dostep do aplikacji pod linkiem -> http://localhost:8087/web-clinic-application/
 ### PACJENT:
-* umowia sie na wizyte (maksymalnie 1h przed zaplanowana wizyta);
-* posiada dostep do historii swoich wizyt, zarowno odbytych jak i zaplanowanych (sortowanie za pomoca Comparable zaimplementowanego w klasie MedicalAppointmentDTO w PatientHistoryDTO) - mozna podzielic na historie i zaplanowane wizyty;
-* wyswietlana historia zawiera rowniez kolumne z notatka doktora po wizycie(przyszle wizyty maja puste pola);
-* odwoluje wizyte (maskymalnie 24 h przed zaplanowana data wizyty);
+* umawia się na wizytę (maksymalnie 1h przed zaplanowaną wizytą);
+* posiada dostęp do historii swoich wizyt, zarówno odbytych jak i zaplanowanych (sortowanie za pomocą interfejsu Comparable zaimplementowanego w klasie MedicalAppointmentDTO w PatientHistoryDTO) - można podzielić na historię i zaplanowane wizyty;
+* wyświetlana historia zawiera również kolumnę z notatką doktora po wizycie (przyszłe wizyty mają puste pola - null);
+* odwołuje wizytę (maskymalnie 24 h przed zaplanowaną datą wizyty);
 ### DOKTOR:
-* posiada dostep do wszytskich wizyt (sortowania)
-* posiada grafik dostepnosci (wolne terminy);
-* posiada dostep do historii pacjenta;
-* moze dodac notatke dla pacjenta po wizycie.
+* posiada dostęp do wszystkich wizyt pacjenta (sortowanie po dacie);
+* posiada grafik dostępności na potencjalne wizyty (wolne terminy);
+* posiada dostęp do historii pacjenta;
+* może dodać notatkę dla pacjenta po wizycie lub zaktulizować już dodaną - w historii pacjenta.
 
 
 ## DO ZROBIENIA:
-### Sortowanie wyswietlanych wynikow plus paginacja
-### Logika dla lekarza!
+* Paginacja wyswietlanych wynikow
+* rejestracja pacjenta bez konta (zakładanie konta)
+* reset hasła

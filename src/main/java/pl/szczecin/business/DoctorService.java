@@ -21,11 +21,13 @@ public class DoctorService {
 
     private final DoctorDAO doctorDAO;
 
+
     public List<Doctor> findAvailableDoctors() {
         List<Doctor> availableDoctors = doctorDAO.findAvailableDoctors();
         log.info("Available doctors: [{}]", availableDoctors.size());
         return availableDoctors;
     }
+
 
     @Transactional
     public Doctor findDoctorByEmail(String email) {
@@ -36,6 +38,7 @@ public class DoctorService {
         return doctor.get();
     }
 
+
     public Doctor findDoctorBySurname(String surname) {
         Optional<Doctor> doctor = doctorDAO.findDoctorBySurname(surname);
         if (doctor.isEmpty()) {
@@ -43,6 +46,7 @@ public class DoctorService {
         }
         return doctor.get();
     }
+
 
     // wyciagamy z securityContext emaila zalogowanego doctora
     public String getLoggedInDoctorEmail() {

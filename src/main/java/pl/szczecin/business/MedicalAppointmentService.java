@@ -5,12 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.szczecin.business.dao.MedicalAppointmentDAO;
-import pl.szczecin.domain.Address;
-import pl.szczecin.domain.Doctor;
-import pl.szczecin.domain.MedicalAppointment;
-import pl.szczecin.domain.MedicalAppointmentDate;
-import pl.szczecin.domain.MedicalAppointmentRequest;
-import pl.szczecin.domain.Patient;
+import pl.szczecin.domain.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,18 +21,12 @@ public class MedicalAppointmentService {
     private final MedicalAppointmentDateService medicalAppointmentDateService;
 
 
-    public List<MedicalAppointment> findAllMedicalAppointment() {
-        List<MedicalAppointment> allMedicalAppointments = medicalAppointmentDAO.findAllMedicalAppointment();
-        log.info("Available doctors: [{}]", allMedicalAppointments.size());
-        return allMedicalAppointments;
-    }
-
     public List<MedicalAppointment> findAllMedicalAppointmentByMADateID(
             List<Integer> allMedicalAppointmentDateIdForDoctor
     ) {
         List<MedicalAppointment> allMedicalAppointments =
                 medicalAppointmentDAO.findAllMedicalAppointmentByMADateID(allMedicalAppointmentDateIdForDoctor);
-        log.info("Available doctors: [{}]", allMedicalAppointments.size());
+        log.info("All medical appointments: [{}]", allMedicalAppointments.size());
         return allMedicalAppointments;
     }
 
@@ -82,12 +71,6 @@ public class MedicalAppointmentService {
                 .findMedicalAppointmentDateByDateAndDoctor(
                         request.getMedicalAppointmentDate(),
                         doctor.getSurname());
-//        var medicalAppointmentDate =
-//                medicalAppointmentDateService.findMedicalAppointmentDateByDate(
-//                                request.getMedicalAppointmentDate()).stream()
-//                        .filter(elem -> elem.getDoctor().equals(doctor))
-//                        .toList()
-//                        .get(0);
 
         // dodajemy do MedicalAppointmentDate Pole Doctor
         MedicalAppointmentDate medicalAppointmentDateToSave = medicalAppointmentDate.withDoctor(doctor);
@@ -115,6 +98,10 @@ public class MedicalAppointmentService {
         // szukamy medicalAppointment w bazie na podstawie podanych parametrow
         medicalAppointmentDAO.cancelMedicalAppointment(medicalAppointmentDateId);
 
+    }
+
+    public void addNoteToMedicalAppointment(MedicalAppointmentRequest request) {
+        medicalAppointmentDAO.addNoteToMedicalAppointment(request);
     }
 
 
@@ -146,5 +133,13 @@ public class MedicalAppointmentService {
                         .address(inputData.getPatientAddressStreet())
                         .build())
                 .build();
+    }
+
+
+    // TODO nie uzywana metoda - do weryfikacji
+    public List<MedicalAppointment> findAllMedicalAppointment() {
+        List<MedicalAppointment> allMedicalAppointments = medicalAppointmentDAO.findAllMedicalAppointment();
+        log.info("Available doctors: [{}]", allMedicalAppointments.size());
+        return allMedicalAppointments;
     }
 }
