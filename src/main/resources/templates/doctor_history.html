@@ -23,13 +23,16 @@
 
     <div class="container">
         <div class="row mt-3">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <a th:href="@{/}" class="btn btn-info" role="button">Go back to the main page</a>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
+                <a th:href="@{/doctor}" class="btn btn-info" role="button">Go back to the doctor page</a>
+            </div>
+            <div class="col-md-3">
                 <a th:href="@{/logout}" class="btn btn-danger" role="button">Logout</a>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <p>Logged-in user:
                     <b>
                         <span th:if="${loggedInDoctorEmail}" th:text="${loggedInDoctorEmail}">DOCTOR EMAIL</span>
@@ -41,7 +44,7 @@
         <br>
         <br>
 
-        <h2>This is your schedule!</h2>
+        <h2>This is your history!</h2>
         <div>
             <table class="table">
                 <thead class="table-dark">
@@ -49,31 +52,27 @@
                     <th>appointment date</th>
                     <th>patient name</th>
                     <th>patient surname</th>
+                    <th>doctor note</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="medicalAppointmentDTO : ${medicalAppointmentDTOs}">
-                    <td th:text="${medicalAppointmentDTO.dateTime}"></td>
-                    <td th:text="${medicalAppointmentDTO.patient.name}"></td>
-                    <td th:text="${medicalAppointmentDTO.patient.surname}"></td>
-                </tr>
+                    <tr th:each="medicalAppointmentDTO : ${medicalAppointmentDTOs}">
+                        <td th:text="${medicalAppointmentDTO.dateTime}"></td>
+                        <td th:text="${medicalAppointmentDTO.patient.name}"></td>
+                        <td th:text="${medicalAppointmentDTO.patient.surname}"></td>
+                        <td th:text="${medicalAppointmentDTO.doctorNote}"></td>
+                        <td>
+                            <form th:action="@{/doctor/history}" method="POST">
+                                <input type="hidden" name="appointmentDate" th:value="${medicalAppointmentDTO.dateTime}">
+                                <input type="hidden" name="patientName" th:value="${medicalAppointmentDTO.patient.name}">
+                                <input type="hidden" name="patientSurname" th:value="${medicalAppointmentDTO.patient.surname}">
+                                <textarea name="doctorNote" placeholder="Enter doctor note"></textarea>
+                                <button type="submit" class="btn btn-success">ADD NOTE</button>
+                            </form>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
-        </div>
-    </div>
-
-    <br>
-    <br>
-
-    <div class="container">
-        <h2>Your additional options!</h2>
-        <div class="row mt-3">
-            <div class="col-md-4">
-                <a th:href="@{/doctor/dates}" class="btn btn-success" role="button">Check the available dates</a>
-            </div>
-            <div class="col-md-4">
-                <a th:href="@{/doctor/history}" class="btn btn-warning" role="button">Medical appointment history</a>
-            </div>
         </div>
     </div>
 

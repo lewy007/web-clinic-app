@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import pl.szczecin.api.dto.mapper.DoctorMapper;
-import pl.szczecin.api.dto.mapper.PatientMapper;
 import pl.szczecin.business.DoctorService;
 import pl.szczecin.business.PatientService;
 
@@ -16,7 +15,6 @@ public class PatientController {
     private static final String PATIENT = "/patient";
 
     private final PatientService patientService;
-    private final PatientMapper patientMapper;
     private final DoctorService doctorService;
     private final DoctorMapper doctorMapper;
 

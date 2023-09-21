@@ -64,7 +64,7 @@ public class DoctorWasilewskaController {
 
         // wyciagamy wolne terminy dla danego lekarza
         var availableMedicalAppointmentDatesForDoctor =
-                medicalAppointmentDateService.getAvailableDatesForDoctor(doctorWasilewskaEmail).stream()
+                medicalAppointmentDateService.getAvailableDatesByDoctorEmail(doctorWasilewskaEmail).stream()
                         .map(medicalAppointmentDateMapper::map)
                         .toList();
 

@@ -1,14 +1,7 @@
 package pl.szczecin.infrastructure.database.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import pl.szczecin.domain.MedicalAppointmentDate;
+import lombok.*;
 
 import java.time.OffsetDateTime;
 

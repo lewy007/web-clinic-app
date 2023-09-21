@@ -20,8 +20,6 @@ public class MedicalAppointmentController {
 
     private static final String APPOINTMENT = "/appointment";
 
-//    private final MedicalAppointmentService medicalAppointmentService;
-//    private final MedicalAppointmentMapper medicalAppointmentMapper;
     private final MedicalAppointmentDateService medicalAppointmentDateService;
     private final MedicalAppointmentDateMapper medicalAppointmentDateMapper;
     private final DoctorService doctorService;

@@ -22,7 +22,7 @@ public interface MedicalAppointmentEntityMapper {
 
 
     // metoda do przemapowania pacjentow z aktualnymi wizytami do PatientHistory.MedicalAppointment
-    // doctor note prezkazuje jako nulla, bo nie jest potrzebny na etapie odwolywania wizyty
+    // doctor note przekazuje jako nulla, bo nie jest potrzebny na etapie odwolywania wizyty
     default PatientHistory.MedicalAppointment mapFromMedicalAppointmentEntityToPatientHistoryMedicalAppointment(
             MedicalAppointmentEntity medicalAppointmentEntity
     ) {

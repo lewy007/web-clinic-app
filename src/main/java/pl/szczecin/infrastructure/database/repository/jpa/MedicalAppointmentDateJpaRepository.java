@@ -39,31 +39,21 @@ public interface MedicalAppointmentDateJpaRepository extends JpaRepository<Medic
             AND NOT EXISTS (SELECT ma FROM MedicalAppointmentEntity ma 
                            WHERE ma.medicalAppointmentDateEntity = mad)
                            """)
-    List<MedicalAppointmentDateEntity> findAvailableByDoctorEmail(final @Param("doctorEmail") String doctorEmail);
+    List<MedicalAppointmentDateEntity> findAvailableDatesByDoctorEmail(final @Param("doctorEmail") String doctorEmail);
 
     @Query("""
             SELECT mad FROM MedicalAppointmentDateEntity mad 
             WHERE mad.doctor.email = :doctorEmail 
                            """)
-    List<MedicalAppointmentDateEntity> findAllByDoctorEmail(final @Param("doctorEmail") String doctorEmail);
+    List<MedicalAppointmentDateEntity> findAllDatesByDoctorEmail(final @Param("doctorEmail") String doctorEmail);
 
 
-//    @Query("""
-//            SELECT
-//                mad.dateTime,
-//                mad.status
-//            FROM
-//                MedicalAppointmentDateEntity mad
-//            LEFT JOIN FETCH
-//                MedicalAppointment mad.medicalAppointmentDateId medicalAppointmentDateId
-//            WHERE
-//                mad.dateTime = :dateTime
-//                mad.status = true
-//                AND (ma.medicalAppointmentId IS NULL OR ma.medicalAppointmentDateId IS NULL)
-//            ORDER BY mad.dateTime
-//            """)
-//    Optional<MedicalAppointmentDateEntity> findByDateTimeAndStatus(
-//            final @Param("dateTime") OffsetDateTime dateTime);
-
+    @Query("""
+            SELECT mad FROM MedicalAppointmentDateEntity mad 
+            WHERE mad.doctor.email = :doctorEmail
+            AND (mad.dateTime >= CURRENT_TIMESTAMP OR FUNCTION('DATE', mad.dateTime) = FUNCTION('DATE', CURRENT_TIMESTAMP))
+                           """)
+    List<MedicalAppointmentDateEntity> findAllFutureDatesByDoctorEmail(
+            final @Param("doctorEmail") String doctorEmail);
 
 }

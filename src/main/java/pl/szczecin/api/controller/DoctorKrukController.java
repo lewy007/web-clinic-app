@@ -64,7 +64,7 @@ public class DoctorKrukController {
 
         // wyciagamy wolne terminy dla danego lekarza
         var availableMedicalAppointmentDatesForDoctor =
-                medicalAppointmentDateService.getAvailableDatesForDoctor(doctorKrukEmail).stream()
+                medicalAppointmentDateService.getAvailableDatesByDoctorEmail(doctorKrukEmail).stream()
                         .map(medicalAppointmentDateMapper::map)
                         .toList();
 

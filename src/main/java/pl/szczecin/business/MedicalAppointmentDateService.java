@@ -10,7 +10,6 @@ import pl.szczecin.domain.MedicalAppointmentDate;
 import pl.szczecin.domain.exception.NotFoundException;
 
 import java.time.OffsetDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,14 +27,7 @@ public class MedicalAppointmentDateService {
         return availableDates;
     }
 
-    public List<MedicalAppointmentDate> findMedicalAppointmentDateByDate(
-            OffsetDateTime medicalAppointmentDate) {
-        List <MedicalAppointmentDate> date =
-                medicalAppointmentDateDAO.findMedicalAppointmentDateByDate(medicalAppointmentDate);
-        log.info("Available medicalAppointmentDates: [{}]", date.size());
-        // lista z takimi samymi datami dla roznych lekarzy, wiec nas interesuje data
-        return date;
-    }
+
     public MedicalAppointmentDate findMedicalAppointmentDateByDateAndDoctor(
             OffsetDateTime medicalAppointmentDate,
             String doctorSurname) {
@@ -49,19 +41,34 @@ public class MedicalAppointmentDateService {
         return date.get();
     }
 
-    public List<MedicalAppointmentDate> getAvailableDatesForDoctor(String doctorEmail) {
-        List<MedicalAppointmentDate> availableDatesForDoctor =
-                medicalAppointmentDateDAO.findAvailableDatesForDoctor(doctorEmail);
-        log.info("Available dates for Doctor: [{}]", availableDatesForDoctor.size());
-        return availableDatesForDoctor;
+
+    public List<MedicalAppointmentDate> getAvailableDatesByDoctorEmail(String doctorEmail) {
+        List<MedicalAppointmentDate> availableDatesByDoctorEmail =
+                medicalAppointmentDateDAO.findAvailableDatesByDoctorEmail(doctorEmail);
+        log.info("Available dates for Doctor: [{}]", availableDatesByDoctorEmail.size());
+        return availableDatesByDoctorEmail;
     }
 
-    public List<MedicalAppointmentDate> getAllDatesForDoctor(String doctorEmail) {
-        List<MedicalAppointmentDate> allDatesForDoctor =
-                medicalAppointmentDateDAO.findAllDatesForDoctor(doctorEmail);
-        log.info("All dates for Doctor: [{}]", allDatesForDoctor.size());
-        return allDatesForDoctor;
+
+    public List<MedicalAppointmentDate> getAllDatesByDoctorEmail(String doctorEmail) {
+        List<MedicalAppointmentDate> allDatesByDoctorEmail =
+                medicalAppointmentDateDAO.findAllDatesByDoctorEmail(doctorEmail);
+        log.info("All dates for Doctor: [{}]", allDatesByDoctorEmail.size());
+        return allDatesByDoctorEmail;
     }
+
+
+    public List<MedicalAppointmentDate> getAllFutureDatesByDoctorEmail(String doctorEmail) {
+        List<MedicalAppointmentDate> allFutureDatesByDoctorEmail =
+                medicalAppointmentDateDAO.findAllFutureDatesByDoctorEmail(doctorEmail);
+        log.info("All future dates for Doctor: [{}]", allFutureDatesByDoctorEmail.size());
+        return allFutureDatesByDoctorEmail;
+    }
+
+
+
+
+    // TODO nie uzywane metody - do weryfikacji
 
     @Transactional
     public MedicalAppointmentDate saveMedicalAppointmentDate(MedicalAppointmentDate medicalAppointmentDate) {
@@ -69,4 +76,12 @@ public class MedicalAppointmentDateService {
     }
 
 
+    public List<MedicalAppointmentDate> findMedicalAppointmentDateByDate(
+            OffsetDateTime medicalAppointmentDate) {
+        List <MedicalAppointmentDate> date =
+                medicalAppointmentDateDAO.findMedicalAppointmentDateByDate(medicalAppointmentDate);
+        log.info("Available medicalAppointmentDates: [{}]", date.size());
+        // lista z takimi samymi datami dla roznych lekarzy, wiec nas interesuje data
+        return date;
+    }
 }

@@ -28,14 +28,6 @@ public class PatientService {
     }
 
     @Transactional
-    public List<Patient> findAvailablePatients() {
-        List<Patient> availablePatients = patientDAO.findAvailablePatients();
-        log.info("Available patients: [{}]", availablePatients.size());
-        return availablePatients;
-
-    }
-
-    @Transactional
     public Patient findPatientByEmail(String email) {
         Optional<Patient> patient = patientDAO.findPatientByEmail(email);
         if (patient.isEmpty()) {
@@ -54,11 +46,22 @@ public class PatientService {
     }
 
     // wyciagamy z securityContext emaila zalogowanego pacjenta
+
     public String getLoggedInPatientEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
             return userDetails.getUsername();
         }
         return null;
+    }
+
+
+    // TODO nie wykorzystywana metoda - do weryfikacji
+    @Transactional
+    public List<Patient> findAvailablePatients() {
+        List<Patient> availablePatients = patientDAO.findAvailablePatients();
+        log.info("Available patients: [{}]", availablePatients.size());
+        return availablePatients;
+
     }
 }

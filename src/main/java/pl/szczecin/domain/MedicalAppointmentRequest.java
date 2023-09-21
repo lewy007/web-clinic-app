@@ -24,5 +24,6 @@ public class MedicalAppointmentRequest {
     String patientAddressStreet;
     String doctorEmail;
     String doctorSurname;
+    String doctorNote;
     OffsetDateTime medicalAppointmentDate;
 }
