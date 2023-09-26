@@ -30,41 +30,42 @@ public class MedicalAppointmentService {
         return allMedicalAppointments;
     }
 
+//    @Transactional
+//    public MedicalAppointment makeAppointment(MedicalAppointmentRequest request) {
+//        return existingPatientEmailExists(request.getExistingPatientEmail())
+//                ? processNextTimeToMakeAnAppointment(request)
+//                : processFirstTimeToMakeAnAppointment(request);
+//    }
+
+//    private MedicalAppointment processFirstTimeToMakeAnAppointment(MedicalAppointmentRequest request) {
+//
+//        // wyciagamy doktora, ktorego pacjent wybral
+//        Doctor doctor = doctorService.findDoctorByEmail(request.getDoctorEmail());
+//
+//        // wyciagamy date przypisana do lekarza, ktora pacjent wybral
+//        MedicalAppointmentDate medicalAppointmentDate = medicalAppointmentDateService
+//                .findMedicalAppointmentDateByDateAndDoctor(
+//                        request.getMedicalAppointmentDate(),
+//                        doctor.getSurname());
+//
+//        // dodajemy do MedicalAppointmentDate Pole Doctor, ktore nie moze byc nullem
+//        MedicalAppointmentDate medicalAppointmentDateToSave = medicalAppointmentDate.withDoctor(doctor);
+//
+//        Patient newPatient = buildPatient(request);
+//        Patient savedPatient = patientService.savePatient(newPatient);
+//
+//        MedicalAppointment medicalAppointment = buildMedicalAppointment(savedPatient, medicalAppointmentDateToSave);
+//
+//        medicalAppointmentDAO.makeAppointment(medicalAppointment);
+//        return medicalAppointment;
+//
+//    }
+
     @Transactional
-    public MedicalAppointment makeAppointment(MedicalAppointmentRequest request) {
-        return existingPatientEmailExists(request.getExistingPatientEmail())
-                ? processNextTimeToMakeAnAppointment(request)
-                : processFirstTimeToMakeAnAppointment(request);
-    }
-
-    private MedicalAppointment processFirstTimeToMakeAnAppointment(MedicalAppointmentRequest request) {
-
-        // wyciagamy doktora, ktorego pacjent wybral
-        Doctor doctor = doctorService.findDoctorByEmail(request.getDoctorEmail());
-
-        // wyciagamy date przypisana do lekarza, ktora pacjent wybral
-        MedicalAppointmentDate medicalAppointmentDate = medicalAppointmentDateService
-                .findMedicalAppointmentDateByDateAndDoctor(
-                        request.getMedicalAppointmentDate(),
-                        doctor.getSurname());
-
-        // dodajemy do MedicalAppointmentDate Pole Doctor, ktore nie moze byc nullem
-        MedicalAppointmentDate medicalAppointmentDateToSave = medicalAppointmentDate.withDoctor(doctor);
-
-        Patient newPatient = buildPatient(request);
-        Patient savedPatient = patientService.savePatient(newPatient);
-
-        MedicalAppointment medicalAppointment = buildMedicalAppointment(savedPatient, medicalAppointmentDateToSave);
-
-        medicalAppointmentDAO.makeAppointment(medicalAppointment);
-        return medicalAppointment;
-
-    }
-
-    private MedicalAppointment processNextTimeToMakeAnAppointment(MedicalAppointmentRequest request) {
+    public MedicalAppointment processNextTimeToMakeAnAppointment(MedicalAppointmentRequest request) {
 
         // pobieramy pacjenta, doktora oraz date
-        Patient existingPatient = patientService.findPatientByEmail(request.getExistingPatientEmail());
+        Patient existingPatient = patientService.findPatientByEmail(request.getPatientEmail());
         Doctor doctor = doctorService.findDoctorByEmail(request.getDoctorEmail());
 
         MedicalAppointmentDate medicalAppointmentDate = medicalAppointmentDateService

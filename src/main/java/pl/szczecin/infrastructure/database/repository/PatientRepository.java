@@ -27,7 +27,7 @@ public class PatientRepository implements PatientDAO {
     public Patient savePatient(Patient patient) {
 
         PatientEntity toSave = patientEntityMapper.mapToEntity(patient);
-        PatientEntity saved = patientJpaRepository.save(toSave);
+        PatientEntity saved = patientJpaRepository.saveAndFlush(toSave);
         return patientEntityMapper.mapFromEntity(saved);
     }
 

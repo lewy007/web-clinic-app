@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
 import lombok.With;
+import pl.szczecin.infrastructure.security.UserEntity;
 
 @With
 @Value
@@ -19,4 +20,5 @@ public class Patient {
     String phone;
     String email;
     Address address;
+    UserEntity userEntity;
 }

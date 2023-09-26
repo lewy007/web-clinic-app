@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+import pl.szczecin.infrastructure.database.entity.PatientEntity;
 
 import java.util.Set;
 
@@ -18,9 +19,14 @@ import java.util.Set;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "web_clinic_user_user_id_seq")
+    @SequenceGenerator(
+            name = "web_clinic_user_user_id_seq",
+            sequenceName = "web_clinic_user_user_id_seq",
+            allocationSize = 1)
     @Column(name = "user_id")
-    private int id;
+    private int userId;
 
     @Column(name = "user_name")
     @Length(min = 5)
@@ -42,4 +48,7 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<RoleEntity> roles;
+
+    @OneToOne(mappedBy = "userEntity", fetch = FetchType.LAZY)
+    private PatientEntity patient;
 }

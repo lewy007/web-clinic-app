@@ -27,3 +27,7 @@ CREATE TABLE web_clinic_user_role
         FOREIGN KEY (role_id)
             REFERENCES web_clinic_role (role_id)
 );
+
+-- przy wyczyszczeniu danych i ponownym uruchomieniu aplikacji, proba dodania wpisu do tabeli
+-- web clinic user konczy sie bledem, poniewaz dodaje od id=1 (a jest 9 wpisów)
+alter sequence web_clinic_user_user_id_seq restart with 10;
