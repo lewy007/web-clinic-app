@@ -37,18 +37,21 @@ public class MedicalAppointmentRequestDTO {
     private String doctorNote;
     private String medicalAppointmentDate;
 
+    // password dla nowego pacjenta
+    private String password;
+
 
     // metoda zbedna w praktyce, napisana, zeby za kazdym razem nie wklikiwac nowego usera od zera
     public static MedicalAppointmentRequestDTO buildDefaultData() {
         return MedicalAppointmentRequestDTO.builder()
-                .patientName("Alfred")
-                .patientSurname("Samochodowy")
+                .patientName("Stefan")
+                .patientSurname("Chorowity")
                 .patientPhone("+48 754 552 234")
-                .patientEmail("alf.samoch@gmail.com")
+                .patientEmail("stefan@example.com")
                 .patientAddressCountry("Polska")
                 .patientAddressCity("Wrocław")
                 .patientAddressPostalCode("50-001")
-                .patientAddressStreet("Bokserska 15")
+                .patientAddressStreet("ul. Woronicza 15")
                 .build();
     }
 }

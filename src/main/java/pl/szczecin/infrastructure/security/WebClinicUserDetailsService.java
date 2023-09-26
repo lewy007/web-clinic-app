@@ -22,7 +22,7 @@ public class WebClinicUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByUserName(userName);
+        UserEntity user = userRepository.findByEmail(userName);
         List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());
         return buildUserForAuthentication(user, authorities);
     }

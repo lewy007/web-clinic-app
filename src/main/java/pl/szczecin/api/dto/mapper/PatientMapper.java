@@ -16,7 +16,6 @@ public interface PatientMapper extends OffsetDateTimeMapper {
     PatientDTO map(Patient patient);
 
 
-
     @Mapping(source = "medicalAppointments", target = "medicalAppointments", qualifiedByName = "mapMedicalAppointments")
     PatientHistoryDTO map(PatientHistory patientHistory);
 

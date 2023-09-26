@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import pl.szczecin.infrastructure.security.UserEntity;
 
 import java.util.Set;
 
@@ -42,6 +43,10 @@ public class PatientEntity {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id")
     private AddressEntity address;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private UserEntity userEntity;
 
     @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
     private Set<MedicalAppointmentEntity> medicalAppointmentDetails;

@@ -26,4 +26,7 @@ public class MedicalAppointmentRequest {
     String doctorSurname;
     String doctorNote;
     OffsetDateTime medicalAppointmentDate;
+
+    // password dla nowego pacjenta
+    String password;
 }

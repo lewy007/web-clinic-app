@@ -6,11 +6,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.szczecin.business.dao.PatientDAO;
+import pl.szczecin.domain.Address;
+import pl.szczecin.domain.MedicalAppointmentRequest;
 import pl.szczecin.domain.Patient;
 import pl.szczecin.domain.PatientHistory;
 import pl.szczecin.domain.exception.NotFoundException;
+import pl.szczecin.infrastructure.security.UserEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,10 +25,14 @@ import java.util.Optional;
 public class PatientService {
 
     private final PatientDAO patientDAO;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public Patient savePatient(Patient patient) {
-        return patientDAO.savePatient(patient);
+    public Patient savePatient(MedicalAppointmentRequest medicalAppointmentRequest) {
+
+        Patient newPatient = buildPatient(medicalAppointmentRequest);
+
+        return patientDAO.savePatient(newPatient);
     }
 
     @Transactional
@@ -45,8 +53,8 @@ public class PatientService {
         return patientDAO.findCurrentPatientAppointmentsByEmail(patientEmail);
     }
 
-    // wyciagamy z securityContext emaila zalogowanego pacjenta
 
+    // wyciagamy z securityContext emaila zalogowanego pacjenta
     public String getLoggedInPatientEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
@@ -55,6 +63,27 @@ public class PatientService {
         return null;
     }
 
+
+    private Patient buildPatient(MedicalAppointmentRequest inputData) {
+        return Patient.builder()
+                .name(inputData.getPatientName())
+                .surname(inputData.getPatientSurname())
+                .phone(inputData.getPatientPhone())
+                .email(inputData.getPatientEmail())
+                .address(Address.builder()
+                        .country(inputData.getPatientAddressCountry())
+                        .city(inputData.getPatientAddressCity())
+                        .postalCode(inputData.getPatientAddressPostalCode())
+                        .address(inputData.getPatientAddressStreet())
+                        .build())
+                .userEntity(UserEntity.builder()
+                        .userName(inputData.getPatientName())
+                        .email(inputData.getPatientEmail())
+                        .password(passwordEncoder.encode(inputData.getPassword()))
+                        .active(true)
+                        .build())
+                .build();
+    }
 
     // TODO nie wykorzystywana metoda - do weryfikacji
     @Transactional

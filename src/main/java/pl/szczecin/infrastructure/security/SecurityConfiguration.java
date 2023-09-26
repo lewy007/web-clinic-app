@@ -47,11 +47,11 @@ public class SecurityConfiguration {
     @ConditionalOnProperty(value = "spring.security.enabled", havingValue = "true", matchIfMissing = true)
     public SecurityFilterChain securityEnabled(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf()
-                .disable()
+//                .csrf()
+//                .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/login", "/error", "/images/oh_no.png").permitAll()
-                .requestMatchers("/patient/**", "/appointment").hasAnyAuthority("PATIENT")
+                .requestMatchers("/login", "/registration", "/error", "/images/oh_no.png").permitAll()
+                .requestMatchers("/patient/**").hasAnyAuthority("PATIENT")
                 .requestMatchers("/doctor/**").hasAnyAuthority("DOCTOR")
                 .requestMatchers("/", "/images/**").hasAnyAuthority("DOCTOR", "PATIENT")
 //                .requestMatchers("/api/**").hasAnyAuthority("REST_API")
