@@ -1,12 +1,14 @@
 package pl.szczecin.api.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Data
 @Builder
@@ -14,27 +16,36 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MedicalAppointmentRequestDTO {
 
-    // jesli klient przychodzi kolejny raz to mamy go w bazie danych i wystarczy tylko email
-    @Email
-    private String existingPatientEmail;
-
-    // jesli przychodzi pierwszy raz to potrzebujmey wszystkich danych
+    @NotNull(message = "Patient name cannot be null")
+    @NotBlank(message = "Patient name cannot be blank")
     private String patientName;
+
     private String patientSurname;
     @Size()
+    @NotNull
     @Pattern(regexp = "^[+]\\d{2}\\s\\d{3}\\s\\d{3}\\s\\d{3}$")
     private String patientPhone;
+
     @Email
+    @NotNull(message = "Patient email cannot be null")
+    @NotBlank(message = "Patient email cannot be blank")
     private String patientEmail;
+
     private String patientAddressCountry;
+
     private String patientAddressCity;
+
     private String patientAddressPostalCode;
+
     private String patientAddressStreet;
 
     // jaki doktor i data wizyty
     private String doctorEmail;
+
     private String doctorSurname;
+
     private String doctorNote;
+
     private String medicalAppointmentDate;
 
     // password dla nowego pacjenta
@@ -52,6 +63,22 @@ public class MedicalAppointmentRequestDTO {
                 .patientAddressCity("Wrocław")
                 .patientAddressPostalCode("50-001")
                 .patientAddressStreet("ul. Woronicza 15")
+                .password("test")
                 .build();
+    }
+
+    // Mapa z polami klasy, jesli istnieje dane pole to dodajemy do mapy jako klucz nazwe pola a wartosc w postaci Stringa
+    public Map<String, String> asMap() {
+        Map<String, String> result = new HashMap<>();
+        Optional.ofNullable(patientName).ifPresent(elem -> result.put("patientName", elem));
+        Optional.ofNullable(patientSurname).ifPresent(elem -> result.put("patientSurname", elem));
+        Optional.ofNullable(patientPhone).ifPresent(elem -> result.put("patientPhone", elem));
+        Optional.ofNullable(patientEmail).ifPresent(elem -> result.put("patientEmail", elem));
+        Optional.ofNullable(patientAddressCountry).ifPresent(elem -> result.put("patientAddressCountry", elem));
+        Optional.ofNullable(patientAddressCity).ifPresent(elem -> result.put("patientAddressCity", elem));
+        Optional.ofNullable(patientAddressPostalCode).ifPresent(elem -> result.put("patientAddressPostalCode", elem));
+        Optional.ofNullable(patientAddressStreet).ifPresent(elem -> result.put("patientAddressStreet", elem));
+        Optional.ofNullable(password).ifPresent(elem -> result.put("password", elem));
+        return result;
     }
 }

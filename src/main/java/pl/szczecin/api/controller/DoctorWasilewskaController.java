@@ -101,9 +101,8 @@ public class DoctorWasilewskaController {
                         .build()
         );
 
-//        MedicalAppointment medicalAppointment = medicalAppointmentService.makeAppointment(request);
         MedicalAppointment medicalAppointment =
-                medicalAppointmentService.processNextTimeToMakeAnAppointment(request);
+                medicalAppointmentService.makeAppointment(request);
 
 
         model.addAttribute("patientName", request.getPatientName());

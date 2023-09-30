@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import pl.szczecin.api.dto.MedicalAppointmentRequestDTO;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentRequestMapper;
-import pl.szczecin.api.dto.mapper.PatientMapper;
 import pl.szczecin.business.PatientService;
 import pl.szczecin.business.UserService;
 import pl.szczecin.domain.MedicalAppointmentRequest;
@@ -23,11 +22,10 @@ import java.util.Map;
 public class RegistrationController {
 
 
-    private static final String REGISTRATION = "/registration";
+    static final String REGISTRATION = "/registration";
 
     private final MedicalAppointmentRequestMapper medicalAppointmentRequestMapper;
     private final PatientService patientService;
-    private final PatientMapper patientMapper;
     private final UserService userService;
 
     @GetMapping(value = REGISTRATION)
@@ -48,7 +46,7 @@ public class RegistrationController {
 
     @PostMapping(value = REGISTRATION)
     public String makeRegistration(
-            @Valid @ModelAttribute("medicalAppointmentRequestDTO") MedicalAppointmentRequestDTO medicalAppointmentRequestDTO,
+            @Valid @ModelAttribute ("medicalAppointmentRequestDTO") MedicalAppointmentRequestDTO medicalAppointmentRequestDTO,
             ModelMap model
     ) {
 
@@ -62,18 +60,10 @@ public class RegistrationController {
         int userId = savePatient.getUserEntity().getUserId();
         userService.assignRoleToUser(userId);
 
-        // dodajemy credentiale dla nowego pacjenta
-//        patientService.addCredential(request.getPassword());
-
 
         model.addAttribute("patientNameDTO", medicalAppointmentRequestDTO.getPatientName());
         model.addAttribute("patientSurnameDTO", medicalAppointmentRequestDTO.getPatientSurname());
         model.addAttribute("patientEmailDTO", medicalAppointmentRequestDTO.getPatientEmail());
-//
-//
-//        model.addAttribute("medicalAppointmentDate", medicalAppointmentRequestDTO.getMedicalAppointmentDate());
-//        model.addAttribute("doctorName", medicalAppointment.getMedicalAppointmentDate().getDoctor().getName());
-//        model.addAttribute("doctorSurname", medicalAppointment.getMedicalAppointmentDate().getDoctor().getSurname());
 
         return "registration_done";
     }
