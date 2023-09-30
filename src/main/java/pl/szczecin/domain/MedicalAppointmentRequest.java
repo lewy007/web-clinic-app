@@ -13,7 +13,6 @@ import java.time.OffsetDateTime;
 @Builder
 public class MedicalAppointmentRequest {
 
-    String existingPatientEmail;
     String patientName;
     String patientSurname;
     String patientPhone;

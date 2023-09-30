@@ -72,7 +72,7 @@ public class PatientCancelController {
 
         medicalAppointmentService.cancelAppointment(request);
 
-        model.addAttribute("existingPatientEmail", patientEmail);
+        model.addAttribute("patientEmail", patientEmail);
         model.addAttribute("medicalAppointmentDate", appointmentDate);
 
         model.addAttribute("doctorName", doctorBySurname.getName());
