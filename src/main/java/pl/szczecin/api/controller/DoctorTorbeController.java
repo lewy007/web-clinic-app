@@ -2,15 +2,13 @@ package pl.szczecin.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-import pl.szczecin.api.dto.DoctorDTO;
 import pl.szczecin.api.dto.MedicalAppointmentDateDTO;
 import pl.szczecin.api.dto.MedicalAppointmentRequestDTO;
-import pl.szczecin.api.dto.mapper.DoctorMapper;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentDateMapper;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentRequestMapper;
 import pl.szczecin.business.DoctorService;
@@ -20,45 +18,29 @@ import pl.szczecin.business.PatientService;
 import pl.szczecin.domain.MedicalAppointment;
 import pl.szczecin.domain.MedicalAppointmentRequest;
 
-import java.util.Map;
-
 @Controller
 @RequiredArgsConstructor
 public class DoctorTorbeController {
 
-    private static final String DOCTOR_TORBE = "/patient/doctor/1";
+    static final String DOCTOR_TORBE = "/patient/doctor/1";
 
     private final MedicalAppointmentService medicalAppointmentService;
     private final MedicalAppointmentRequestMapper medicalAppointmentRequestMapper;
     private final MedicalAppointmentDateService medicalAppointmentDateService;
     private final MedicalAppointmentDateMapper medicalAppointmentDateMapper;
     private final DoctorService doctorService;
-    private final DoctorMapper doctorMapper;
     private final PatientService patientService;
 
     @GetMapping(value = DOCTOR_TORBE)
-    public ModelAndView medicalAppointmentPage() {
-
-        Map<String, ?> model = prepareMedicalAppointmentData();
-
-        return new ModelAndView("doctor_torbe_portal", model);
-    }
-
-    private Map<String, ?> prepareMedicalAppointmentData() {
+    public String medicalAppointmentPageToDoctorTorbe(
+            Model model
+    ) {
 
         // email zalogowanego pacjenta
         String loggedInPatientEmail = patientService.getLoggedInPatientEmail();
 
-        var availableDoctors = doctorService.findAvailableDoctors().stream()
-                .map(doctorMapper::map)
-                .filter(doctor -> doctor.getSurname().equals("Torbe"))
-                .toList();
-
         // wyciagamy email z jednoelemntowej listy
-        var doctorTorbeEmail = availableDoctors.stream()
-                .map(DoctorDTO::getEmail)
-                .toList()
-                .get(0);
+        var doctorTorbeEmail = getDoctorTorbeEmail();
 
         // wyciagamy wolne terminy dla danego lekarza
         var availableDates =
@@ -67,11 +49,11 @@ public class DoctorTorbeController {
                         .map(MedicalAppointmentDateDTO::getDateTime)
                         .toList();
 
-        return Map.of(
-                "loggedInPatientEmail", loggedInPatientEmail,
-                "doctorTorbeEmail", doctorTorbeEmail,
-                "availableDates", availableDates
-        );
+        model.addAttribute("loggedInPatientEmail", loggedInPatientEmail);
+        model.addAttribute("doctorTorbeEmail", doctorTorbeEmail);
+        model.addAttribute("availableDates", availableDates);
+
+        return "doctor_torbe_portal";
     }
 
 
@@ -85,12 +67,7 @@ public class DoctorTorbeController {
         String loggedInPatientEmail = patientService.getLoggedInPatientEmail();
 
         // wyciagamy doktora po nazwisku i jego email z jednoelemntowej listy
-        var doctorTorbeEmail = doctorService.findAvailableDoctors().stream()
-                .map(doctorMapper::map)
-                .filter(doctor -> doctor.getSurname().equals("Torbe"))
-                .map(DoctorDTO::getEmail)
-                .toList()
-                .get(0);
+        String doctorTorbeEmail = getDoctorTorbeEmail();
 
         // tworzymy request z parametrow
         MedicalAppointmentRequest request = medicalAppointmentRequestMapper.map(
@@ -114,4 +91,11 @@ public class DoctorTorbeController {
 
         return "medical_appointment_done";
     }
+
+    // TODO mozna zmienic metode i znalezc maila na podstawie peselu badz na chwile nazwiska
+    private String getDoctorTorbeEmail() {
+        String doctorSurname = "Torbe";
+        return doctorService.findDoctorBySurname(doctorSurname).getEmail();
+    }
+
 }
