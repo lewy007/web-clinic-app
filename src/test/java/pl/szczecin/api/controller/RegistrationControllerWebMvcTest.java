@@ -2,6 +2,7 @@ package pl.szczecin.api.controller;
 
 import lombok.AllArgsConstructor;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -44,6 +45,7 @@ class RegistrationControllerWebMvcTest {
 
 
     @Test
+    @DisplayName("GET method should return the correct view")
     void registrationControllerMethodGetWorksCorrectly() throws Exception {
 
         //given, when, then
@@ -54,6 +56,7 @@ class RegistrationControllerWebMvcTest {
 
 
     @Test
+    @DisplayName("POST method should return correct patient registration")
     void registrationControllerMethodPostWorksCorrectly() throws Exception {
 
         // given
@@ -85,6 +88,7 @@ class RegistrationControllerWebMvcTest {
 
     @ParameterizedTest
     @MethodSource("thatEmailValidationWorksCorrectly")
+    @DisplayName("That method should check the correct validation of emails")
     void thatEmailValidationWorksCorrectly(Boolean correctEmail, String email) throws Exception {
         // given
         LinkedMultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
@@ -106,6 +110,10 @@ class RegistrationControllerWebMvcTest {
 
             Mockito.when(patientService.savePatient(Mockito.any())).thenReturn(expectedPatient);
 
+            // metoda symuluje zachownie klienta, mowi serwerowi, ze wysylam POST na taki endpoint,
+            // a serwer ma go obsluzyc
+            // Jezeli poprawnie ten request typu POST z takimi parametrami na taki endpoint zostamie obsluzony
+            // to status ma byc ok - czyli zwrocony 200, atrybut ma sie nie znajdowac a widok ma byc "registration_done"
             mockMvc.perform(post(RegistrationController.REGISTRATION).params(parameters))
                     .andExpect(status().isOk())
                     .andExpect(model().attributeExists("patientNameDTO"))
@@ -126,6 +134,7 @@ class RegistrationControllerWebMvcTest {
 
     @ParameterizedTest
     @MethodSource("thatPhoneValidationWorksCorrectly")
+    @DisplayName("That method should check the correct validation of phones")
     void thatPhoneValidationWorksCorrectly(Boolean correctPhone, String phone) throws Exception {
         // given
         LinkedMultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();

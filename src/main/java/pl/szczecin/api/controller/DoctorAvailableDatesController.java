@@ -13,7 +13,7 @@ import pl.szczecin.business.MedicalAppointmentDateService;
 @RequiredArgsConstructor
 public class DoctorAvailableDatesController {
 
-    private static final String DOCTOR_AVAILABLE_DATES = "/doctor/dates";
+    static final String DOCTOR_AVAILABLE_DATES = "/doctor/dates";
 
     private final DoctorService doctorService;
     private final MedicalAppointmentDateService medicalAppointmentDateService;

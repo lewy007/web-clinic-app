@@ -1,6 +1,7 @@
 package pl.szczecin.api.controller;
 
 import lombok.AllArgsConstructor;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ class PatientControllerWebMvcTest {
 
 
     @Test
+    @DisplayName("GET Method should return the correct view")
     void patientControllerMethodGetWorksCorrectly() throws Exception {
 
         // Given
