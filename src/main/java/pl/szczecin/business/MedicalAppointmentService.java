@@ -52,7 +52,7 @@ public class MedicalAppointmentService {
     }
 
     @Transactional
-    public void cancelAppointment(MedicalAppointmentRequest request) {
+    public MedicalAppointment cancelAppointment(MedicalAppointmentRequest request) {
 
         // tutaj szukam na podstawie daty i lekarza, bo moze byc kilku lekarzy przyjmujacych na te sama godzine
         var medicalAppointmentDateId =
@@ -64,12 +64,13 @@ public class MedicalAppointmentService {
 
 
         // szukamy medicalAppointment w bazie na podstawie podanych parametrow
-        medicalAppointmentDAO.cancelMedicalAppointment(medicalAppointmentDateId);
+        return medicalAppointmentDAO.cancelMedicalAppointment(medicalAppointmentDateId);
 
     }
 
-    public void addNoteToMedicalAppointment(MedicalAppointmentRequest request) {
-        medicalAppointmentDAO.addNoteToMedicalAppointment(request);
+    @Transactional
+    public MedicalAppointment addNoteToMedicalAppointment(MedicalAppointmentRequest request) {
+       return medicalAppointmentDAO.addNoteToMedicalAppointment(request);
     }
 
 

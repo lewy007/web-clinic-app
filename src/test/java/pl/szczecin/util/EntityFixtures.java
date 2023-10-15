@@ -4,13 +4,12 @@ import lombok.experimental.UtilityClass;
 import pl.szczecin.api.dto.DoctorDTO;
 import pl.szczecin.api.dto.MedicalAppointmentDTO;
 import pl.szczecin.api.dto.MedicalAppointmentDateDTO;
-import pl.szczecin.domain.Doctor;
-import pl.szczecin.domain.MedicalAppointment;
-import pl.szczecin.domain.MedicalAppointmentDate;
-import pl.szczecin.domain.MedicalAppointmentRequest;
+import pl.szczecin.api.dto.PatientHistoryDTO;
+import pl.szczecin.domain.*;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 
 @UtilityClass
 public class EntityFixtures {
@@ -61,6 +60,22 @@ public class EntityFixtures {
                 .name("Malwina")
                 .surname("Malinowska")
                 .email("malwina.malinowska@clinic.pl")
+                .build();
+    }
+
+    public static Patient somePatient1() {
+        return Patient.builder()
+                .name("Janina")
+                .surname("Pacjentowska")
+                .phone("+48 372 54 56")
+                .email("janina.pacjentowska@clinic.pl")
+                .build();
+    }
+
+    public static MedicalAppointment someMedicalAppointment() {
+        return MedicalAppointment.builder()
+                .medicalAppointmentDate(someMedicalAppointmentDate1())
+                .doctorNote("some note to test")
                 .build();
     }
 
@@ -169,10 +184,55 @@ public class EntityFixtures {
                 .build();
     }
 
-    public static MedicalAppointment someMedicalAppointment() {
-        return MedicalAppointment.builder()
-                .medicalAppointmentDate(someMedicalAppointmentDate1())
-                .doctorNote("some note to test")
+    public static PatientHistory.MedicalAppointment someMedicalAppointmentFromPatientHistory1() {
+        return PatientHistory.MedicalAppointment.builder()
+                .doctorName("nameTest1")
+                .doctorSurname("surnameTest1")
+                .dateTime(
+                        OffsetDateTime.of(2022, 8, 15,
+                                0, 0, 0, 0, ZoneOffset.UTC))
+                .doctorNote("some test note1")
+                .build();
+    }
+
+    public static PatientHistory.MedicalAppointment someMedicalAppointmentFromPatientHistory2() {
+        return PatientHistory.MedicalAppointment.builder()
+                .doctorName("nameTest2")
+                .doctorSurname("surnameTest2")
+                .dateTime(
+                        OffsetDateTime.of(2023, 9, 16,
+                                0, 0, 0, 0, ZoneOffset.UTC))
+                .doctorNote("some test note1")
+                .build();
+    }
+
+    public static PatientHistory somePatientHistory() {
+        return PatientHistory.builder()
+                .patientEmail("patient@example.com")
+                .medicalAppointments(List.of(
+                        someMedicalAppointmentFromPatientHistory1(),
+                        someMedicalAppointmentFromPatientHistory2())
+                )
+                .build();
+    }
+
+    public static PatientHistoryDTO somePatientHistoryDTO() {
+        return PatientHistoryDTO.builder()
+                .patientEmail("patient@example.com")
+                .medicalAppointments(List.of(
+                        PatientHistoryDTO.MedicalAppointmentDTO.builder()
+                                .doctorName("nameTest1")
+                                .doctorSurname("surnameTest1")
+                                .dateTime("2023-11-17 10:00:00")
+                                .doctorNote("some test note1")
+                                .build(),
+                        PatientHistoryDTO.MedicalAppointmentDTO.builder()
+                                .doctorName("nameTest2")
+                                .doctorSurname("surnameTest2")
+                                .dateTime("2023-11-18 10:00:00")
+                                .doctorNote("some test note2")
+                                .build())
+                )
                 .build();
     }
 

@@ -22,7 +22,7 @@ import pl.szczecin.domain.MedicalAppointmentRequest;
 @RequiredArgsConstructor
 public class DoctorTorbeController {
 
-    static final String DOCTOR_TORBE = "/patient/doctor/1";
+    public static final String DOCTOR_TORBE = "/patient/doctor/1";
 
     private final MedicalAppointmentService medicalAppointmentService;
     private final MedicalAppointmentRequestMapper medicalAppointmentRequestMapper;

@@ -49,7 +49,12 @@ public class MedicalAppointmentRepository implements MedicalAppointmentDAO {
     }
 
     @Override
-    public void cancelMedicalAppointment(Integer medicalAppointmentDateId) {
+    public MedicalAppointment cancelMedicalAppointment(Integer medicalAppointmentDateId) {
+
+        // przypisanie w dwóch krokach, aby zwrocic MedicalAppointment do testow
+        var medicalAppointmentEntityToDelete
+                = medicalAppointmentJpaRepository
+                .findByMedicalAppointmentDateId(medicalAppointmentDateId);
 
         var medicalAppointmentEntityIdToDelete
                 = medicalAppointmentJpaRepository
@@ -59,10 +64,11 @@ public class MedicalAppointmentRepository implements MedicalAppointmentDAO {
             medicalAppointmentJpaRepository.deleteById(medicalAppointmentEntityIdToDelete);
         }
 
+        return medicalAppointmentEntityMapper.mapFromEntity(medicalAppointmentEntityToDelete);
     }
 
     @Override
-    public void addNoteToMedicalAppointment(MedicalAppointmentRequest request) {
+    public MedicalAppointment addNoteToMedicalAppointment(MedicalAppointmentRequest request) {
 
         OffsetDateTime medicalAppointmentDate = request.getMedicalAppointmentDate();
         String patientName = request.getPatientName();
@@ -81,9 +87,12 @@ public class MedicalAppointmentRepository implements MedicalAppointmentDAO {
             requestMedicalAppointment.setDoctorNote(doctorNote);
 
             // Zapisz zaktualizowany rekord
-            medicalAppointmentJpaRepository.save(requestMedicalAppointment);
+            MedicalAppointmentEntity saved = medicalAppointmentJpaRepository.save(requestMedicalAppointment);
 
-        }
+            return medicalAppointmentEntityMapper.mapFromEntity(saved);
 
+            // TODO do poprawienia zwracany null
+        } else
+            return null;
     }
 }

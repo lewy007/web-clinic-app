@@ -14,7 +14,7 @@ import pl.szczecin.domain.MedicalAppointmentDate;
 @RequiredArgsConstructor
 public class DoctorController {
 
-    static final String DOCTOR = "/doctor";
+    public static final String DOCTOR = "/doctor";
 
     private final DoctorService doctorService;
     private final MedicalAppointmentService medicalAppointmentService;

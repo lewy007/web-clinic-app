@@ -12,7 +12,7 @@ import pl.szczecin.business.PatientService;
 @RequiredArgsConstructor
 public class PatientController {
 
-    static final String PATIENT = "/patient";
+    public static final String PATIENT = "/patient";
 
     private final PatientService patientService;
     private final DoctorService doctorService;

@@ -22,7 +22,7 @@ import java.util.Map;
 public class RegistrationController {
 
 
-    static final String REGISTRATION = "/registration";
+    public static final String REGISTRATION = "/registration";
 
     private final MedicalAppointmentRequestMapper medicalAppointmentRequestMapper;
     private final PatientService patientService;

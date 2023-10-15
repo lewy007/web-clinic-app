@@ -1,4 +1,4 @@
-package pl.szczecin.api.controller;
+package pl.szczecin.api.controller.unit;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
+import pl.szczecin.api.controller.PatientController;
 import pl.szczecin.api.dto.DoctorDTO;
 import pl.szczecin.api.dto.mapper.DoctorMapper;
 import pl.szczecin.business.DoctorService;

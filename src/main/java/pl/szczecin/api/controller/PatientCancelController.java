@@ -13,16 +13,15 @@ import pl.szczecin.api.dto.mapper.PatientMapper;
 import pl.szczecin.business.DoctorService;
 import pl.szczecin.business.MedicalAppointmentService;
 import pl.szczecin.business.PatientService;
+import pl.szczecin.domain.MedicalAppointment;
 import pl.szczecin.domain.MedicalAppointmentRequest;
 import pl.szczecin.domain.PatientHistory;
-
-import java.util.Objects;
 
 @Controller
 @AllArgsConstructor
 public class PatientCancelController {
 
-    private static final String PATIENT_CANCELLED = "/patient/cancel";
+    public static final String PATIENT_CANCELLED = "/patient/cancel";
 
     private final MedicalAppointmentService medicalAppointmentService;
     private final MedicalAppointmentRequestMapper medicalAppointmentRequestMapper;
@@ -31,20 +30,18 @@ public class PatientCancelController {
     private final DoctorService doctorService;
 
     @GetMapping(value = PATIENT_CANCELLED)
-    public String getPatientCancelAppointment(
+    public String patientCancelAppointmentPage(
             Model model
     ) {
 
         // email zalogowanego pacjenta
         String loggedInPatientEmail = patientService.getLoggedInPatientEmail();
 
-        if (Objects.nonNull(loggedInPatientEmail)) {
-            PatientHistory patientHistory = patientService.findCurrentPatientAppointmentsByEmail(loggedInPatientEmail);
-            model.addAttribute("patientHistoryDTO", patientMapper.map(patientHistory));
-            model.addAttribute("loggedInPatientEmail", loggedInPatientEmail);
-        } else {
-            model.addAttribute("patientHistoryDTO", PatientHistoryDTO.buildDefault());
-        }
+
+        PatientHistory patientHistory = patientService.findCurrentPatientAppointmentsByEmail(loggedInPatientEmail);
+
+        model.addAttribute("patientHistoryDTO", patientMapper.map(patientHistory));
+        model.addAttribute("loggedInPatientEmail", loggedInPatientEmail);
 
         return "patient_cancel";
     }
@@ -70,7 +67,8 @@ public class PatientCancelController {
 
         var doctorBySurname = doctorService.findDoctorBySurname(doctorSurname);
 
-        medicalAppointmentService.cancelAppointment(request);
+        // wartosc zwrocona do wykorzystania w testach
+        MedicalAppointment medicalAppointment = medicalAppointmentService.cancelAppointment(request);
 
         model.addAttribute("patientEmail", patientEmail);
         model.addAttribute("medicalAppointmentDate", appointmentDate);
