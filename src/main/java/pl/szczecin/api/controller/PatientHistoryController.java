@@ -9,34 +9,29 @@ import pl.szczecin.api.dto.mapper.PatientMapper;
 import pl.szczecin.business.PatientService;
 import pl.szczecin.domain.PatientHistory;
 
-import java.util.Objects;
-
 @Controller
 @AllArgsConstructor
 public class PatientHistoryController {
 
-    private static final String PATIENT_HISTORY = "/patient/history";
+    public static final String PATIENT_HISTORY = "/patient/history";
 
     private final PatientService patientService;
     private final PatientMapper patientMapper;
 
     @GetMapping(value = PATIENT_HISTORY)
-    public String patientHistory(
+    public String patientHistoryPage(
             Model model
     ) {
 
         // email zalogowanego pacjenta
         String loggedInPatientEmail = patientService.getLoggedInPatientEmail();
 
-        if (Objects.nonNull(loggedInPatientEmail)) {
-            PatientHistory patientHistory = patientService.findPatientHistoryByEmail(loggedInPatientEmail);
-            PatientHistoryDTO patientHistoryDTO = patientMapper.map(patientHistory);
+        PatientHistory patientHistory = patientService.findPatientHistoryByEmail(loggedInPatientEmail);
+        PatientHistoryDTO patientHistoryDTO = patientMapper.map(patientHistory);
 
-            model.addAttribute("patientHistoryDTO", patientHistoryDTO);
-            model.addAttribute("loggedInPatientEmail", loggedInPatientEmail);
-        } else {
-            model.addAttribute("patientHistoryDTO", PatientHistoryDTO.buildDefault());
-        }
+        model.addAttribute("patientHistoryDTO", patientHistoryDTO);
+        model.addAttribute("loggedInPatientEmail", loggedInPatientEmail);
+
 
         return "patient_history";
 

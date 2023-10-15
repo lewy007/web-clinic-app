@@ -12,7 +12,7 @@ public interface MedicalAppointmentDAO {
 
     void makeAppointment(MedicalAppointment medicalAppointment);
 
-    void cancelMedicalAppointment(Integer medicalAppointmentDate);
+    MedicalAppointment cancelMedicalAppointment(Integer medicalAppointmentDate);
 
-    void addNoteToMedicalAppointment(MedicalAppointmentRequest request);
+    MedicalAppointment addNoteToMedicalAppointment(MedicalAppointmentRequest request);
 }

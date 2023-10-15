@@ -12,6 +12,7 @@ import pl.szczecin.api.dto.mapper.MedicalAppointmentRequestMapper;
 import pl.szczecin.business.DoctorService;
 import pl.szczecin.business.MedicalAppointmentDateService;
 import pl.szczecin.business.MedicalAppointmentService;
+import pl.szczecin.domain.MedicalAppointment;
 import pl.szczecin.domain.MedicalAppointmentDate;
 import pl.szczecin.domain.MedicalAppointmentRequest;
 
@@ -19,7 +20,7 @@ import pl.szczecin.domain.MedicalAppointmentRequest;
 @RequiredArgsConstructor
 public class DoctorHistoryController {
 
-    private static final String DOCTOR_HISTORY = "/doctor/history";
+    public static final String DOCTOR_HISTORY = "/doctor/history";
 
     private final DoctorService doctorService;
     private final MedicalAppointmentService medicalAppointmentService;
@@ -29,7 +30,7 @@ public class DoctorHistoryController {
 
 
     @GetMapping(value = DOCTOR_HISTORY)
-    public String doctorPage(
+    public String doctorHistoryPage(
             Model model
     ) {
 
@@ -76,14 +77,13 @@ public class DoctorHistoryController {
                         .build()
         );
 
-
-        medicalAppointmentService.addNoteToMedicalAppointment(request);
+        // zwrócony medicalAppoinmnet wykorzystywany w testach do porównania
+        MedicalAppointment medicalAppointment = medicalAppointmentService.addNoteToMedicalAppointment(request);
 
         // Dodajemy atrybut informujący o sukcesie w zwracanym widoku
         model.addAttribute("successMessage", "Notatka została dodana pomyślnie.");
 
         return "doctor_history_added_note";
-
     }
 
 }

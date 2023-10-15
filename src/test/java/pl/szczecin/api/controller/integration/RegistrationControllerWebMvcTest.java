@@ -1,4 +1,4 @@
-package pl.szczecin.api.controller;
+package pl.szczecin.api.controller.integration;
 
 import lombok.AllArgsConstructor;
 import org.hamcrest.Matchers;
@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
+import pl.szczecin.api.controller.RegistrationController;
 import pl.szczecin.api.dto.MedicalAppointmentRequestDTO;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentRequestMapper;
 import pl.szczecin.business.PatientService;

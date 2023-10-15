@@ -1,4 +1,4 @@
-package pl.szczecin.api.controller;
+package pl.szczecin.api.controller.integration;
 
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import pl.szczecin.api.controller.DoctorTorbeController;
 import pl.szczecin.api.dto.MedicalAppointmentRequestDTO;
 import pl.szczecin.api.dto.mapper.DoctorMapper;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentDateMapper;
@@ -57,7 +58,7 @@ class DoctorTorbeControllerWebMvcTest {
     @Test
     @DisplayName("GET Method should return the correct view")
     void doctorTorbeControllerShouldReturnCorrectView() throws Exception {
-        // Given
+        // given
         String patientEmail = "patient@example.com";
         String doctorSurname = "Torbe";
         String doctorEmail = "agata.torbe@clinic.pl";
@@ -79,7 +80,7 @@ class DoctorTorbeControllerWebMvcTest {
         Mockito.when(medicalAppointmentDateService.getAvailableDatesByDoctorEmail(doctorEmail))
                 .thenReturn(medicalAppointmentDateList);
 
-        // When, then
+        // when, then
         mockMvc.perform(get(DoctorTorbeController.DOCTOR_TORBE))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("loggedInPatientEmail"))
@@ -91,7 +92,7 @@ class DoctorTorbeControllerWebMvcTest {
     @Test
     @DisplayName("POST Method should correctly make an appointment")
     void doctorTorbeControllerShouldCorrectMakeAppointment() throws Exception {
-        // Given
+        // given
         String doctorSurname = "Torbe";
         Doctor expectedDoctor = EntityFixtures.someDoctor1();
 
@@ -106,8 +107,9 @@ class DoctorTorbeControllerWebMvcTest {
                 .thenReturn(expectedRequest);
         Mockito.when(medicalAppointmentService.makeAppointment(expectedRequest)).thenReturn(expectedMedicalAppointment);
 
-        // When, then
-        mockMvc.perform(post(DoctorTorbeController.DOCTOR_TORBE).param("medicalAppointmentDate", medicalAppointmentDate))
+        // when, then
+        mockMvc.perform(post(DoctorTorbeController.DOCTOR_TORBE)
+                        .param("medicalAppointmentDate", medicalAppointmentDate))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("patientName"))
                 .andExpect(model().attributeExists("patientSurname"))

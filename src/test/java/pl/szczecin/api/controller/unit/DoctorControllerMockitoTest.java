@@ -1,4 +1,4 @@
-package pl.szczecin.api.controller;
+package pl.szczecin.api.controller.unit;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.ExtendedModelMap;
+import pl.szczecin.api.controller.DoctorController;
 import pl.szczecin.api.dto.MedicalAppointmentDTO;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentMapper;
 import pl.szczecin.business.DoctorService;
@@ -69,14 +70,14 @@ class DoctorControllerMockitoTest {
     @Test
     @DisplayName("That method should return correct attributes of model")
     void doctorPageShouldAddAttributesToModel() {
-        // Given
+        // given
         ExtendedModelMap model = new ExtendedModelMap();
 //        Mockito.when(doctorService.getLoggedInDoctorEmail()).thenReturn("test@example.com");
 
-        // When
+        // when
         doctorController.doctorPage(model);
 
-        // Then
+        // then
         Assertions.assertThat(model).containsKeys("loggedInDoctorEmail", "medicalAppointmentDTOs");
     }
 
