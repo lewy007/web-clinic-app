@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.ExtendedModelMap;
 import pl.szczecin.api.controller.PatientCancelController;
 import pl.szczecin.api.dto.MedicalAppointmentRequestDTO;
+import pl.szczecin.api.dto.PatientHistoryDTO;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentRequestMapper;
 import pl.szczecin.api.dto.mapper.PatientMapper;
 import pl.szczecin.business.DoctorService;
@@ -97,6 +98,24 @@ class PatientCancelControllerMockitoTest {
 
     }
 
+    @Test
+    @DisplayName("That method should correctly mapped patientHistory to patientHistoryDTO")
+    void patientMapperShouldReturnCorrectMappedPatientHistory() {
+        // given
+        PatientHistory somePatientHistory = EntityFixtures.somePatientHistory();
+        PatientHistoryDTO expectedPatientHistoryDTO = EntityFixtures.somePatientHistoryDTO();
+
+        Mockito.when(patientMapper.map(Mockito.any(PatientHistory.class)))
+                .thenReturn(expectedPatientHistoryDTO);
+
+        // when
+        PatientHistoryDTO resultPatientHistoryDTO = patientMapper.map(somePatientHistory);
+
+        // then
+        Assertions.assertThat(resultPatientHistoryDTO).isEqualTo(expectedPatientHistoryDTO);
+
+    }
+
 
     // metoda POST
     @Test
@@ -166,17 +185,17 @@ class PatientCancelControllerMockitoTest {
     @DisplayName("That method should return correct MedicalAppointment to Cancel")
     void cancelAppointmentShouldReturnCorrectMedicalAppointmentToCancel() {
         // given
-        MedicalAppointment medicalAppointmentExpected = EntityFixtures.someMedicalAppointment();
+        MedicalAppointment expectedMedicalAppointment = EntityFixtures.someMedicalAppointment();
         MedicalAppointmentRequest request = EntityFixtures.someMedicalAppointmentRequest();
 
         Mockito.when(medicalAppointmentService.cancelAppointment(request))
-                .thenReturn(medicalAppointmentExpected);
+                .thenReturn(expectedMedicalAppointment);
 
         // when
-        MedicalAppointment medicalAppointmentResult = medicalAppointmentService.cancelAppointment(request);
+        MedicalAppointment resultMedicalAppointment = medicalAppointmentService.cancelAppointment(request);
 
         // then
-        Assertions.assertThat(medicalAppointmentResult).isEqualTo(medicalAppointmentExpected);
+        Assertions.assertThat(resultMedicalAppointment).isEqualTo(expectedMedicalAppointment);
 
     }
 

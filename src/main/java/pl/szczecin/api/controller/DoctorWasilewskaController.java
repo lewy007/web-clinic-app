@@ -2,15 +2,13 @@ package pl.szczecin.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-import pl.szczecin.api.dto.DoctorDTO;
 import pl.szczecin.api.dto.MedicalAppointmentDateDTO;
 import pl.szczecin.api.dto.MedicalAppointmentRequestDTO;
-import pl.szczecin.api.dto.mapper.DoctorMapper;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentDateMapper;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentRequestMapper;
 import pl.szczecin.business.DoctorService;
@@ -20,45 +18,29 @@ import pl.szczecin.business.PatientService;
 import pl.szczecin.domain.MedicalAppointment;
 import pl.szczecin.domain.MedicalAppointmentRequest;
 
-import java.util.Map;
-
 @Controller
 @RequiredArgsConstructor
 public class DoctorWasilewskaController {
 
-    private static final String DOCTOR_WASILEWSKA = "/patient/doctor/3";
+    public static final String DOCTOR_WASILEWSKA = "/patient/doctor/3";
 
     private final MedicalAppointmentService medicalAppointmentService;
     private final MedicalAppointmentRequestMapper medicalAppointmentRequestMapper;
     private final MedicalAppointmentDateService medicalAppointmentDateService;
     private final MedicalAppointmentDateMapper medicalAppointmentDateMapper;
     private final DoctorService doctorService;
-    private final DoctorMapper doctorMapper;
     private final PatientService patientService;
 
     @GetMapping(value = DOCTOR_WASILEWSKA)
-    public ModelAndView medicalAppointmentPage() {
-
-        Map<String, ?> model = prepareMedicalAppointmentData();
-
-        return new ModelAndView("doctor_wasilewska_portal", model);
-    }
-
-    private Map<String, ?> prepareMedicalAppointmentData() {
+    public String medicalAppointmentPageToDoctorWasilewska(
+            Model model
+    ) {
 
         // email zalogowanego pacjenta
         String loggedInPatientEmail = patientService.getLoggedInPatientEmail();
 
-        var availableDoctors = doctorService.findAvailableDoctors().stream()
-                .map(doctorMapper::map)
-                .filter(doctor -> doctor.getSurname().equals("Wasilewska"))
-                .toList();
-
-        // wyciagamy email z jednoelemntowej listy
-        var doctorWasilewskaEmail = availableDoctors.stream()
-                .map(DoctorDTO::getEmail)
-                .toList()
-                .get(0);
+        // wyciagamy email doctora danej strony
+        var doctorWasilewskaEmail = getDoctorWasilewskaEmail();
 
         // wyciagamy wolne terminy dla danego lekarza
         var availableDates =
@@ -67,11 +49,11 @@ public class DoctorWasilewskaController {
                         .map(MedicalAppointmentDateDTO::getDateTime)
                         .toList();
 
-        return Map.of(
-                "loggedInPatientEmail", loggedInPatientEmail,
-                "doctorKrukEmail", doctorWasilewskaEmail,
-                "availableDates", availableDates
-        );
+        model.addAttribute("loggedInPatientEmail", loggedInPatientEmail);
+        model.addAttribute("doctorWasilewskaEmail", doctorWasilewskaEmail);
+        model.addAttribute("availableDates", availableDates);
+
+        return "doctor_wasilewska_portal";
     }
 
 
@@ -84,20 +66,15 @@ public class DoctorWasilewskaController {
         // email zalogowanego pacjenta
         String loggedInPatientEmail = patientService.getLoggedInPatientEmail();
 
-        // wyciagamy doktora po nazwisku i jego email z jednoelemntowej listy
-        var doctorTorbeEmail = doctorService.findAvailableDoctors().stream()
-                .map(doctorMapper::map)
-                .filter(doctor -> doctor.getSurname().equals("Wasilewska"))
-                .map(DoctorDTO::getEmail)
-                .toList()
-                .get(0);
+        // wyciagamy email doctora danej strony
+        var doctorWasilewskaEmail = getDoctorWasilewskaEmail();
 
         // tworzymy request z parametrow
         MedicalAppointmentRequest request = medicalAppointmentRequestMapper.map(
                 MedicalAppointmentRequestDTO.builder()
                         .patientEmail(loggedInPatientEmail)
                         .medicalAppointmentDate(medicalAppointmentDate)
-                        .doctorEmail(doctorTorbeEmail)
+                        .doctorEmail(doctorWasilewskaEmail)
                         .build()
         );
 
@@ -114,4 +91,11 @@ public class DoctorWasilewskaController {
 
         return "medical_appointment_done";
     }
+
+    // TODO mozna zmienic metode i znalezc maila na podstawie peselu badz na chwile nazwiska
+    private String getDoctorWasilewskaEmail() {
+        String doctorSurname = "Wasilewska";
+        return doctorService.findDoctorBySurname(doctorSurname).getEmail();
+    }
+
 }

@@ -9,7 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import pl.szczecin.api.controller.DoctorTorbeController;
+import pl.szczecin.api.controller.DoctorKrukController;
 import pl.szczecin.api.dto.MedicalAppointmentRequestDTO;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentDateMapper;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentRequestMapper;
@@ -30,10 +30,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@WebMvcTest(controllers = DoctorTorbeController.class)
+@WebMvcTest(controllers = DoctorKrukController.class)
 @AutoConfigureMockMvc(addFilters = false) //wylaczenie konfiguracji security na potrzeby testow
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-class DoctorTorbeControllerWebMvcTest {
+class DoctorKrukControllerWebMvcTest {
 
 
     //klasa symuluje wywolania przegladarki
@@ -54,11 +54,11 @@ class DoctorTorbeControllerWebMvcTest {
 
     @Test
     @DisplayName("GET Method should return the correct view")
-    void doctorTorbeControllerShouldReturnCorrectView() throws Exception {
+    void doctorKrukControllerShouldReturnCorrectView() throws Exception {
         // given
         String patientEmail = "patient@example.com";
-        String doctorSurname = "Torbe";
-        String doctorEmail = "agata.torbe@clinic.pl";
+        String doctorSurname = "Kruk";
+        String doctorEmail = "renata.kruk@clinic.pl";
 
         Doctor expectedDoctor = EntityFixtures.someDoctor1();
 
@@ -78,19 +78,19 @@ class DoctorTorbeControllerWebMvcTest {
                 .thenReturn(medicalAppointmentDateList);
 
         // when, then
-        mockMvc.perform(get(DoctorTorbeController.DOCTOR_TORBE))
+        mockMvc.perform(get(DoctorKrukController.DOCTOR_KRUK))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("loggedInPatientEmail"))
-                .andExpect(model().attributeExists("doctorTorbeEmail"))
+                .andExpect(model().attributeExists("doctorKrukEmail"))
                 .andExpect(model().attributeExists("availableDates"))
-                .andExpect(view().name("doctor_torbe_portal"));
+                .andExpect(view().name("doctor_kruk_portal"));
     }
 
     @Test
     @DisplayName("POST Method should correctly make an appointment")
-    void doctorTorbeControllerShouldCorrectMakeAppointment() throws Exception {
+    void doctorKrukControllerShouldCorrectMakeAppointment() throws Exception {
         // given
-        String doctorSurname = "Torbe";
+        String doctorSurname = "Kruk";
         Doctor expectedDoctor = EntityFixtures.someDoctor1();
 
         String medicalAppointmentDate = "2022-08-27 09:28:00";
@@ -105,7 +105,7 @@ class DoctorTorbeControllerWebMvcTest {
         Mockito.when(medicalAppointmentService.makeAppointment(expectedRequest)).thenReturn(expectedMedicalAppointment);
 
         // when, then
-        mockMvc.perform(post(DoctorTorbeController.DOCTOR_TORBE)
+        mockMvc.perform(post(DoctorKrukController.DOCTOR_KRUK)
                         .param("medicalAppointmentDate", medicalAppointmentDate))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("patientName"))

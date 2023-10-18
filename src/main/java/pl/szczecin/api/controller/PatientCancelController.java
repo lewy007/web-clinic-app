@@ -37,10 +37,10 @@ public class PatientCancelController {
         // email zalogowanego pacjenta
         String loggedInPatientEmail = patientService.getLoggedInPatientEmail();
 
-
         PatientHistory patientHistory = patientService.findCurrentPatientAppointmentsByEmail(loggedInPatientEmail);
+        PatientHistoryDTO patientHistoryDTO = patientMapper.map(patientHistory);
 
-        model.addAttribute("patientHistoryDTO", patientMapper.map(patientHistory));
+        model.addAttribute("patientHistoryDTO", patientHistoryDTO);
         model.addAttribute("loggedInPatientEmail", loggedInPatientEmail);
 
         return "patient_cancel";
