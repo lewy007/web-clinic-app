@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -17,12 +16,6 @@ public class PatientHistoryDTO {
     String patientEmail;
     List<MedicalAppointmentDTO> medicalAppointments;
 
-    public static PatientHistoryDTO buildDefault() {
-        return PatientHistoryDTO.builder()
-                .patientEmail("empty")
-                .medicalAppointments(Collections.emptyList())
-                .build();
-    }
 
     @Data
     @Builder

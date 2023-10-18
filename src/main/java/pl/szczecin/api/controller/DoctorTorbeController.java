@@ -39,7 +39,7 @@ public class DoctorTorbeController {
         // email zalogowanego pacjenta
         String loggedInPatientEmail = patientService.getLoggedInPatientEmail();
 
-        // wyciagamy email z jednoelemntowej listy
+        // wyciagamy email doctora danej strony
         var doctorTorbeEmail = getDoctorTorbeEmail();
 
         // wyciagamy wolne terminy dla danego lekarza
@@ -66,7 +66,7 @@ public class DoctorTorbeController {
         // email zalogowanego pacjenta
         String loggedInPatientEmail = patientService.getLoggedInPatientEmail();
 
-        // wyciagamy doktora po nazwisku i jego email z jednoelemntowej listy
+        // wyciagamy email doctora danej strony
         String doctorTorbeEmail = getDoctorTorbeEmail();
 
         // tworzymy request z parametrow

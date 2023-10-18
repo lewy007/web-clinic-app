@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.ExtendedModelMap;
-import pl.szczecin.api.controller.DoctorTorbeController;
+import pl.szczecin.api.controller.DoctorWasilewskaController;
 import pl.szczecin.api.dto.MedicalAppointmentDateDTO;
 import pl.szczecin.api.dto.MedicalAppointmentRequestDTO;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentDateMapper;
@@ -28,7 +28,7 @@ import java.util.List;
 
 
 @ExtendWith(MockitoExtension.class)
-class DoctorTorbeControllerMockitoTest {
+class DoctorWasilewskaControllerMockitoTest {
 
 
     @Mock
@@ -45,15 +45,15 @@ class DoctorTorbeControllerMockitoTest {
     private PatientService patientService;
 
     @InjectMocks
-    private DoctorTorbeController doctorTorbeController;
+    private DoctorWasilewskaController doctorWasilewskaController;
 
 
     @Test
     @DisplayName("That method should return correct view")
-    public void doctorTorbePageShouldReturnCorrectViewName() {
+    public void doctorWasilewskaPageShouldReturnCorrectViewName() {
         // given
         String patientEmail = "patient@example.com";
-        String doctorSurname = "Torbe";
+        String doctorSurname = "Wasilewska";
         Doctor expectedDoctor = EntityFixtures.someDoctor1();
 
         ExtendedModelMap model = new ExtendedModelMap();
@@ -62,10 +62,10 @@ class DoctorTorbeControllerMockitoTest {
         Mockito.when(doctorService.findDoctorBySurname(doctorSurname)).thenReturn(expectedDoctor);
 
         // when
-        String resultView = doctorTorbeController.medicalAppointmentPageToDoctorTorbe(model);
+        String resultView = doctorWasilewskaController.medicalAppointmentPageToDoctorWasilewska(model);
 
         // then
-        Assertions.assertThat("doctor_torbe_portal").isEqualTo(resultView);
+        Assertions.assertThat("doctor_wasilewska_portal").isEqualTo(resultView);
     }
 
 
@@ -86,9 +86,9 @@ class DoctorTorbeControllerMockitoTest {
 
     @Test
     @DisplayName("That method should return correct doctor email")
-    void getDoctorTorbeEmailShouldReturnCorrectDoctorEmail() {
+    void getDoctorWasilewskaEmailShouldReturnCorrectDoctorEmail() {
         // given
-        String doctorSurname = "Torbe";
+        String doctorSurname = "Wasilewska";
         String expectedEmail = "edyta.kowalska@clinic.pl";
         Doctor expectedDoctor = EntityFixtures.someDoctor1();
 
@@ -102,8 +102,8 @@ class DoctorTorbeControllerMockitoTest {
     }
 
     @Test
-    @DisplayName("That method should return correct dates for Doctor Torbe")
-    void getAvailableDatesForDoctorTorbeShouldReturnDates() {
+    @DisplayName("That method should return correct dates for Doctor Wasilewska")
+    void getAvailableDatesForDoctorWasilewskaShouldReturnDates() {
         // given
         String doctorEmail = "test@example.com";
 
