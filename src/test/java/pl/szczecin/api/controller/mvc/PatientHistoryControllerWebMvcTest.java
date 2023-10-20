@@ -1,4 +1,4 @@
-package pl.szczecin.api.controller.integration;
+package pl.szczecin.api.controller.mvc;
 
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
@@ -9,19 +9,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import pl.szczecin.api.controller.DoctorHistoryController;
 import pl.szczecin.api.controller.PatientHistoryController;
-import pl.szczecin.api.dto.MedicalAppointmentRequestDTO;
 import pl.szczecin.api.dto.PatientHistoryDTO;
 import pl.szczecin.api.dto.mapper.PatientMapper;
 import pl.szczecin.business.PatientService;
-import pl.szczecin.domain.MedicalAppointment;
-import pl.szczecin.domain.MedicalAppointmentDate;
-import pl.szczecin.domain.MedicalAppointmentRequest;
 import pl.szczecin.domain.PatientHistory;
 import pl.szczecin.util.EntityFixtures;
-
-import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
