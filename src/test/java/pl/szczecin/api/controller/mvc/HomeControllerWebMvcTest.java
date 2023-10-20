@@ -1,4 +1,4 @@
-package pl.szczecin.api.controller.integration;
+package pl.szczecin.api.controller.mvc;
 
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.DisplayName;

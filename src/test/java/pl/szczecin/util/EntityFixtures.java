@@ -1,15 +1,17 @@
 package pl.szczecin.util;
 
 import lombok.experimental.UtilityClass;
-import pl.szczecin.api.dto.DoctorDTO;
-import pl.szczecin.api.dto.MedicalAppointmentDTO;
-import pl.szczecin.api.dto.MedicalAppointmentDateDTO;
-import pl.szczecin.api.dto.PatientHistoryDTO;
+import pl.szczecin.api.dto.*;
 import pl.szczecin.domain.*;
+import pl.szczecin.infrastructure.database.entity.AddressEntity;
+import pl.szczecin.infrastructure.database.entity.DoctorEntity;
+import pl.szczecin.infrastructure.database.entity.PatientEntity;
+import pl.szczecin.infrastructure.security.UserEntity;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Optional;
 
 @UtilityClass
 public class EntityFixtures {
@@ -63,12 +65,43 @@ public class EntityFixtures {
                 .build();
     }
 
+    public static Optional<DoctorEntity> someDoctorEntity1() {
+        return Optional.of(DoctorEntity.builder()
+                .doctorId(3)
+                .name("Danuta")
+                .surname("Wasilewska")
+                .email("danuta_wasilewska@clinic.pl")
+                .build());
+    }
+
     public static Patient somePatient1() {
         return Patient.builder()
                 .name("Janina")
                 .surname("Pacjentowska")
                 .phone("+48 372 54 56")
                 .email("janina.pacjentowska@clinic.pl")
+                .build();
+    }
+
+    public static PatientEntity somePatientEntity1() {
+
+        return PatientEntity.builder()
+                .name("Janina")
+                .surname("Pacjentowska")
+                .phone("+48 372 54 56")
+                .email("janina.pacjentowska@clinic.pl")
+                .address(AddressEntity.builder()
+                        .country("Poland")
+                        .city("Szczecin")
+                        .postalCode("50-200")
+                        .address("ul. Jana Matejki 13 ")
+                        .build())
+                .userEntity(UserEntity.builder()
+                        .userName("Janina")
+                        .email("janina.pacjentowska@clinic.pl")
+                        .password("test")
+                        .active(true)
+                        .build())
                 .build();
     }
 
