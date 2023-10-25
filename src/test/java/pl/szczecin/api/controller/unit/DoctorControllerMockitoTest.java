@@ -1,6 +1,7 @@
 package pl.szczecin.api.controller.unit;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +22,8 @@ import pl.szczecin.util.EntityFixtures;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 
 @ExtendWith(MockitoExtension.class)
 class DoctorControllerMockitoTest {
@@ -36,6 +39,17 @@ class DoctorControllerMockitoTest {
 
     @InjectMocks
     private DoctorController doctorController;
+
+
+    //TODO sprawdz czy nie mozna zastosowac tego do innych testow
+    @BeforeEach
+    public void setUp() {
+        System.out.println("checking for nulls");
+        assertNotNull(doctorService);
+        assertNotNull(medicalAppointmentService);
+        assertNotNull(medicalAppointmentMapper);
+        assertNotNull(medicalAppointmentDateService);
+    }
 
 
     @Test

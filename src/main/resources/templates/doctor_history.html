@@ -58,14 +58,14 @@
                 <tbody>
                     <tr th:each="medicalAppointmentDTO : ${medicalAppointmentDTOs}">
                         <td th:text="${medicalAppointmentDTO.dateTime}"></td>
-                        <td th:text="${medicalAppointmentDTO.patient.name}"></td>
-                        <td th:text="${medicalAppointmentDTO.patient.surname}"></td>
+                        <td th:text="${medicalAppointmentDTO.patientName}"></td>
+                        <td th:text="${medicalAppointmentDTO.patientSurname}"></td>
                         <td th:text="${medicalAppointmentDTO.doctorNote}"></td>
                         <td>
                             <form th:action="@{/doctor/history}" method="POST">
                                 <input type="hidden" name="appointmentDate" th:value="${medicalAppointmentDTO.dateTime}">
-                                <input type="hidden" name="patientName" th:value="${medicalAppointmentDTO.patient.name}">
-                                <input type="hidden" name="patientSurname" th:value="${medicalAppointmentDTO.patient.surname}">
+                                <input type="hidden" name="patientName" th:value="${medicalAppointmentDTO.patientName}">
+                                <input type="hidden" name="patientSurname" th:value="${medicalAppointmentDTO.patientSurname}">
                                 <textarea name="doctorNote" placeholder="Enter doctor note"></textarea>
                                 <button type="submit" class="btn btn-success">ADD NOTE</button>
                             </form>
