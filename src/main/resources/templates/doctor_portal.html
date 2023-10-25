@@ -54,8 +54,8 @@
                 <tbody>
                 <tr th:each="medicalAppointmentDTO : ${medicalAppointmentDTOs}">
                     <td th:text="${medicalAppointmentDTO.dateTime}"></td>
-                    <td th:text="${medicalAppointmentDTO.patient.name}"></td>
-                    <td th:text="${medicalAppointmentDTO.patient.surname}"></td>
+                    <td th:text="${medicalAppointmentDTO.patientName}"></td>
+                    <td th:text="${medicalAppointmentDTO.patientSurname}"></td>
                 </tr>
                 </tbody>
             </table>

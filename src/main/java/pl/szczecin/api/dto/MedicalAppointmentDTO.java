@@ -14,8 +14,8 @@ import pl.szczecin.domain.Patient;
 public class MedicalAppointmentDTO {
 
     private String doctorNote;
-    private Patient patient;
-    private MedicalAppointmentDate medicalAppointmentDate;
+    private String patientName;
+    private String patientSurname;
 
     // data do wyswietlenia Terminarza dla lekarza
     private String dateTime;

@@ -25,6 +25,9 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+      # do wyłaczenia
+  security:
+    enabled: false
 
 logging:
   level:

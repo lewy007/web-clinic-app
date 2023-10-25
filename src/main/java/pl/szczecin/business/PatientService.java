@@ -16,7 +16,6 @@ import pl.szczecin.domain.PatientHistory;
 import pl.szczecin.domain.exception.NotFoundException;
 import pl.szczecin.infrastructure.security.UserEntity;
 
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -32,7 +31,9 @@ public class PatientService {
 
         Patient newPatient = buildPatient(medicalAppointmentRequest);
 
-        return patientDAO.savePatient(newPatient);
+        Patient savedPatient = patientDAO.savePatient(newPatient);
+        log.info("New patient: [{}]", savedPatient);
+        return savedPatient;
     }
 
     @Transactional
@@ -45,12 +46,16 @@ public class PatientService {
     }
 
     public PatientHistory findPatientHistoryByEmail(String patientEmail) {
-        return patientDAO.findPatientHistoryByEmail(patientEmail);
+        PatientHistory patientHistoryByEmail = patientDAO.findPatientHistoryByEmail(patientEmail);
+        log.info("Patient history by email: [{}]", patientHistoryByEmail.getPatientEmail());
+        return patientHistoryByEmail;
 
     }
 
     public PatientHistory findCurrentPatientAppointmentsByEmail(String patientEmail) {
-        return patientDAO.findCurrentPatientAppointmentsByEmail(patientEmail);
+        PatientHistory currentPatientAppointmentsByEmail = patientDAO.findCurrentPatientAppointmentsByEmail(patientEmail);
+        log.info("Patient current appointments by email: [{}]", currentPatientAppointmentsByEmail.getPatientEmail());
+        return currentPatientAppointmentsByEmail;
     }
 
 
@@ -85,12 +90,4 @@ public class PatientService {
                 .build();
     }
 
-    // TODO nie wykorzystywana metoda - do weryfikacji
-    @Transactional
-    public List<Patient> findAvailablePatients() {
-        List<Patient> availablePatients = patientDAO.findAvailablePatients();
-        log.info("Available patients: [{}]", availablePatients.size());
-        return availablePatients;
-
-    }
 }
