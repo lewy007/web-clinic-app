@@ -22,6 +22,7 @@ import java.util.List;
 public class DoctorHistoryRestController {
 
     public static final String API_DOCTOR_HISTORY = "/api/doctor/history";
+    public static final String NOTE = "/note";
 
     private final MedicalAppointmentService medicalAppointmentService;
     private final MedicalAppointmentMapper medicalAppointmentMapper;
@@ -31,9 +32,10 @@ public class DoctorHistoryRestController {
 
     @GetMapping()
     @Operation(
-            summary = "Get Available Medical Appointment History For Selected Doctor",
-            description = "This endpoint returns medical appointment history for selected doctor."
-            //  tags = { "Doctors" } // Możesz dodawać tagi, aby grupować end-pointy
+            summary = "Get Medical Appointment History For Selected Doctor",
+            description = "This endpoint returns medical appointment history (include future appointments)" +
+                    "for selected doctor.",
+            tags = {"Doctors"} // TAG do grupowania end-pointów
     )
     public List<MedicalAppointmentDTO> doctorMedicalAppointmentHistory(
             @Parameter(
@@ -66,32 +68,41 @@ public class DoctorHistoryRestController {
     }
 
 
-    @PostMapping()
+    // Dodawanie danych pacjenta jest dodatkowe, ponieważ na daną godzinę jeden lekarz może przyjąć
+    // tylko jednego pacjenta, ale dla pewności dodałem parametry pacjenta
+
+    @PostMapping(value = NOTE)
     @Operation(
             summary = "Add Note to Appointment",
             description = "Doctor can add note to appointment after patient visit." +
-                    "This endpoint returns............."
-            //  tags = { "Doctors" } // Możesz dodawać tagi, aby grupować end-pointy
+                    "This endpoint returns medical appointment with added note.",
+            tags = {"Doctors"} // TAG do grupowania end-pointów
     )
     public MedicalAppointmentDTO addNoteToAppointment(
             @Parameter(
                     description = "Please use a correct format date according to the example." +
                             " Available dates can be checked using the GET /api/doctor/history",
                     example = "2024-10-23 09:30:00")
-            @RequestParam(value = "appointment date")
+            @RequestParam(value = "appointmentDate")
             String appointmentDate,
             @Parameter(
                     description = "Please use a correct patient name according to the example. " +
                             "Available names can be checked using the GET /api/doctor/history",
                     example = "Agnieszka")
-            @RequestParam(value = "patient name")
+            @RequestParam(value = "patientName")
             String patientName,
             @Parameter(
                     description = "Please use a correct patient surname according to the example. " +
                             "Available surnames can be checked using the GET /api/doctor/history",
                     example = "Nowak")
-            @RequestParam(value = "patient surname")
+            @RequestParam(value = "patientSurname")
             String patientSurname,
+            @Parameter(
+                    description = "Please use a correct doctor email according to the example. " +
+                            "Available doctors can be checked using the GET /api/patient",
+                    example = "name_surname@clinic.pl")
+            @RequestParam(value = "doctorEmail")
+            String doctorEmail,
             @Parameter(
                     description = "Please add a note for patient after visit.")
             @RequestParam(value = "doctor note")
@@ -99,7 +110,7 @@ public class DoctorHistoryRestController {
     ) {
 
         MedicalAppointmentRequest request
-                = getRequest(appointmentDate, patientName, patientSurname, doctorNote);
+                = getRequest(appointmentDate, patientName, patientSurname, doctorEmail, doctorNote);
 
         // zwrócony medicalAppoinmnet wykorzystywany w testach do porównania
         MedicalAppointment medicalAppointment = medicalAppointmentService.addNoteToMedicalAppointment(request);
@@ -109,12 +120,18 @@ public class DoctorHistoryRestController {
 
 
     // tworzymy request z parametrow
-    private MedicalAppointmentRequest getRequest(String appointmentDate, String patientName, String patientSurname, String doctorNote) {
+    private MedicalAppointmentRequest getRequest(
+            String appointmentDate,
+            String patientName,
+            String patientSurname,
+            String doctorEmail,
+            String doctorNote) {
         return medicalAppointmentRequestMapper.map(
                 MedicalAppointmentRequestDTO.builder()
                         .medicalAppointmentDate(appointmentDate)
                         .patientName(patientName)
                         .patientSurname(patientSurname)
+                        .doctorEmail(doctorEmail)
                         .doctorNote(doctorNote)
                         .build()
         );

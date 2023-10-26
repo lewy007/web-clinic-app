@@ -37,7 +37,8 @@ public class DoctorTorbeRestController {
     @Operation(
             summary = "Get Available Medical Appointment Dates For Doctor Torbe",
             description = "This endpoint returns a list of available dates for doctor Torbe." +
-                    "The returned results can be used for the POST method: POST /api/doctor/1 "
+                    "The returned results can be used for the POST method: POST /api/doctor/1 ",
+            tags = {"Patients"} // TAG do grupowania endpointów
     )
     public List<String> availableMedicalAppointmentDatesForDoctorTorbe() {
         return getAvailableDates();
@@ -63,14 +64,15 @@ public class DoctorTorbeRestController {
     @PostMapping(value = APPOINTMENT)
     @Operation(
             summary = "Make Appointment For Doctor Torbe",
-            description = "Patient makes appointment to doctor Torbe. " +
-                    "This endpoint returns appointment date, patient name and surname."
+            description = "Patient can make appointment to doctor Torbe. " +
+                    "This endpoint returns appointment date, patient name and surname.",
+            tags = {"Patients"}
     )
     public MedicalAppointmentDTO makeAppointment(
             @Parameter(
                     description = "Please use a correct patient email according to the example",
                     example = "name@example.com")
-            @RequestParam(value = "patient email")
+            @RequestParam(value = "patientEmail")
             String patientEmail,
             @Parameter(
                     description = "Please use a correct format date according to the example." +

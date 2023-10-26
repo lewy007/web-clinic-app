@@ -67,12 +67,16 @@ public class DoctorHistoryController {
             Model model
     ) {
 
+        // email zalogowanego doctora
+        String loggedInDoctorEmail = doctorService.getLoggedInDoctorEmail();
+
         // tworzymy request z parametrow
         MedicalAppointmentRequest request = medicalAppointmentRequestMapper.map(
                 MedicalAppointmentRequestDTO.builder()
                         .medicalAppointmentDate(appointmentDate)
                         .patientName(patientName)
                         .patientSurname(patientSurname)
+                        .doctorEmail(loggedInDoctorEmail)
                         .doctorNote(doctorNote)
                         .build()
         );

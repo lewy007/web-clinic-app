@@ -33,16 +33,18 @@ public interface MedicalAppointmentJpaRepository extends JpaRepository<MedicalAp
     );
 
 
-
     @Query("""
             SELECT ma FROM MedicalAppointmentEntity ma 
             WHERE ma.medicalAppointmentDateEntity.dateTime = :medicalAppointmentDate
             AND ma.patient.name = :patientName
             AND ma.patient.surname = :patientSurname
+            AND ma.medicalAppointmentDateEntity.doctor.email = :doctorEmail
             """)
-    MedicalAppointmentEntity findByDateAndPatientNameAndSurname(
+    MedicalAppointmentEntity findByDataFromRequest(
             @Param("medicalAppointmentDate") OffsetDateTime medicalAppointmentDate,
             @Param("patientName") String patientName,
-            @Param("patientSurname") String patientSurname);
+            @Param("patientSurname") String patientSurname,
+            @Param("doctorEmail") String doctorEmail
+    );
 
 }

@@ -60,7 +60,7 @@ class PatientCancelControllerWebMvcTest {
                 .thenReturn(expectedPatientHistoryDTO);
 
         //then
-        mockMvc.perform(get(PatientCancelController.PATIENT_CANCELLED))
+        mockMvc.perform(get(PatientCancelController.PATIENT_CANCEL))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("patientHistoryDTO"))
                 .andExpect(model().attributeExists("loggedInPatientEmail"))
@@ -89,7 +89,7 @@ class PatientCancelControllerWebMvcTest {
                 .thenReturn(expectedMedicalAppointment);
 
         // when, then
-        mockMvc.perform(post(PatientCancelController.PATIENT_CANCELLED)
+        mockMvc.perform(post(PatientCancelController.PATIENT_CANCEL)
                         .param("patientEmail", patientEmail)
                         .param("appointmentDate", appointmentDate)
                         .param("doctorSurname", doctorSurname)
