@@ -26,8 +26,8 @@ public class PatientRestController {
     @GetMapping()
     @Operation(
             summary = "Get Available Doctors",
-            description = "This endpoint returns a list of available doctors."
-          //  tags = { "Doctors" } // Możesz dodawać tagi, aby grupować end-pointy
+            description = "This endpoint returns a list of available doctors.",
+            tags = {"Patients"} // TAG do grupowania endpointów
     )
     public DoctorsDTO availableDoctors() {
         return getAvailableDoctorsDTO();

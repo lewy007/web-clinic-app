@@ -73,21 +73,23 @@ public class MedicalAppointmentRepository implements MedicalAppointmentDAO {
         OffsetDateTime medicalAppointmentDate = request.getMedicalAppointmentDate();
         String patientName = request.getPatientName();
         String patientSurname = request.getPatientSurname();
+        String doctorEmail = request.getDoctorEmail();
         String doctorNote = request.getDoctorNote();
 
         // Sprawdzenie, czy rekord istnieje
         MedicalAppointmentEntity requestMedicalAppointment =
-                medicalAppointmentJpaRepository.findByDateAndPatientNameAndSurname(
+                medicalAppointmentJpaRepository.findByDataFromRequest(
                         medicalAppointmentDate,
                         patientName,
-                        patientSurname);
+                        patientSurname,
+                        doctorEmail);
 
         // Jeśli rekord istnieje, aktulizacja notatki lekarza
         if (requestMedicalAppointment != null) {
             requestMedicalAppointment.setDoctorNote(doctorNote);
 
             // Zapisz zaktualizowany rekord
-            MedicalAppointmentEntity saved = medicalAppointmentJpaRepository.save(requestMedicalAppointment);
+            MedicalAppointmentEntity saved = medicalAppointmentJpaRepository.saveAndFlush(requestMedicalAppointment);
 
             return medicalAppointmentEntityMapper.mapFromEntity(saved);
 

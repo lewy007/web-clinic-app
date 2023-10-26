@@ -136,21 +136,27 @@ public class EntityFixtures {
     public static MedicalAppointmentDTO someMedicalAppointmentDTO1() {
         return MedicalAppointmentDTO.builder()
                 .doctorNote("some note 1")
-                .medicalAppointmentDate(someMedicalAppointmentDate1())
+                .dateTime("2023-11-16 10:00:00")
+                .patientName("Jan")
+                .patientSurname("Kowalski")
                 .build();
     }
 
     public static MedicalAppointmentDTO someMedicalAppointmentDTO2() {
         return MedicalAppointmentDTO.builder()
                 .doctorNote("some note 2")
-                .medicalAppointmentDate(someMedicalAppointmentDate2())
+                .dateTime("2023-11-17 10:00:00")
+                .patientName("Jan")
+                .patientSurname("Kowalski")
                 .build();
     }
 
     public static MedicalAppointmentDTO someMedicalAppointmentDTO3() {
         return MedicalAppointmentDTO.builder()
                 .doctorNote("some note 3")
-                .medicalAppointmentDate(someMedicalAppointmentDate3())
+                .dateTime("2023-11-18 10:00:00")
+                .patientName("Jan")
+                .patientSurname("Kowalski")
                 .build();
     }
 

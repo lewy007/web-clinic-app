@@ -29,13 +29,14 @@ public class DoctorRestController {
 
     @GetMapping()
     @Operation(
-            summary = "Get Future Medical Appointments For Doctor",
-            description = "This endpoint returns future appointment dates, patient names and surnames for selected doctor."
-            //  tags = { "Doctors" } // Możesz dodawać tagi, aby grupować end-pointy
+            summary = "Get Future Medical Appointments For Selected Doctor",
+            description = "This endpoint returns future appointment dates," +
+                    " patient names and surnames for selected doctor.",
+            tags = {"Doctors"} // TAG do grupowania end-pointów
     )
     public List<MedicalAppointmentDTO> futureMedicalAppointmentsForDoctor(
             @Parameter(description = "Please use a correct doctor email", example = "name_surname@clinic.pl")
-            @RequestParam(value = "doctor email")
+            @RequestParam(value = "doctorEmail")
             String doctorEmail
     ) {
 

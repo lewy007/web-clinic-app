@@ -21,7 +21,7 @@ import pl.szczecin.domain.PatientHistory;
 @AllArgsConstructor
 public class PatientCancelController {
 
-    public static final String PATIENT_CANCELLED = "/patient/cancel";
+    public static final String PATIENT_CANCEL = "/patient/cancel";
 
     private final MedicalAppointmentService medicalAppointmentService;
     private final MedicalAppointmentRequestMapper medicalAppointmentRequestMapper;
@@ -29,7 +29,7 @@ public class PatientCancelController {
     private final PatientMapper patientMapper;
     private final DoctorService doctorService;
 
-    @GetMapping(value = PATIENT_CANCELLED)
+    @GetMapping(value = PATIENT_CANCEL)
     public String patientCancelAppointmentPage(
             Model model
     ) {
@@ -46,7 +46,7 @@ public class PatientCancelController {
         return "patient_cancel";
     }
 
-    @PostMapping(value = PATIENT_CANCELLED)
+    @PostMapping(value = PATIENT_CANCEL)
     public String cancelAppointment(
             @RequestParam(value = "patientEmail", required = false) String patientEmail,
             @RequestParam("appointmentDate") String appointmentDate,

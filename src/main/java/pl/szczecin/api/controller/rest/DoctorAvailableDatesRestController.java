@@ -26,9 +26,9 @@ public class DoctorAvailableDatesRestController {
 
     @GetMapping()
     @Operation(
-            summary = "Get Available Medical Appointments For Doctor",
-            description = "This endpoint returns available appointment dates for selected doctor."
-            //  tags = { "Doctors" } // Możesz dodawać tagi, aby grupować end-pointy
+            summary = "Get Available Medical Appointment Dates For Selected Doctor",
+            description = "This endpoint returns available appointment dates for selected doctor.",
+            tags = {"Doctors"} // TAG do grupowania end-pointów
     )
     public List<String> availableDatesForDoctor(
             @Parameter(
