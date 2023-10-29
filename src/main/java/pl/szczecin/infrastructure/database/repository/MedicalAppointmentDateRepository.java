@@ -50,6 +50,13 @@ public class MedicalAppointmentDateRepository implements MedicalAppointmentDateD
                 .toList();
     }
 
+    @Override
+    public List<MedicalAppointmentDate> findAllHistoryDatesByDoctorEmail(String doctorEmail) {
+        return medicalAppointmentDateJpaRepository.findAllHistoryDatesByDoctorEmail(doctorEmail).stream()
+                .map(medicalAppointmentDateEntityMapper::mapFromEntity)
+                .toList();
+    }
+
 
     @Override
     public List<MedicalAppointmentDate> findMedicalAppointmentDateByDate(
@@ -61,8 +68,8 @@ public class MedicalAppointmentDateRepository implements MedicalAppointmentDateD
     @Override
     public Optional<MedicalAppointmentDate> findMedicalAppointmentDateByDateAndDoctor(
             OffsetDateTime medicalAppointmentDate,
-            String doctorSurname) {
-        return medicalAppointmentDateJpaRepository.findByDateTimeAndDoctor(medicalAppointmentDate, doctorSurname)
+            String doctorEmail) {
+        return medicalAppointmentDateJpaRepository.findByDateTimeAndDoctor(medicalAppointmentDate, doctorEmail)
                 .map(medicalAppointmentDateEntityMapper::mapFromEntity);
     }
 

@@ -16,5 +16,7 @@ public interface PatientDAO {
 
     PatientHistory findPatientHistoryByEmail(String patientEmail);
 
-    PatientHistory findCurrentPatientAppointmentsByEmail(String patientEmail);
+    PatientHistory findPatientScheduleByEmail(String patientEmail);
+
+    PatientHistory findPatientAppointmentsToCancelByEmail(String patientEmail);
 }

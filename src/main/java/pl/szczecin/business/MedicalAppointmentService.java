@@ -39,7 +39,7 @@ public class MedicalAppointmentService {
         MedicalAppointmentDate medicalAppointmentDate = medicalAppointmentDateService
                 .findMedicalAppointmentDateByDateAndDoctor(
                         request.getMedicalAppointmentDate(),
-                        doctor.getSurname());
+                        doctor.getEmail());
 
         // dodajemy do MedicalAppointmentDate Pole Doctor
         MedicalAppointmentDate medicalAppointmentDateToSave = medicalAppointmentDate.withDoctor(doctor);
@@ -59,7 +59,7 @@ public class MedicalAppointmentService {
                 medicalAppointmentDateService
                         .findMedicalAppointmentDateByDateAndDoctor(
                                 request.getMedicalAppointmentDate(),
-                                request.getDoctorSurname())
+                                request.getDoctorEmail())
                         .getMedicalAppointmentDateId();
 
 

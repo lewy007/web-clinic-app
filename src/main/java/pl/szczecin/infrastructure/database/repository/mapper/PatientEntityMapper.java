@@ -25,6 +25,7 @@ public interface PatientEntityMapper {
                                 .dateTime(request.getMedicalAppointmentDateEntity().getDateTime())
                                 .doctorName(request.getMedicalAppointmentDateEntity().getDoctor().getName())
                                 .doctorSurname(request.getMedicalAppointmentDateEntity().getDoctor().getSurname())
+                                .doctorEmail(request.getMedicalAppointmentDateEntity().getDoctor().getEmail())
                                 .doctorNote(request.getDoctorNote())
                                 .build())
                         .toList())

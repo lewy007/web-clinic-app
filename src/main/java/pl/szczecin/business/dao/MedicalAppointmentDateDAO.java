@@ -16,11 +16,13 @@ public interface MedicalAppointmentDateDAO {
 
     List<MedicalAppointmentDate> findAllFutureDatesByDoctorEmail(String doctorEmail);
 
+    List<MedicalAppointmentDate> findAllHistoryDatesByDoctorEmail(String doctorEmail);
+
     List<MedicalAppointmentDate> findMedicalAppointmentDateByDate(OffsetDateTime medicalAppointmentDate);
 
     Optional<MedicalAppointmentDate> findMedicalAppointmentDateByDateAndDoctor(
             OffsetDateTime medicalAppointmentDate,
-            String doctorSurname);
+            String doctorEmail);
 
     MedicalAppointmentDate saveMedicalAppointmentDate(MedicalAppointmentDate medicalAppointmentDate);
 }

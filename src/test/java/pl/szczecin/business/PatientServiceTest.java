@@ -79,10 +79,10 @@ class PatientServiceTest {
         //given
         String patientEmail = "janusz.pacjent@clinic.pl";
         PatientHistory expectedPatientHistory = EntityFixtures.somePatientHistory();
-        Mockito.when(patientDAO.findCurrentPatientAppointmentsByEmail(patientEmail)).thenReturn(expectedPatientHistory);
+        Mockito.when(patientDAO.findPatientScheduleByEmail(patientEmail)).thenReturn(expectedPatientHistory);
 
         //when
-        PatientHistory resultPatientHistory = patientDAO.findCurrentPatientAppointmentsByEmail(patientEmail);
+        PatientHistory resultPatientHistory = patientDAO.findPatientScheduleByEmail(patientEmail);
 
         //then
         Assertions.assertThat(resultPatientHistory).isEqualTo(expectedPatientHistory);

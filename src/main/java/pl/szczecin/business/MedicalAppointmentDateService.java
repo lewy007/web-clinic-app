@@ -30,11 +30,11 @@ public class MedicalAppointmentDateService {
 
     public MedicalAppointmentDate findMedicalAppointmentDateByDateAndDoctor(
             OffsetDateTime medicalAppointmentDate,
-            String doctorSurname) {
+            String doctorEmail) {
         Optional<MedicalAppointmentDate> date =
                 medicalAppointmentDateDAO.findMedicalAppointmentDateByDateAndDoctor(
                         medicalAppointmentDate,
-                        doctorSurname);
+                        doctorEmail);
         if (date.isEmpty()) {
             throw new NotFoundException("Could not find medicalAppointmentDate by date and Doctor: [%s]".formatted(date));
         }
@@ -50,11 +50,11 @@ public class MedicalAppointmentDateService {
     }
 
 
-    public List<MedicalAppointmentDate> getAllDatesByDoctorEmail(String doctorEmail) {
-        List<MedicalAppointmentDate> allDatesByDoctorEmail =
-                medicalAppointmentDateDAO.findAllDatesByDoctorEmail(doctorEmail);
-        log.info("All dates for Doctor: [{}]", allDatesByDoctorEmail.size());
-        return allDatesByDoctorEmail;
+    public List<MedicalAppointmentDate> getAllHistoryDatesByDoctorEmail(String doctorEmail) {
+        List<MedicalAppointmentDate> allFutureDatesByDoctorEmail =
+                medicalAppointmentDateDAO.findAllHistoryDatesByDoctorEmail(doctorEmail);
+        log.info("All future dates for Doctor: [{}]", allFutureDatesByDoctorEmail.size());
+        return allFutureDatesByDoctorEmail;
     }
 
 
@@ -65,7 +65,13 @@ public class MedicalAppointmentDateService {
         return allFutureDatesByDoctorEmail;
     }
 
-
+    // ta metoda zluzyla do wyciagania wszytskich dat (przeszlych i przyszlych) do History
+    //    public List<MedicalAppointmentDate> getAllDatesByDoctorEmail(String doctorEmail) {
+    //        List<MedicalAppointmentDate> allDatesByDoctorEmail =
+    //                medicalAppointmentDateDAO.findAllDatesByDoctorEmail(doctorEmail);
+    //        log.info("All dates for Doctor: [{}]", allDatesByDoctorEmail.size());
+    //        return allDatesByDoctorEmail;
+    //    }
 
 
     // TODO nie uzywane metody - do weryfikacji
@@ -78,7 +84,7 @@ public class MedicalAppointmentDateService {
 
     public List<MedicalAppointmentDate> findMedicalAppointmentDateByDate(
             OffsetDateTime medicalAppointmentDate) {
-        List <MedicalAppointmentDate> date =
+        List<MedicalAppointmentDate> date =
                 medicalAppointmentDateDAO.findMedicalAppointmentDateByDate(medicalAppointmentDate);
         log.info("Available medicalAppointmentDates: [{}]", date.size());
         // lista z takimi samymi datami dla roznych lekarzy, wiec nas interesuje data

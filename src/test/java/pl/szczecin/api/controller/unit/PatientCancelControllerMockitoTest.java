@@ -86,12 +86,12 @@ class PatientCancelControllerMockitoTest {
         String patientEmail = "patient.test@clinic.pl";
         PatientHistory expectedPatientHistory = EntityFixtures.somePatientHistory();
 
-        Mockito.when(patientService.findCurrentPatientAppointmentsByEmail(patientEmail))
+        Mockito.when(patientService.findPatientScheduleByEmail(patientEmail))
                 .thenReturn(expectedPatientHistory);
 
         // when
         PatientHistory resultPatientHistory = patientService
-                .findCurrentPatientAppointmentsByEmail(patientEmail);
+                .findPatientScheduleByEmail(patientEmail);
 
         // then
         Assertions.assertThat(resultPatientHistory).isEqualTo(expectedPatientHistory);

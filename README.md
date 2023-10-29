@@ -17,6 +17,7 @@
 * Paginacja wyswietlanych wynikow
 * rejestracja pacjenta bez konta (zakładanie konta)
 * reset hasła
+* Actuator metric (do mierzenia ilosci zapytan do serwera) i Actuator health (czy z apka ok)
 
 
 ## REST API

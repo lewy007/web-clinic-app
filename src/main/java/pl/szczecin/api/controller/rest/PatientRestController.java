@@ -5,10 +5,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.szczecin.api.dto.DoctorDTO;
-import pl.szczecin.api.dto.DoctorsDTO;
-import pl.szczecin.api.dto.mapper.DoctorMapper;
-import pl.szczecin.business.DoctorService;
+import pl.szczecin.api.dto.PatientDTO;
+import pl.szczecin.api.dto.PatientsDTO;
+import pl.szczecin.api.dto.mapper.PatientMapper;
+import pl.szczecin.business.PatientService;
 
 import java.util.List;
 
@@ -17,31 +17,31 @@ import java.util.List;
 @RequestMapping(PatientRestController.PATIENT_API)
 public class PatientRestController {
 
-    public static final String PATIENT_API = "/api/patient";
+    public static final String PATIENT_API = "/api/patients";
 
-    private final DoctorService doctorService;
-    private final DoctorMapper doctorMapper;
+    private final PatientService patientService;
+    private final PatientMapper patientMapper;
 
 
     @GetMapping()
     @Operation(
-            summary = "Get Available Doctors",
-            description = "This endpoint returns a list of available doctors.",
+            summary = "Get Available Patients",
+            description = "This endpoint returns a list of available patients.",
             tags = {"Patients"} // TAG do grupowania endpointów
     )
-    public DoctorsDTO availableDoctors() {
-        return getAvailableDoctorsDTO();
+    public PatientsDTO availablePatients() {
+        return getAvailablePatientsDTO();
     }
 
 
-    private DoctorsDTO getAvailableDoctorsDTO() {
-        return DoctorsDTO.builder()
-                .doctorsDTO(getDoctorDTOList())
+    private PatientsDTO getAvailablePatientsDTO() {
+        return PatientsDTO.builder()
+                .patientsDTO(getPatientDTOList())
                 .build();
     }
 
-    private List<DoctorDTO> getDoctorDTOList() {
-        return doctorService.findAvailableDoctors().stream()
-                .map(doctorMapper::map).toList();
+    private List<PatientDTO> getPatientDTOList() {
+        return patientService.findAvailablePatients().stream()
+                .map(patientMapper::map).toList();
     }
 }
