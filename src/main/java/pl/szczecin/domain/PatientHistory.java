@@ -26,6 +26,9 @@ public class PatientHistory {
         OffsetDateTime dateTime;
         String doctorName;
         String doctorSurname;
+
+        // dopisałem ale nie działa
+        String doctorEmail;
     }
 
 }

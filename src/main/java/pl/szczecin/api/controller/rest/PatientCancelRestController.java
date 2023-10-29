@@ -21,7 +21,7 @@ import pl.szczecin.domain.PatientHistory;
 @RequestMapping(PatientCancelRestController.API_PATIENT_APPOINTMENTS)
 public class PatientCancelRestController {
 
-    public static final String API_PATIENT_APPOINTMENTS = "/api/patient/appointments";
+    public static final String API_PATIENT_APPOINTMENTS = "/api/patients/{patientEmail}/schedule";
     public static final String CANCEL = "/cancel";
 
     private final MedicalAppointmentService medicalAppointmentService;
@@ -32,7 +32,7 @@ public class PatientCancelRestController {
 
     @GetMapping()
     @Operation(
-            summary = "Get Future Medical Appointment For Selected Patient",
+            summary = "Get Medical Appointments Schedule For Selected Patient",
             description = "This endpoint returns future medical appointments (minimum 24h after now)" +
                     " for selected patient.",
             tags = {"Patients"} // TAG do grupowania endpointów
@@ -41,11 +41,10 @@ public class PatientCancelRestController {
             @Parameter(
                     description = "Please use a correct patient email according to the example",
                     example = "name@example.com")
-            @RequestParam(value = "patientEmail")
-            String patientEmail
+            @PathVariable String patientEmail
     ) {
 
-        PatientHistory patientHistory = patientService.findCurrentPatientAppointmentsByEmail(patientEmail);
+        PatientHistory patientHistory = patientService.findPatientScheduleByEmail(patientEmail);
 
         return patientMapper.map(patientHistory);
 
@@ -56,21 +55,19 @@ public class PatientCancelRestController {
             summary = "Cancel Appointment For Selected Patient and Doctor",
             description = "Selected patient can cancel appointment to selected doctor. " +
                     "This endpoint returns data about cancelled appointment. " +
-                    "NOTICE: Required fields can be checked using the GET /api/patient/appointments",
+                    "NOTICE: Required fields can be checked using the GET /api/patients/{patientEmail}/schedule",
             tags = {"Patients"}
     )
     public MedicalAppointmentDTO cancelAppointment(
             @Parameter(
                     description = "Please use a correct patient email according to the example",
                     example = "name@example.com")
-            @RequestParam(value = "patientEmail")
-            String patientEmail,
+            @PathVariable String patientEmail,
             @Parameter(
-                    description = "Please use a correct doctor surname according to the example",
-                    example = "Surname")
-            @RequestParam(value = "doctorSurname")
-            String doctorSurname,
-
+                    description = "Please use a correct doctor email according to the example",
+                    example = "name_surname@clinic.pl")
+            @RequestParam(value = "doctorEmail")
+            String doctorEmail,
             @Parameter(
                     description = "Please use a correct patient email according to the example",
                     example = "2024-10-23 09:30:00")
@@ -79,7 +76,7 @@ public class PatientCancelRestController {
     ) {
 
         // tworzymy request z parametrow
-        MedicalAppointmentRequest request = getMedicalAppointmentRequest(patientEmail, doctorSurname, appointmentDate);
+        MedicalAppointmentRequest request = getMedicalAppointmentRequest(patientEmail, doctorEmail, appointmentDate);
 
         // wartosc zwrocona do wykorzystania w testach
         MedicalAppointment medicalAppointment = medicalAppointmentService.cancelAppointment(request);
@@ -90,13 +87,13 @@ public class PatientCancelRestController {
 
     private MedicalAppointmentRequest getMedicalAppointmentRequest(
             String patientEmail,
-            String doctorSurname,
+            String doctorEmail,
             String appointmentDate) {
         return medicalAppointmentRequestMapper.map(
                 MedicalAppointmentRequestDTO.builder()
                         .patientEmail(patientEmail)
                         .medicalAppointmentDate(appointmentDate)
-                        .doctorSurname(doctorSurname)
+                        .doctorEmail(doctorEmail)
                         .build()
         );
     }

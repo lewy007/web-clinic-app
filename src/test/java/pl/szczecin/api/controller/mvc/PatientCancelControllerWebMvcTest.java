@@ -54,7 +54,7 @@ class PatientCancelControllerWebMvcTest {
         PatientHistoryDTO expectedPatientHistoryDTO = EntityFixtures.somePatientHistoryDTO();
 
         Mockito.when(patientService.getLoggedInPatientEmail()).thenReturn(patientEmail);
-        Mockito.when(patientService.findCurrentPatientAppointmentsByEmail(patientEmail))
+        Mockito.when(patientService.findPatientScheduleByEmail(patientEmail))
                 .thenReturn(expectedPatientHistory);
         Mockito.when(patientMapper.map(Mockito.any(PatientHistory.class)))
                 .thenReturn(expectedPatientHistoryDTO);

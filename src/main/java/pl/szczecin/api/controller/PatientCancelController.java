@@ -37,7 +37,7 @@ public class PatientCancelController {
         // email zalogowanego pacjenta
         String loggedInPatientEmail = patientService.getLoggedInPatientEmail();
 
-        PatientHistory patientHistory = patientService.findCurrentPatientAppointmentsByEmail(loggedInPatientEmail);
+        PatientHistory patientHistory = patientService.findPatientAppointmentsToCancelByEmail(loggedInPatientEmail);
         PatientHistoryDTO patientHistoryDTO = patientMapper.map(patientHistory);
 
         model.addAttribute("patientHistoryDTO", patientHistoryDTO);
@@ -50,7 +50,7 @@ public class PatientCancelController {
     public String cancelAppointment(
             @RequestParam(value = "patientEmail", required = false) String patientEmail,
             @RequestParam("appointmentDate") String appointmentDate,
-            @RequestParam("doctorSurname") String doctorSurname,
+            @RequestParam("doctorEmail") String doctorEmail,
             Model model
     ) {
 
@@ -59,13 +59,13 @@ public class PatientCancelController {
                 MedicalAppointmentRequestDTO.builder()
                         .patientEmail(patientEmail)
                         .medicalAppointmentDate(appointmentDate)
-                        .doctorSurname(doctorSurname)
+                        .doctorEmail(doctorEmail)
                         .build()
         );
 
+        var doctorByEmail = doctorService.findDoctorByEmail(doctorEmail);
         var patientByEmail = patientService.findPatientByEmail(patientEmail);
 
-        var doctorBySurname = doctorService.findDoctorBySurname(doctorSurname);
 
         // wartosc zwrocona do wykorzystania w testach
         MedicalAppointment medicalAppointment = medicalAppointmentService.cancelAppointment(request);
@@ -73,8 +73,8 @@ public class PatientCancelController {
         model.addAttribute("patientEmail", patientEmail);
         model.addAttribute("medicalAppointmentDate", appointmentDate);
 
-        model.addAttribute("doctorName", doctorBySurname.getName());
-        model.addAttribute("doctorSurname", doctorBySurname.getSurname());
+        model.addAttribute("doctorName", doctorByEmail.getName());
+        model.addAttribute("doctorSurname", doctorByEmail.getSurname());
         model.addAttribute("patientName", patientByEmail.getName());
         model.addAttribute("patientSurname", patientByEmail.getSurname());
 

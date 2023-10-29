@@ -4,8 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.szczecin.api.dto.MedicalAppointmentDateDTO;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentDateMapper;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping(DoctorAvailableDatesRestController.API_DOCTOR_AVAILABLE_DATES)
 public class DoctorAvailableDatesRestController {
 
-    public static final String API_DOCTOR_AVAILABLE_DATES = "/api/doctor/dates";
+    public static final String API_DOCTOR_AVAILABLE_DATES = "/api/doctors/{doctorEmail}/dates";
 
     private final MedicalAppointmentDateService medicalAppointmentDateService;
     private final MedicalAppointmentDateMapper medicalAppointmentDateMapper;
@@ -32,10 +32,10 @@ public class DoctorAvailableDatesRestController {
     )
     public List<String> availableDatesForDoctor(
             @Parameter(
-                    description = "Please use a correct doctor email according to the example",
+                    description = "Please use a correct doctor email according to the example. " +
+                            "Available emails can be checked using method GET /api/doctors",
                     example = "name_surname@clinic.pl")
-            @RequestParam(value = "doctorEmail")
-            String doctorEmail
+            @PathVariable String doctorEmail
     ) {
 
         return getAvailableDatesByDoctorEmail(doctorEmail);

@@ -61,6 +61,15 @@
                         <td th:text="${medicalAppointmentDTO.patientName}"></td>
                         <td th:text="${medicalAppointmentDTO.patientSurname}"></td>
                         <td th:text="${medicalAppointmentDTO.doctorNote}"></td>
+                        <td>
+                            <form th:action="@{/doctor/schedule}" method="POST">
+                                <input type="hidden" name="appointmentDate" th:value="${medicalAppointmentDTO.dateTime}">
+                                <input type="hidden" name="patientName" th:value="${medicalAppointmentDTO.patientName}">
+                                <input type="hidden" name="patientSurname" th:value="${medicalAppointmentDTO.patientSurname}">
+                                <textarea name="doctorNote" placeholder="Enter doctor note"></textarea>
+                                <button type="submit" class="btn btn-success">ADD NOTE</button>
+                            </form>
+                        </td>
                     </tr>
                 </tbody>
             </table>

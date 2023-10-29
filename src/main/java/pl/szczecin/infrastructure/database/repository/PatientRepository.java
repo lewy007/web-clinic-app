@@ -49,15 +49,51 @@ public class PatientRepository implements PatientDAO {
 
         PatientEntity entity = patientJpaRepository.findByEmail(patientEmail);
 
-        return patientEntityMapper.mapFromEntity(entity, patientEmail);
+        OffsetDateTime oneDayAgo = OffsetDateTime.now().minusDays(1);
+
+        // Poniższe zapytanie pobiera tylko te spotkania, które już się odbyły (aktualizacja co jeden dzien)
+        List<PatientHistory.MedicalAppointment> pastAppointments = entity.getMedicalAppointmentDetails().stream()
+                .filter(appointment -> appointment.getMedicalAppointmentDateEntity().getDateTime()
+                        .isBefore(oneDayAgo))
+                .map(medicalAppointmentEntityMapper::mapFromMedicalAppointmentEntityToPatientHistoryMedicalAppointment)
+                .toList();
+
+        // Tworzymy nową instancję PatientHistory i ustawiamy w niej tylko odbyte spotkania
+        PatientHistory patientHistoryAll = patientEntityMapper.mapFromEntity(entity, patientEmail);
+
+        return patientHistoryAll.withMedicalAppointments(pastAppointments);
     }
 
 
     @Override
-    public PatientHistory findCurrentPatientAppointmentsByEmail(String patientEmail) {
+    public PatientHistory findPatientScheduleByEmail(String patientEmail) {
+
         PatientEntity entity = patientJpaRepository.findByEmail(patientEmail);
 
-        // Poniższe zapytanie pobiera tylko te spotkania, które odbywają się za minimum 24 godziny od teraz
+        OffsetDateTime oneDayAgo = OffsetDateTime.now().minusDays(1);
+
+        // Poniższe zapytanie pobiera tylko te spotkania, które są zaplanowane dziś i dalej
+        // (aktualizacja co jeden dzien)
+        List<PatientHistory.MedicalAppointment> futureAppointments = entity.getMedicalAppointmentDetails().stream()
+                .filter(appointment -> appointment.getMedicalAppointmentDateEntity().getDateTime()
+                        .isAfter(oneDayAgo))
+                .map(medicalAppointmentEntityMapper::mapFromMedicalAppointmentEntityToPatientHistoryMedicalAppointment)
+                .toList();
+
+        // Tworzymy nową instancję PatientHistory i ustawiamy w niej tylko przyszłe spotkania
+        PatientHistory patientHistoryAll = patientEntityMapper.mapFromEntity(entity, patientEmail);
+
+        return patientHistoryAll.withMedicalAppointments(futureAppointments);
+
+    }
+
+    @Override
+    public PatientHistory findPatientAppointmentsToCancelByEmail(String patientEmail) {
+
+        PatientEntity entity = patientJpaRepository.findByEmail(patientEmail);
+
+        // Poniższe zapytanie pobiera tylko te spotkania, które odbywają się za minimum 24 godziny od teraz,
+        // bo tak zakłada logika odwoływnaia wizyt
         List<PatientHistory.MedicalAppointment> futureAppointments = entity.getMedicalAppointmentDetails().stream()
                 .filter(appointment -> {
                     OffsetDateTime appointmentDateTime = appointment.getMedicalAppointmentDateEntity().getDateTime();

@@ -9,13 +9,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.szczecin.business.dao.PatientDAO;
-import pl.szczecin.domain.Address;
-import pl.szczecin.domain.MedicalAppointmentRequest;
-import pl.szczecin.domain.Patient;
-import pl.szczecin.domain.PatientHistory;
+import pl.szczecin.domain.*;
 import pl.szczecin.domain.exception.NotFoundException;
 import pl.szczecin.infrastructure.security.UserEntity;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -36,6 +34,12 @@ public class PatientService {
         return savedPatient;
     }
 
+    public List<Patient> findAvailablePatients() {
+        List<Patient> availablePatients = patientDAO.findAvailablePatients();
+        log.info("Available patients: [{}]", availablePatients.size());
+        return availablePatients;
+    }
+
     @Transactional
     public Patient findPatientByEmail(String email) {
         Optional<Patient> patient = patientDAO.findPatientByEmail(email);
@@ -52,14 +56,20 @@ public class PatientService {
 
     }
 
-    public PatientHistory findCurrentPatientAppointmentsByEmail(String patientEmail) {
-        PatientHistory currentPatientAppointmentsByEmail = patientDAO.findCurrentPatientAppointmentsByEmail(patientEmail);
-        log.info("Patient current appointments by email: [{}]", currentPatientAppointmentsByEmail.getPatientEmail());
-        return currentPatientAppointmentsByEmail;
+    public PatientHistory findPatientScheduleByEmail(String patientEmail) {
+        PatientHistory patientScheduleByEmail = patientDAO.findPatientScheduleByEmail(patientEmail);
+        log.info("Patient schedule by email: [{}]", patientScheduleByEmail.getPatientEmail());
+        return patientScheduleByEmail;
     }
 
+    public PatientHistory findPatientAppointmentsToCancelByEmail(String patientEmail) {
+        PatientHistory patientScheduleByEmail = patientDAO.findPatientAppointmentsToCancelByEmail(patientEmail);
+        log.info("Patient appointments to cancel by email: [{}]", patientScheduleByEmail.getPatientEmail());
+        return patientScheduleByEmail;
+    }
 
     // wyciagamy z securityContext emaila zalogowanego pacjenta
+
     public String getLoggedInPatientEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
@@ -89,5 +99,4 @@ public class PatientService {
                         .build())
                 .build();
     }
-
 }

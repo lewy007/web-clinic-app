@@ -25,11 +25,11 @@ public interface MedicalAppointmentDateJpaRepository extends JpaRepository<Medic
     @Query("""
             SELECT mad FROM MedicalAppointmentDateEntity mad
             WHERE mad.dateTime = :dateTime
-            AND mad.doctor.surname = :doctorSurname
+            AND mad.doctor.email = :doctorEmail
             """)
     Optional<MedicalAppointmentDateEntity> findByDateTimeAndDoctor(
             final @Param("dateTime") OffsetDateTime medicalAppointmentDate,
-            final @Param("doctorSurname") String doctorSurname);
+            final @Param("doctorEmail") String doctorEmail);
 
 
     @Query("""
@@ -55,5 +55,16 @@ public interface MedicalAppointmentDateJpaRepository extends JpaRepository<Medic
                            """)
     List<MedicalAppointmentDateEntity> findAllFutureDatesByDoctorEmail(
             final @Param("doctorEmail") String doctorEmail);
+
+
+    //TODO LOGIKA do przetestowania czy aktualny dzien wejdzie do history czy schedule
+    @Query("""
+            SELECT mad FROM MedicalAppointmentDateEntity mad 
+            WHERE mad.doctor.email = :doctorEmail
+            AND (mad.dateTime < CURRENT_TIMESTAMP OR FUNCTION('DATE', mad.dateTime) = FUNCTION('DATE', CURRENT_TIMESTAMP))
+                           """)
+    List<MedicalAppointmentDateEntity> findAllHistoryDatesByDoctorEmail(
+            final @Param("doctorEmail") String doctorEmail);
+
 
 }

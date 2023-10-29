@@ -30,6 +30,8 @@ public interface MedicalAppointmentEntityMapper {
                 .dateTime(medicalAppointmentEntity.getMedicalAppointmentDateEntity().getDateTime())
                 .doctorName(medicalAppointmentEntity.getMedicalAppointmentDateEntity().getDoctor().getName())
                 .doctorSurname(medicalAppointmentEntity.getMedicalAppointmentDateEntity().getDoctor().getSurname())
+                .doctorEmail(medicalAppointmentEntity.getMedicalAppointmentDateEntity().getDoctor().getEmail())
+                .doctorNote(medicalAppointmentEntity.getDoctorNote())
                 .build();
     }
 

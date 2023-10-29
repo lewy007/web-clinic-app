@@ -27,6 +27,9 @@ public class PatientHistoryDTO {
         private String doctorName;
         private String doctorSurname;
 
+        // dopisany ale nie działa, nie pobierany jest email
+        private String doctorEmail;
+
         @Override
         public int compareTo(MedicalAppointmentDTO o) {
             return this.dateTime.compareTo(o.dateTime);
