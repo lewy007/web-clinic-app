@@ -86,12 +86,12 @@ class PatientCancelControllerMockitoTest {
         String patientEmail = "patient.test@clinic.pl";
         PatientHistory expectedPatientHistory = EntityFixtures.somePatientHistory();
 
-        Mockito.when(patientService.findPatientScheduleByEmail(patientEmail))
+        Mockito.when(patientService.findPatientAppointmentsToCancelByEmail(patientEmail))
                 .thenReturn(expectedPatientHistory);
 
         // when
         PatientHistory resultPatientHistory = patientService
-                .findPatientScheduleByEmail(patientEmail);
+                .findPatientAppointmentsToCancelByEmail(patientEmail);
 
         // then
         Assertions.assertThat(resultPatientHistory).isEqualTo(expectedPatientHistory);
@@ -124,6 +124,8 @@ class PatientCancelControllerMockitoTest {
         // given
         String patientName = "Agnieszka";
         String patientSurname = "Testowa";
+        String patientEmail = "patient@clinic.pl";
+        String doctorEmail = "doctor@clinic.pl";
         String date = "2022-08-27 09:28:00";
 
         MedicalAppointmentRequest expectedRequest =
@@ -138,6 +140,8 @@ class PatientCancelControllerMockitoTest {
                         .medicalAppointmentDate(date)
                         .patientName(patientName)
                         .patientSurname(patientSurname)
+                        .patientEmail(patientEmail)
+                        .doctorEmail(doctorEmail)
                         .build()
         );
 
@@ -165,16 +169,16 @@ class PatientCancelControllerMockitoTest {
 
     @Test
     @DisplayName("That method should return correct Doctor")
-    void findDoctorBySurnameShouldReturnCorrectPatient() {
+    void findDoctorByEmailShouldReturnCorrectDoctor() {
         // given
-        String doctorSurname = "Testowa";
+        String doctorEmail = "doctor@clinic.pl";
         Doctor expectedDoctor = EntityFixtures.someDoctor1();
 
-        Mockito.when(doctorService.findDoctorBySurname(doctorSurname))
+        Mockito.when(doctorService.findDoctorByEmail(doctorEmail))
                 .thenReturn(expectedDoctor);
 
         // when
-        Doctor resultDoctor = doctorService.findDoctorBySurname(doctorSurname);
+        Doctor resultDoctor = doctorService.findDoctorByEmail(doctorEmail);
 
         // then
         Assertions.assertThat(resultDoctor).isEqualTo(expectedDoctor);

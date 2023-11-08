@@ -2,6 +2,9 @@ server:
   port: 8087
   servlet:
     context-path: /web-clinic-application
+#    session:
+#      cookie:
+#        same-site: strict
 
 spring:
   datasource:
@@ -21,13 +24,14 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
   mvc:
     hiddenmethod:
       filter:
         enabled: true
       # do wyłaczenia
-  security:
-    enabled: false
+#  security:
+#    enabled: false
 
 logging:
   level:

@@ -4,6 +4,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 
 @Configuration
 @EnableWebSecurity(debug = true) // na potrzeby developmentu mozna wlaczyc logi security. Nigdy na produkcje
@@ -39,7 +42,6 @@ public class SecurityConfiguration {
                 .build();
     }
 
-
     // sprawdzenie czy kazdy request spelnia reguly bezpieczenstwa, dodatkowo dodajemy reguly do ktorych endpointow
     // uzytkownik uwierzytelniony moze sie dostac, a do ktorych nie
     @SuppressWarnings("removal")
@@ -47,14 +49,15 @@ public class SecurityConfiguration {
     @ConditionalOnProperty(value = "spring.security.enabled", havingValue = "true", matchIfMissing = true)
     public SecurityFilterChain securityEnabled(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-//                .csrf()
-//                .disable()
+                .csrf()
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/login", "/registration", "/error", "/images/oh_no.png").permitAll()
                 .requestMatchers("/patient/**").hasAnyAuthority("PATIENT")
                 .requestMatchers("/doctor/**").hasAnyAuthority("DOCTOR")
+                .requestMatchers("/api/**", "/swagger-ui/**", "/v3/api-docs/**").hasAnyAuthority("REST_API")
                 .requestMatchers("/", "/images/**").hasAnyAuthority("DOCTOR", "PATIENT", "REST_API")
-                .requestMatchers("/api/**").hasAnyAuthority("REST_API")
 //                .requestMatchers(HttpMethod.DELETE).hasAnyAuthority("ADMIN")
                 .and()
                 // zamiast formLogin jest httpBasic (takie zwykle okienko co wyskakuje do logowania jak wejedziemy w obszar chroniony)
@@ -75,8 +78,8 @@ public class SecurityConfiguration {
     @ConditionalOnProperty(value = "spring.security.enabled", havingValue = "false")
     public SecurityFilterChain securityDisabled(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf()
-                .disable()
+//                .csrf()
+//                .disable()
                 .authorizeHttpRequests()
                 .anyRequest()
                 .permitAll();

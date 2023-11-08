@@ -54,7 +54,7 @@ class PatientCancelControllerWebMvcTest {
         PatientHistoryDTO expectedPatientHistoryDTO = EntityFixtures.somePatientHistoryDTO();
 
         Mockito.when(patientService.getLoggedInPatientEmail()).thenReturn(patientEmail);
-        Mockito.when(patientService.findPatientScheduleByEmail(patientEmail))
+        Mockito.when(patientService.findPatientAppointmentsToCancelByEmail(patientEmail))
                 .thenReturn(expectedPatientHistory);
         Mockito.when(patientMapper.map(Mockito.any(PatientHistory.class)))
                 .thenReturn(expectedPatientHistoryDTO);
@@ -74,7 +74,7 @@ class PatientCancelControllerWebMvcTest {
         MedicalAppointmentRequest expectedRequest = EntityFixtures.someMedicalAppointmentRequest();
         String patientEmail = "patient.test@clinic.pl";
         Patient expectedPatient = EntityFixtures.somePatient1();
-        String doctorSurname = "Testowa";
+        String doctorEmail = "doctor@clinic.pl";
         Doctor expectedDoctor = EntityFixtures.someDoctor1();
         MedicalAppointment expectedMedicalAppointment = EntityFixtures.someMedicalAppointment();
         String appointmentDate = "2022-08-27 09:28:00";
@@ -83,7 +83,7 @@ class PatientCancelControllerWebMvcTest {
                 .thenReturn(expectedRequest);
         Mockito.when(patientService.findPatientByEmail(patientEmail))
                 .thenReturn(expectedPatient);
-        Mockito.when(doctorService.findDoctorBySurname(doctorSurname))
+        Mockito.when(doctorService.findDoctorByEmail(doctorEmail))
                 .thenReturn(expectedDoctor);
         Mockito.when(medicalAppointmentService.addNoteToMedicalAppointment(expectedRequest))
                 .thenReturn(expectedMedicalAppointment);
@@ -92,7 +92,7 @@ class PatientCancelControllerWebMvcTest {
         mockMvc.perform(post(PatientCancelController.PATIENT_CANCEL)
                         .param("patientEmail", patientEmail)
                         .param("appointmentDate", appointmentDate)
-                        .param("doctorSurname", doctorSurname)
+                        .param("doctorEmail", doctorEmail)
                 )
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("patientEmail"))

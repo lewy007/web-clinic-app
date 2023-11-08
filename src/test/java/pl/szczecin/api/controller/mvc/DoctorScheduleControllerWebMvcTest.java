@@ -9,24 +9,29 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import pl.szczecin.api.controller.DoctorHistoryController;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import pl.szczecin.api.controller.DoctorScheduleController;
+import pl.szczecin.api.dto.MedicalAppointmentRequestDTO;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentMapper;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentRequestMapper;
 import pl.szczecin.business.DoctorService;
 import pl.szczecin.business.MedicalAppointmentDateService;
 import pl.szczecin.business.MedicalAppointmentService;
+import pl.szczecin.domain.MedicalAppointment;
 import pl.szczecin.domain.MedicalAppointmentDate;
+import pl.szczecin.domain.MedicalAppointmentRequest;
 import pl.szczecin.util.EntityFixtures;
 
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(controllers = DoctorHistoryController.class)
+@WebMvcTest(controllers = DoctorScheduleController.class)
 @AutoConfigureMockMvc(addFilters = false) //wylaczenie konfiguracji security na potrzeby testow
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-class DoctorHistoryControllerWebMvcTest {
+class DoctorScheduleControllerWebMvcTest {
+
 
     //klasa symuluje wywolania przegladarki
     private MockMvc mockMvc;
@@ -45,7 +50,7 @@ class DoctorHistoryControllerWebMvcTest {
 
     @Test
     @DisplayName("GET Method should return the correct view")
-    void doctorHistoryControllerMethodGetWorksCorrectly() throws Exception {
+    void doctorScheduleControllerMethodGetWorksCorrectly() throws Exception {
         //given, when
         String doctorEmail = "doctor.test@clinic.pl";
         List<MedicalAppointmentDate> medicalAppointmentDateList = List.of(
@@ -55,15 +60,47 @@ class DoctorHistoryControllerWebMvcTest {
         );
 
         Mockito.when(doctorService.getLoggedInDoctorEmail()).thenReturn(doctorEmail);
-        Mockito.when(medicalAppointmentDateService.getAllHistoryDatesByDoctorEmail(doctorEmail))
+        Mockito.when(medicalAppointmentDateService.getAllFutureDatesByDoctorEmail(doctorEmail))
                 .thenReturn(medicalAppointmentDateList);
 
         //then
-        mockMvc.perform(get(DoctorHistoryController.DOCTOR_HISTORY))
+        mockMvc.perform(MockMvcRequestBuilders.get(DoctorScheduleController.DOCTOR_SCHEDULE))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("loggedInDoctorEmail"))
                 .andExpect(model().attributeExists("medicalAppointmentDTOs"))
-                .andExpect(view().name("doctor_history"));
+                .andExpect(view().name("doctor_schedule"));
+    }
+
+    @Test
+    @DisplayName("POST Method should correctly add a note")
+    void doctorTorbeControllerShouldCorrectAddNote() throws Exception {
+        // given
+        String patientName = "Agnieszka";
+        String patientSurname = "Testowa";
+        String appointmentDate = "2022-08-27 09:28:00";
+        String doctorNote = "some test note";
+
+
+        MedicalAppointmentRequest expectedRequest = EntityFixtures.someMedicalAppointmentRequest();
+        MedicalAppointment expectedMedicalAppointment = EntityFixtures.someMedicalAppointment();
+
+
+        Mockito.when(medicalAppointmentRequestMapper.map(Mockito.any(MedicalAppointmentRequestDTO.class)))
+                .thenReturn(expectedRequest);
+        Mockito.when(medicalAppointmentService.addNoteToMedicalAppointment(expectedRequest))
+                .thenReturn(expectedMedicalAppointment);
+
+        // when, then
+        mockMvc.perform(post(DoctorScheduleController.DOCTOR_SCHEDULE)
+                        .param("appointmentDate", appointmentDate)
+                        .param("patientName", patientName)
+                        .param("patientSurname", patientSurname)
+                        .param("doctorNote", doctorNote)
+                )
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("successMessage"))
+                .andExpect(view().name("doctor_schedule_added_note"));
+
     }
 
 }
