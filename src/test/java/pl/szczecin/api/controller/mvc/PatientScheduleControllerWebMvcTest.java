@@ -9,7 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import pl.szczecin.api.controller.PatientHistoryController;
+import pl.szczecin.api.controller.PatientScheduleController;
 import pl.szczecin.api.dto.PatientHistoryDTO;
 import pl.szczecin.api.dto.mapper.PatientMapper;
 import pl.szczecin.business.PatientService;
@@ -19,10 +19,10 @@ import pl.szczecin.util.EntityFixtures;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(controllers = PatientHistoryController.class)
+@WebMvcTest(controllers = PatientScheduleController.class)
 @AutoConfigureMockMvc(addFilters = false) //wylaczenie konfiguracji security na potrzeby testow
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-class PatientHistoryControllerWebMvcTest {
+class PatientScheduleControllerWebMvcTest {
 
     //klasa symuluje wywolania przegladarki
     private MockMvc mockMvc;
@@ -35,7 +35,7 @@ class PatientHistoryControllerWebMvcTest {
 
     @Test
     @DisplayName("GET Method should return the correct view")
-    void patientHistoryControllerMethodGetWorksCorrectly() throws Exception {
+    void patientScheduleControllerMethodGetWorksCorrectly() throws Exception {
         //given, when
         String patientEmail = "patient.test@clinic.pl";
         PatientHistory expected = EntityFixtures.somePatientHistory();
@@ -43,17 +43,17 @@ class PatientHistoryControllerWebMvcTest {
 
 
         Mockito.when(patientService.getLoggedInPatientEmail()).thenReturn(patientEmail);
-        Mockito.when(patientService.findPatientHistoryByEmail(patientEmail)).thenReturn(expected);
+        Mockito.when(patientService.findPatientScheduleByEmail(patientEmail)).thenReturn(expected);
         Mockito.when(patientMapper.map(Mockito.any(PatientHistory.class)))
                 .thenReturn(expectedPatientHistoryDTO);
 
 
         //then
-        mockMvc.perform(get(PatientHistoryController.PATIENT_HISTORY))
+        mockMvc.perform(get(PatientScheduleController.PATIENT_SCHEDULE))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("patientHistoryDTO"))
                 .andExpect(model().attributeExists("loggedInPatientEmail"))
-                .andExpect(view().name("patient_history"));
+                .andExpect(view().name("patient_schedule"));
     }
 
 }

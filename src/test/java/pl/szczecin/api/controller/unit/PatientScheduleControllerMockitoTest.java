@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.ExtendedModelMap;
-import pl.szczecin.api.controller.PatientHistoryController;
+import pl.szczecin.api.controller.PatientScheduleController;
 import pl.szczecin.api.dto.PatientHistoryDTO;
 import pl.szczecin.api.dto.mapper.PatientMapper;
 import pl.szczecin.business.PatientService;
@@ -17,7 +17,7 @@ import pl.szczecin.domain.PatientHistory;
 import pl.szczecin.util.EntityFixtures;
 
 @ExtendWith(MockitoExtension.class)
-class PatientHistoryControllerMockitoTest {
+class PatientScheduleControllerMockitoTest {
 
     @Mock
     private PatientService patientService;
@@ -25,19 +25,19 @@ class PatientHistoryControllerMockitoTest {
     private PatientMapper patientMapper;
 
     @InjectMocks
-    private PatientHistoryController patientHistoryController;
+    private PatientScheduleController patientScheduleController;
 
     @Test
     @DisplayName("That method should return correct view")
-    public void patientHistoryPageShouldReturnCorrectViewName() {
+    public void patientSchedulePageShouldReturnCorrectViewName() {
         // given
         ExtendedModelMap model = new ExtendedModelMap();
 
         // when
-        String resultView = patientHistoryController.patientHistoryPage(model);
+        String resultView = patientScheduleController.patientSchedulePage(model);
 
         // then
-        Assertions.assertThat("patient_history").isEqualTo(resultView);
+        Assertions.assertThat("patient_schedule").isEqualTo(resultView);
 
     }
 
@@ -58,28 +58,28 @@ class PatientHistoryControllerMockitoTest {
 
     @Test
     @DisplayName("That method should return correct attributes of model")
-    void patientHistoryPageShouldAddAttributesToModel() {
+    void patientSchedulePageShouldAddAttributesToModel() {
         // given
         ExtendedModelMap model = new ExtendedModelMap();
 
         // when
-        patientHistoryController.patientHistoryPage(model);
+        patientScheduleController.patientSchedulePage(model);
 
         // then
         Assertions.assertThat(model).containsKeys("patientHistoryDTO", "loggedInPatientEmail");
     }
 
     @Test
-    @DisplayName("That method should return correct patient history of logged in patient")
-    public void findPatientHistoryByEmailShouldReturnCorrectPatientHistory() {
+    @DisplayName("That method should return correct patient schedule of logged in patient")
+    public void findPatientScheduleByEmailShouldReturnCorrectPatientSchedule() {
         // given
         String patientEmail = "patient.test@clinic.pl";
         PatientHistory expected = EntityFixtures.somePatientHistory();
 
-        Mockito.when(patientService.findPatientHistoryByEmail(patientEmail)).thenReturn(expected);
+        Mockito.when(patientService.findPatientScheduleByEmail(patientEmail)).thenReturn(expected);
 
         // when
-        PatientHistory result = patientService.findPatientHistoryByEmail(patientEmail);
+        PatientHistory result = patientService.findPatientScheduleByEmail(patientEmail);
 
         // then
         Assertions.assertThat(result).isEqualTo(expected);

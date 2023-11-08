@@ -10,7 +10,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.ExtendedModelMap;
 import pl.szczecin.api.controller.DoctorHistoryController;
+import pl.szczecin.api.controller.DoctorScheduleController;
 import pl.szczecin.api.dto.MedicalAppointmentDTO;
+import pl.szczecin.api.dto.MedicalAppointmentRequestDTO;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentMapper;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentRequestMapper;
 import pl.szczecin.business.DoctorService;
@@ -18,12 +20,13 @@ import pl.szczecin.business.MedicalAppointmentDateService;
 import pl.szczecin.business.MedicalAppointmentService;
 import pl.szczecin.domain.MedicalAppointment;
 import pl.szczecin.domain.MedicalAppointmentDate;
+import pl.szczecin.domain.MedicalAppointmentRequest;
 import pl.szczecin.util.EntityFixtures;
 
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
-class DoctorHistoryControllerMockitoTest {
+class DoctorScheduleControllerMockitoTest {
 
     @Mock
     private DoctorService doctorService;
@@ -36,20 +39,21 @@ class DoctorHistoryControllerMockitoTest {
     @Mock
     private MedicalAppointmentRequestMapper medicalAppointmentRequestMapper;
 
+
     @InjectMocks
-    private DoctorHistoryController doctorHistoryController;
+    private DoctorScheduleController doctorScheduleController;
 
     @Test
     @DisplayName("That method should return correct view")
-    public void doctorHistoryPageShouldReturnCorrectViewName() {
+    public void doctorSchedulePageShouldReturnCorrectViewName() {
         // given
         ExtendedModelMap model = new ExtendedModelMap();
 
         // when
-        String resultView = doctorHistoryController.doctorHistoryPage(model);
+        String resultView = doctorScheduleController.doctorSchedulePage(model);
 
         // then
-        Assertions.assertThat("doctor_history").isEqualTo(resultView);
+        Assertions.assertThat("doctor_schedule").isEqualTo(resultView);
 
     }
 
@@ -76,15 +80,15 @@ class DoctorHistoryControllerMockitoTest {
 //        Mockito.when(doctorService.getLoggedInDoctorEmail()).thenReturn("test@example.com");
 
         // when
-        doctorHistoryController.doctorHistoryPage(model);
+        doctorScheduleController.doctorSchedulePage(model);
 
         // then
         Assertions.assertThat(model).containsKeys("loggedInDoctorEmail", "medicalAppointmentDTOs");
     }
 
     @Test
-    @DisplayName("That method should return correct IDs of all medical appointment dates for Doctor")
-    void getAllMedicalAppointmentDateIdsByDoctorEmailShouldReturnCorrectIds() {
+    @DisplayName("That method should return correct IDs of future medical appointment dates for Doctor")
+    void getFutureMedicalAppointmentDateIdsByDoctorEmailShouldReturnCorrectIds() {
         // given
         String doctorEmail = "doctor.test@clinic.pl";
         List<MedicalAppointmentDate> medicalAppointmentDateList = List.of(
@@ -93,12 +97,12 @@ class DoctorHistoryControllerMockitoTest {
                 EntityFixtures.someMedicalAppointmentDate3()
         );
 
-        Mockito.when(medicalAppointmentDateService.getAllHistoryDatesByDoctorEmail(doctorEmail))
+        Mockito.when(medicalAppointmentDateService.getAllFutureDatesByDoctorEmail(doctorEmail))
                 .thenReturn(medicalAppointmentDateList);
 
         // when
         List<Integer> result = medicalAppointmentDateService
-                .getAllHistoryDatesByDoctorEmail(doctorEmail).stream()
+                .getAllFutureDatesByDoctorEmail(doctorEmail).stream()
                 .map(MedicalAppointmentDate::getMedicalAppointmentDateId)
                 .toList();
 
@@ -141,6 +145,53 @@ class DoctorHistoryControllerMockitoTest {
 
         // Then
         Assertions.assertThat(result).containsExactlyElementsOf(medicalAppointmentDTOs);
+    }
+
+
+
+    // Metoda POST
+    @Test
+    @DisplayName("That method should correctly mapped MedicalAppointmentRequestDTO to MedicalAppointmentRequest")
+    void medicalAppointmentRequestMapperShouldReturnCorrectRequest() {
+        // given
+        String patientName = "Agnieszka";
+        String patientSurname = "Testowa";
+        String date = "2022-08-27 09:28:00";
+
+        MedicalAppointmentRequest expectedRequest =
+                EntityFixtures.someMedicalAppointmentRequest();
+
+        Mockito.when(medicalAppointmentRequestMapper.map(Mockito.any(MedicalAppointmentRequestDTO.class)))
+                .thenReturn(expectedRequest);
+
+        // when
+        MedicalAppointmentRequest resultRequest = medicalAppointmentRequestMapper.map(
+                MedicalAppointmentRequestDTO.builder()
+                        .medicalAppointmentDate(date)
+                        .patientName(patientName)
+                        .patientSurname(patientSurname)
+                        .build()
+        );
+
+        // then
+        Assertions.assertThat(resultRequest).isEqualTo(expectedRequest);
+    }
+
+    @Test
+    @DisplayName("That method should return a correct note doctor")
+    void medicalAppointmentServiceShouldCorrectlyAddNoteToMedicalAppointment() {
+        // given
+
+        MedicalAppointmentRequest request = EntityFixtures.someMedicalAppointmentRequest();
+        MedicalAppointment expectedMedicalAppointment = EntityFixtures.someMedicalAppointment();
+
+        Mockito.when(medicalAppointmentService.addNoteToMedicalAppointment(request)).thenReturn(expectedMedicalAppointment);
+
+        // when
+        MedicalAppointment resultMedicalAppointment =
+                medicalAppointmentService.addNoteToMedicalAppointment(request);
+        // then
+        Assertions.assertThat(resultMedicalAppointment).isEqualTo(expectedMedicalAppointment);
     }
 
 }

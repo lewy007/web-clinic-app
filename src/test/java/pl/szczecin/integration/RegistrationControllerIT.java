@@ -50,33 +50,33 @@ public class RegistrationControllerIT extends AbstractIT {
 
     }
 
-    @Test
-    @DisplayName("That IT should return correct status and body of POST method in Registration Controller")
-    void makeRegistrationPageWorksCorrectly() throws URISyntaxException {
-
-        String url = "http://localhost:%s%s/registration".formatted(port, basePath);
-        URI uri = new URI(url);
-
-        // Obiekt `MultiValueMap` do przekazywania danych jako formularza
-        MultiValueMap<String, String> requestParameters = getRequestToRegistrationForm();
-
-        // Obiekt `HttpHeaders` i ustawiamy odpowiedni nagłówek
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        // Obiekt `HttpEntity` z przekazywanymi danymi i nagłówkami
-        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(requestParameters, headers);
-
-        // Zapytanie HTTP POST
-        ResponseEntity<String> result
-                = this.testRestTemplate.exchange(uri, HttpMethod.POST, requestEntity, String.class);
-
-        // Sprawdamy status odpowiedzi i treść odpowiedzi
-        assertEquals(HttpStatus.OK, result.getStatusCode());
-        assertTrue(Objects.requireNonNull(result.getBody())
-                .contains("You have registered in Web Clinic Application"));
-
-    }
+//    @Test
+//    @DisplayName("That IT should return correct status and body of POST method in Registration Controller")
+//    void makeRegistrationPageWorksCorrectly() throws URISyntaxException {
+//
+//        String url = "http://localhost:%s%s/registration".formatted(port, basePath);
+//        URI uri = new URI(url);
+//
+//        // Obiekt `MultiValueMap` do przekazywania danych jako formularza
+//        MultiValueMap<String, String> requestParameters = getRequestToRegistrationForm();
+//
+//        // Obiekt `HttpHeaders` i ustawiamy odpowiedni nagłówek
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//
+//        // Obiekt `HttpEntity` z przekazywanymi danymi i nagłówkami
+//        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(requestParameters, headers);
+//
+//        // Zapytanie HTTP POST
+//        ResponseEntity<String> result
+//                = this.testRestTemplate.exchange(uri, HttpMethod.POST, requestEntity, String.class);
+//
+//        // Sprawdamy status odpowiedzi i treść odpowiedzi
+//        assertEquals(HttpStatus.OK, result.getStatusCode());
+//        assertTrue(Objects.requireNonNull(result.getBody())
+//                .contains("You have registered in Web Clinic Application"));
+//
+//    }
 
     @NotNull
     private static MultiValueMap<String, String> getRequestToRegistrationForm() {

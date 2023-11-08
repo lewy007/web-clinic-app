@@ -13,13 +13,6 @@
 * może dodać notatkę dla pacjenta po wizycie lub zaktulizować już dodaną - w historii pacjenta.
 
 
-### DO ZROBIENIA:
-* Paginacja wyswietlanych wynikow
-* rejestracja pacjenta bez konta (zakładanie konta)
-* reset hasła
-* Actuator metric (do mierzenia ilosci zapytan do serwera) i Actuator health (czy z apka ok)
-
-
 ## REST API
 ## 1. Konfiguracja wstępna do wystawienia zwracanych elementów z kontrolera PatientRestControl.class:
 * Utworzono klasę do obsługi błedów (GlobalExceptionRestHandler.class), która skonfigurowana w odpowiedni sposób, pozwala na dwie obslugi błędów jednoczesnie w projekcie. Restowa konfiguracja jest priorytetowa.
@@ -68,3 +61,10 @@ public class SpringDocConfiguration {
 ### Po uruchomieniu aplikacji można wejść w przeglądarce internetowej pod endpoint: http://localhost:8087/web-clinic-application/swagger-ui/index.html
 ### Pod tym linkiem jest dokumentacja mojego API. Następnie można przejć pod link http://localhost:8087/web-clinic-application/v3/api-docs/default, jest to kontrakt. Jest to faktyczna dokumentacja, która trzyma się specyfikacji OpenApi.
 ### Controlery dostępne z poziomy MVC zostały skopiowane i przerobione pod specyfikację API. Teraz można sprawdzać metody GET lub POST poprzez swaggera na ww. endpoincie.
+
+### DO ZROBIENIA:
+* Paginacja wyswietlanych wynikow
+* rejestracja pacjenta bez konta (zakładanie konta)
+* reset hasła
+* Actuator metric (do mierzenia ilosci zapytan do serwera) i Actuator health (czy z apka ok)
+* Jenkins lub CircleCI - do continuous integration and continuous delivery
