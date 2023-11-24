@@ -62,6 +62,15 @@ public class SpringDocConfiguration {
 ### Pod tym linkiem jest dokumentacja mojego API. Następnie można przejć pod link http://localhost:8087/web-clinic-application/v3/api-docs/default, jest to kontrakt. Jest to faktyczna dokumentacja, która trzyma się specyfikacji OpenApi.
 ### Controlery dostępne z poziomy MVC zostały skopiowane i przerobione pod specyfikację API. Teraz można sprawdzać metody GET lub POST poprzez swaggera na ww. endpoincie.
 
+### 3.Actuator
+### Documentary: https://docs.spring.io/spring-boot/docs/current/actuator-api/htmlsingle/
+### http://localhost:8087/web-clinic-application/actuator/metrics/http.server.requests
+### http://localhost:8087/web-clinic-application/actuator/info
+### http://localhost:8087/web-clinic-application/actuator/health
+### http://localhost:8087/web-clinic-application/actuator/status
+### CURL -> curl -i -H "Accept: application/json" -X GET http://localhost:8087/web-clinic-application/actuator/health
+
+
 ### DO ZROBIENIA:
 * Paginacja wyswietlanych wynikow
 * rejestracja pacjenta bez konta (zakładanie konta)
