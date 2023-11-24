@@ -38,3 +38,23 @@ logging:
     org:
       springframework:
         security: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /actuator
+  metrics:
+    enable:
+      http:
+        server:
+          requests: true
+  endpoint:
+    shutdown:
+      enabled: true
+  info:
+    env:
+      enabled: true
+    java:
+      enabled: true

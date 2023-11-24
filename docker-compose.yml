@@ -1,0 +1,40 @@
+version: '3.1'
+services:
+  backend:
+    build: .
+    ports:
+      - "8087:8087"
+    restart: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://PostgreSQL:5432/web_clinic_app
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    networks:
+      - spring-boot-postgres
+    depends_on:
+      PostgreSQL:
+        condition: service_healthy
+  PostgreSQL:
+#    container_name: 'postgreSQL'
+    image: postgres:15.0
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=web_clinic_app
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - spring-boot-postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+volumes:
+  db-data:
+networks:
+  spring-boot-postgres:
