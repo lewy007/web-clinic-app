@@ -10,7 +10,7 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/web_clinic_app
+    url: jdbc:postgresql://localhost:5433/web_clinic_app
     username: postgres
     password: password
     hikari:

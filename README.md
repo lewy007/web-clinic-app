@@ -1,79 +1,140 @@
-## WEB CLINIC APPLICATION
-### Aplikacja dla przychodni internetowej przeznaczona do rejestrowania się na wizyty lekarskie. Skierowana jest do dwóch grup: pacjentów i lekarzy.Każda z grup ma dostęp do innego obszaru aplikacji.
-### Dostep do aplikacji pod linkiem -> http://localhost:8087/web-clinic-application/
-### PACJENT:
-* umawia się na wizytę (maksymalnie 1h przed zaplanowaną wizytą);
-* posiada dostęp do historii swoich wizyt, zarówno odbytych jak i zaplanowanych (sortowanie za pomocą interfejsu Comparable zaimplementowanego w klasie MedicalAppointmentDTO w PatientHistoryDTO) - można podzielić na historię i zaplanowane wizyty;
-* wyświetlana historia zawiera również kolumnę z notatką doktora po wizycie (przyszłe wizyty mają puste pola - null);
-* odwołuje wizytę (maskymalnie 24 h przed zaplanowaną datą wizyty);
-### DOKTOR:
-* posiada dostęp do wszystkich wizyt pacjenta (sortowanie po dacie);
-* posiada grafik dostępności na potencjalne wizyty (wolne terminy);
-* posiada dostęp do historii pacjenta;
-* może dodać notatkę dla pacjenta po wizycie lub zaktulizować już dodaną - w historii pacjenta.
+<h1 align="center">WEB CLINIC APPLICATION
+</h1>
 
+This project is a web application created in Spring Boot.
+The application is an online clinic designed to medical appointments.
+It is directed to two groups: patients and doctors.
+Each group has access to a different area of the application.
+After build the project according to the directions in the section `How to build the project on your own`
+You can check this project out by yourself
+on [Web-Clinic-Application](http://localhost:8087/web-clinic-application).
+If you want to see API, you can
+go to [Swagger UI](http://localhost:8087/web-clinic-application/swagger-ui/index.html).
+If you want to see the documentation of my API, you can
+go to [API documentation](http://localhost:8087/web-clinic-application/v3/api-docs/default).
+This is the contract. This is the actual documentation that sticks to the OpenApi specification.
 
-## REST API
-## 1. Konfiguracja wstępna do wystawienia zwracanych elementów z kontrolera PatientRestControl.class:
-* Utworzono klasę do obsługi błedów (GlobalExceptionRestHandler.class), która skonfigurowana w odpowiedni sposób, pozwala na dwie obslugi błędów jednoczesnie w projekcie. Restowa konfiguracja jest priorytetowa.
-* Utworzono dedykowanego usera z dostępem do api -> test.user w grupie REST_API w SecurityConfiguration.class
-## 2. Tworzenie własnej dokumentacji API
-### 2.1. Dodajemy biblioteke do wygenerowania api
-```yaml
-dependencies {
-  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
-}
+## TECHNICAL REQUIREMENTS
+
+### Solved Problems
+
+During the development of this project I had to face of a bunch of problems. These are a few of them.
+<ul>
+    <li>Build code that is maximal encapsulated</li>
+    <li>Stick to the SOLID rules</li>
+    <li>Create ERD diagram</li>
+    <li>Use Flyway migration scripts to create the database schema automatically</li>
+    <li>Design and create entity classes to represent tables in the database</li>
+    <li>Design and create repositories and methods to provide access to data and allow manipulation of that data. Recommended use of Spring Data JPA</li>
+    <li>Create a service layer where the business logic will be defined</li>
+    <li>Create a WEB layer and use Thymeleaf for it. Remember about error handling and HTTP statuses. Remember that the WEB layer is ultimately to allow users to work with the database</li>
+    <li>Add input validation</li>
+    <li>Use Actuator</li>
+    <li>Secure the application from unauthorized access</li>
+    <li>Ability to log into the application of users with different permissions, and therefore had access to other areas of the application</li>
+    <li>Ability to register a new patient</li>
+    <li>Write unit tests (Mockito), @DataJpaTest, @WebMvcTest and @SpringBootTest</li>
+    <li>Expose your REST API that allows you to call GET, POST, PUT and DELETE endpoints</li>
+    <li>Expose SwaggerUI</li>
+    <li>Use Docker Compose</li>
+</ul>
+
+### What I'm going to do in the future
+
+There are many things that I'm going to do in this project in the future. Few of them:
+<ul>
+    <li>Pagination of displayed results</li>
+    <li>Write RestAssured tests to cover the case of each of the listed HTTP methods in your REST API</li>
+    <li>Use some external API that you consume in your application</li>
+    <li>Write Wiremock tests for an external API</li>
+    <li>Authorization with JWT token and Spring Security</li>
+    <li>Continuous integration and Continuous Deployment with CircleCi (to ECR AWS) or Jenkins</li>
+</ul>
+
+## BUSINESS REQUIREMENTS
+
+### PATIENT:
+
+<ul>
+    <li>can make an appointment (up to 1h before the scheduled appointment)</li>
+    <li>has access to his scheduled appointments and his appointment history</li>
+    <li>the patient's history also includes a column with a doctor's note added after the appointment (future appointments have blank fields - null)</li>
+    <li>can cancel a medical appointment (up to 24h before the scheduled appointment date)</li>
+</ul>
+
+### DOCTOR:
+
+<ul>
+    <li>has access to all patient appointments (sort by date)</li>
+    <li>has an availability schedule for potential appointments (free appointments)</li>
+    <li>has access to patient history</li>
+    <li>can add a note for a patient after a visit or update an already added one - in the patient's history</li>
+</ul>
+
+## How to build the project on your own
+
+#### To build the project:
+
+<ol>
+<li>Clone the repository:</li>
+
 ```
-### 2.2 Tworzymy konfiguracje w klasie. Klasa sluzy do wystawienia Swaggera. Beany w tej klasie sluza do wygenerowania automatycznie dokumentacji naszego API zgodnie ze specyfikacja OpenAPI
-```java
-@Configuration
-public class SpringDocConfiguration {
-
-    @Bean
-    public GroupedOpenApi groupedOpenApi() {
-        return GroupedOpenApi.builder()
-                .group("default")
-                .pathsToMatch("/**")
-                .packagesToScan(WebClinicApplication.class.getPackageName())
-                .build();
-    }
-
-    @Bean
-    public OpenAPI springDocOpenAPI() {
-        return new OpenAPI()
-                .components(new Components())
-                .info(new Info()
-                        .title("Web clinic application")
-                        .contact(contact())
-                        .version("1.0")
-                );
-    }
-
-    @Bean
-    public Contact contact() {
-        return new Contact()
-                .name("Peter from Szczecin")
-                .url("https://mojastrona.pl")
-                .email("lewy007@o2.pl");
-    }
-}
+git clone https://github.com/lewy007/web-clinic-app.git
 ```
-### Po uruchomieniu aplikacji można wejść w przeglądarce internetowej pod endpoint: http://localhost:8087/web-clinic-application/swagger-ui/index.html
-### Pod tym linkiem jest dokumentacja mojego API. Następnie można przejć pod link http://localhost:8087/web-clinic-application/v3/api-docs/default, jest to kontrakt. Jest to faktyczna dokumentacja, która trzyma się specyfikacji OpenApi.
-### Controlery dostępne z poziomy MVC zostały skopiowane i przerobione pod specyfikację API. Teraz można sprawdzać metody GET lub POST poprzez swaggera na ww. endpoincie.
 
-### 3.Actuator
-### Documentary: https://docs.spring.io/spring-boot/docs/current/actuator-api/htmlsingle/
-### http://localhost:8087/web-clinic-application/actuator/metrics/http.server.requests
-### http://localhost:8087/web-clinic-application/actuator/info
-### http://localhost:8087/web-clinic-application/actuator/health
-### http://localhost:8087/web-clinic-application/actuator/status
-### CURL -> curl -i -H "Accept: application/json" -X GET http://localhost:8087/web-clinic-application/actuator/health
+<li>Go to the folder with cloned repository</li> 
+<li>Run the command:</li>
 
+```
+gradle build -x test
+```
 
-### DO ZROBIENIA:
-* Paginacja wyswietlanych wynikow
-* rejestracja pacjenta bez konta (zakładanie konta)
-* reset hasła
-* Actuator metric (do mierzenia ilosci zapytan do serwera) i Actuator health (czy z apka ok)
-* Jenkins lub CircleCI - do continuous integration and continuous delivery
+<li>In folder build/libs you should find a file named: web-clinic-app-{version}.jar</li>
+</ol>
+
+#### To build the docker image with Docker Compose:
+
+<ol>
+<li>Clone the repository:</li>
+
+```
+git clone https://github.com/lewy007/web-clinic-app.git
+```
+
+<li>Go to the folder with cloned repository</li> 
+<li>Run the command:</li>
+
+```
+docker-compose build
+```
+
+<li>Check images by using command:</li>
+
+```
+docker images
+```
+
+<li>Run app by using command:</li>
+
+```
+docker compose up -d
+```
+
+<li>Check docker compose by using command:</li>
+
+```
+docker compose ps
+```
+
+<li>Shut down app by using command:</li>
+
+```
+docker compose down
+```
+
+</ol>
+
+## Learn More
+
+You can learn more in
+the [Spring Boot Actuator Web API Documentation](https://docs.spring.io/spring-boot/docs/current/actuator-api/htmlsingle/).
