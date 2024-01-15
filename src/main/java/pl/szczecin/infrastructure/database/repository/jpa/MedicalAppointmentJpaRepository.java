@@ -22,7 +22,7 @@ public interface MedicalAppointmentJpaRepository extends JpaRepository<MedicalAp
 
     // zwracamy tylko te wpisy gdzie w tabeli Medical Appointment klucz obcy medical appointment date id
     // posiada wartosc z listy parametrow metody - lista id wyciagnieta z innej metody
-    // na podstawie zapytania do bazy danych o wszystkie daty na podstawie peselu doctora
+    // na podstawie zapytania do bazy danych o wszystkie daty na podstawie meila doctora
     @Query("""
             SELECT ma FROM MedicalAppointmentEntity ma 
             WHERE ma.medicalAppointmentDateEntity.medicalAppointmentDateId IN :dateIds

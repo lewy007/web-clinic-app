@@ -31,12 +31,14 @@ public class DoctorHistoryController {
         String loggedInDoctorEmail = doctorService.getLoggedInDoctorEmail();
 
         // wyciagamy wszystkie daty (dokladnie ich id) powiazane z lekarzem
+        // Założenia biznesu-> zakres dat to daty do aktualnego dnia wyłącznie.
+        // Metoda zazębia się z pobieraniem przyszłych i teraźniejszych dat
         var allMedicalAppointmentDateIdsByDoctorEmail =
                 medicalAppointmentDateService.getAllHistoryDatesByDoctorEmail(loggedInDoctorEmail).stream()
                         .map(MedicalAppointmentDate::getMedicalAppointmentDateId)
                         .toList();
 
-        // wyszukujemy wszystkie wykorzystane daty wizyt (medical_appointment_date) w medical_appointment
+        // wyszukujemy wszystkie historyczne, wykorzystane daty wizyt (medical_appointment_date) w medical_appointment
         // dla danego lekarza
         var medicalAppointmentDTOs = medicalAppointmentService
                 .findAllMedicalAppointmentByMADateID(allMedicalAppointmentDateIdsByDoctorEmail).stream()

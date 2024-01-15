@@ -58,7 +58,7 @@ public class MedicalAppointmentRequestDTO {
                 .patientName("Stefan")
                 .patientSurname("Chorowity")
                 .patientPhone("+48 754 552 234")
-                .patientEmail("stefan@example.com")
+                .patientEmail("stefan.chorowity@clinic.pl")
                 .patientAddressCountry("Polska")
                 .patientAddressCity("Wrocław")
                 .patientAddressPostalCode("50-001")

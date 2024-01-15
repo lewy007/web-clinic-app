@@ -1,0 +1,39 @@
+[#5] Projekt możesz napisać albo w Maven, albo w Gradle, pełna dowolność.
+
+[#19] Projekt ma być uruchamiany na Tomcat.
+
+[#20] My zalecamy wykorzystanie Spring Boot, ale możesz napisać ten projekt jak masz ochotę.
+
+[#12] Efekt końcowy projektu ma być dostępny na GitHub, a Twoje repozytorium ma być publiczne. Chcemy mieć pełny wgląd do kodu źródłowego, żeby móc go przeczytać i ocenić. Dodaj również plik README.md, w którym zawrzesz informacje o Twoim projekcie.
+
+[#16] Zaprojektuj bazę danych. Chcemy zobaczyć przygotowany diagram ERD. Możesz go narysować, w czym chcesz, możesz spróbować zrobić ten diagram np. wykorzystując PlantUML.
+
+[#17] Napisz skrypty migracyjne Flyway, które pozwolą na stworzenie schematu bazy danych automatycznie. Jeżeli chcesz, żeby Twoja aplikacja miała zdefiniowane jakieś dane rozruchowe - możesz to zrobić również w Flyway, albo inaczej, jak masz ochotę 😉.
+
+[#16] Zaprojektuj i stwórz klasy encji, które będą reprezentowały tabele w bazie danych. Przyłóż się do relacji pomiędzy encjami.
+
+[#16] Zaprojektuj i stwórz repozytoria oraz metody zapewniające dostęp do danych i pozwalające na manipulację tymi danymi.
+
+[#17] My zalecamy wykorzystanie Spring Data JPA do realizacji warstwy dostępu do danych, ale możesz to napisać jak masz ochotę.
+
+[#15] Stwórz warstwę serwisów, gdzie będzie zdefiniowana logika biznesowa Twojego programu. Pamiętaj o transakcjach.
+
+[#19] Napisz warstwę WEB i wykorzystaj do tego Thymeleaf. Pamiętaj o obsłudze błędów i statusach HTTP. Pamiętaj, że warstwa WEB ma finalnie umożliwić użytkownikom pracę z bazą danych - analogicznie do tego, co było/jest/będzie przedstawiane we wspólnych projektach.
+
+[#20] Dodaj walidację danych wejściowych.
+
+[#20] Zabezpiecz swoją aplikację przed nieautoryzowanym dostępem. Jeżeli chodzi o zarządzanie użytkownikami (tworzenie, usuwanie, odzyskiwanie hasła), tutaj zostawiamy Ci pole do popisu. Naszym wymaganiem jest tylko to, żeby do aplikacji można było się zalogować i żeby istnieli użytkownicy z różnymi uprawnieniami, a w związku z tym mieli dostęp do innych obszarów aplikacji. Pamiętaj, że jak dodasz do projektu security, to będziesz musiał/musiała jakoś ograć w testach warstwę security. Masz tutaj wolną rękę.
+
+[#20] Napisz testy jednostkowe (Mockito), @DataJpaTest, @WebMvcTest oraz @SpringBootTest. Zapewnij pokrycie kodu testami na poziomie 80%.
+
+[#21] Wystaw swoje REST API umożliwiające wywołanie endpointów GET, POST, PUT oraz DELETE w Twojej aplikacji. Co te endpointy będą realizowały w kontekście biznesowym - tutaj zostawiamy Ci wolną rękę. Przyjrzyj się domenie projektu i na tej podstawie zdecyduj o możliwościach tych endpointów.
+
+[#21] Wystaw SwaggerUI.
+
+[#21] Napisz testy RestAssured tak, żeby pokryć przypadek każdej z wymienionych metod HTTP w Twoim REST API.
+
+[#21] Postaraj się wykorzystać jakieś zewnętrzne API, które skonsumujesz w swojej aplikacji. Napisałem "postaraj", bo nie w każdej z proponowanych domen biznesowych będzie można łatwo znaleźć w Internecie REST API do skonsumowania, a tym bardziej API wystawiające kontrakt OpenAPI. Jeżeli uda Ci się znaleźć takie REST API to super, wtedy możesz je skonsumować. Jeżeli nie, to zostaje jeszcze taka opcja, że możesz napisać obok drugą mini aplikację, która wystawi Ci kontrakt OpenApi, który będzie wykorzystany tylko na Twoje potrzeby, żeby podłączyć się do jakiegoś API. Oczywiście taki mini serwer będzie wystawiał jakieś mockowe dane. Podpowiemy, że istnieją rozwiązania takie jak np. JSON Server, który służy do wystawienia mini serwera mockującego REST API. Wtedy pozostaje kwestia pokombinowania z wystawieniem kontraktu. Rozwiąż ten problem, jak uważasz, my tu nic nie narzucamy, byle zobaczyć u Ciebie w projekcie jak konsumujesz jakieś obce REST API. Liczymy na Twoją inwencję w tym zakresie.
+
+[#21] Wiremock. Jeżeli uda Ci znaleźć REST API do skonsumowania, napisz też testy Wiremock.
+
+[#22] Chcę, żeby cały projekt można było uruchomić jedną komendą. Wykorzystaj w tym celu Docker Compose.

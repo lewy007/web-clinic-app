@@ -51,10 +51,10 @@ public class MedicalAppointmentDateService {
 
 
     public List<MedicalAppointmentDate> getAllHistoryDatesByDoctorEmail(String doctorEmail) {
-        List<MedicalAppointmentDate> allFutureDatesByDoctorEmail =
+        List<MedicalAppointmentDate> allHistoryDatesByDoctorEmail =
                 medicalAppointmentDateDAO.findAllHistoryDatesByDoctorEmail(doctorEmail);
-        log.info("All future dates for Doctor: [{}]", allFutureDatesByDoctorEmail.size());
-        return allFutureDatesByDoctorEmail;
+        log.info("All history dates for Doctor: [{}]", allHistoryDatesByDoctorEmail.size());
+        return allHistoryDatesByDoctorEmail;
     }
 
 

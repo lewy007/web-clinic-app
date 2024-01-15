@@ -70,7 +70,7 @@ public class EntityFixtures {
                 .doctorId(3)
                 .name("Danuta")
                 .surname("Wasilewska")
-                .email("danuta_wasilewska@clinic.pl")
+                .email("danuta.wasilewska@clinic.pl")
                 .build());
     }
 

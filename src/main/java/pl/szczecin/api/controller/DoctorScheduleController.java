@@ -29,6 +29,8 @@ public class DoctorScheduleController {
     private final MedicalAppointmentRequestMapper medicalAppointmentRequestMapper;
 
 
+
+    // Metoda powtórzona z DoctorController, w zwracanym widoku dodanu tylko "doctor note".
     @GetMapping(value = DOCTOR_SCHEDULE)
     public String doctorSchedulePage(
             Model model
