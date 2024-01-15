@@ -9,7 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.szczecin.business.dao.PatientDAO;
-import pl.szczecin.domain.*;
+import pl.szczecin.domain.Address;
+import pl.szczecin.domain.MedicalAppointmentRequest;
+import pl.szczecin.domain.Patient;
+import pl.szczecin.domain.PatientHistory;
 import pl.szczecin.domain.exception.NotFoundException;
 import pl.szczecin.infrastructure.security.UserEntity;
 
@@ -92,7 +95,9 @@ public class PatientService {
                         .address(inputData.getPatientAddressStreet())
                         .build())
                 .userEntity(UserEntity.builder()
-                        .userName(inputData.getPatientName())
+                        .userName(inputData.getPatientName().toLowerCase()
+                                + "."
+                                + inputData.getPatientSurname().toLowerCase())
                         .email(inputData.getPatientEmail())
                         .password(passwordEncoder.encode(inputData.getPassword()))
                         .active(true)

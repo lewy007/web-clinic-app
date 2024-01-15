@@ -10,8 +10,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import javax.sql.DataSource;
 
 // Klasa sluzy do stworzenia tymczasowej bazy danych postgresql przy wykorzystaniu Testcontainers
-// na czas trwania testu - jest to inny sposob na stworzenie konfiguracji kontenera
-// (pierwszy jest w infrastructure - DatabaseContainerInitializer) - efekt ten sam
+// na czas trwania testu
 @TestConfiguration
 public class PersistenceContainerTestConfiguration {
 

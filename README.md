@@ -14,6 +14,19 @@ If you want to see the documentation of my API, you can
 go to [API documentation](http://localhost:8087/web-clinic-application/v3/api-docs/default).
 This is the contract. This is the actual documentation that sticks to the OpenApi specification.
 
+## Diagram ERD
+
+Entity Relationship Diagram illustrates the relationship of entities in the database.
+
+<img src="web_clinic_erd.png">
+
+## REST API Endpoints
+
+|               ENDPOINT               | METHOD |         REQUEST          |     RESPONSE     |                           FUNCTION                           |
+|:------------------------------------:|:------:|:------------------------:|:----------------:|:------------------------------------------------------------:|
+|             /api/doctors             |  GET   |            -             |  JSON (doctors)  |             returns a list of available doctors              |
+| /api/doctors/{doctorEmail}/schedule  |  GET   | JSON BODY (doctor email) | JSON (schedule)  | returns medical appointment schedule with given email doctor |
+
 ## TECHNICAL REQUIREMENTS
 
 ### Solved Problems
@@ -27,14 +40,14 @@ During the development of this project I had to face of a bunch of problems. The
     <li>Design and create entity classes to represent tables in the database</li>
     <li>Design and create repositories and methods to provide access to data and allow manipulation of that data. Recommended use of Spring Data JPA</li>
     <li>Create a service layer where the business logic will be defined</li>
-    <li>Create a WEB layer and use Thymeleaf for it. Remember about error handling and HTTP statuses. Remember that the WEB layer is ultimately to allow users to work with the database</li>
+    <li>Create a WEB layer and use Thymeleaf for it. Remembering about error handling and HTTP statuses. Remembering that the WEB layer is ultimately to allow users to work with the database</li>
     <li>Add input validation</li>
     <li>Use Actuator</li>
     <li>Secure the application from unauthorized access</li>
     <li>Ability to log into the application of users with different permissions, and therefore had access to other areas of the application</li>
     <li>Ability to register a new patient</li>
     <li>Write unit tests (Mockito), @DataJpaTest, @WebMvcTest and @SpringBootTest</li>
-    <li>Expose your REST API that allows you to call GET, POST, PUT and DELETE endpoints</li>
+    <li>Expose my REST API that allows you to call GET, POST, PUT and DELETE endpoints</li>
     <li>Expose SwaggerUI</li>
     <li>Use Docker Compose</li>
 </ul>

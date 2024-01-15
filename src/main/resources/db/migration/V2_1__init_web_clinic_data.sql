@@ -1,9 +1,9 @@
 -- Wprowadzenie przykładowych danych dla tabeli doctor
 INSERT INTO doctor (name, surname, email)
 VALUES
-    ('Agata', 'Torbe', 'agata_torbe@clinic.pl'),
-    ('Renata', 'Kruk', 'renata_kruk@clinic.pl'),
-    ('Danuta', 'Wasilewska', 'danuta_wasilewska@clinic.pl');
+    ('Agata', 'Torbe', 'agata.torbe@clinic.pl'),
+    ('Renata', 'Kruk', 'renata.kruk@clinic.pl'),
+    ('Danuta', 'Wasilewska', 'danuta.wasilewska@clinic.pl');
 
 -- Wprowadzenie przykładowych danych dla tabeli address
 INSERT INTO address (country, city, postal_code, address)
@@ -17,11 +17,11 @@ VALUES
 -- Wprowadzenie przykładowych danych dla tabeli patient
 INSERT INTO patient (name, surname, phone, email, address_id)
 VALUES
-    ('Agnieszka', 'Nowak', '123456789', 'agnieszka@example.com', 1),
-    ('Michał', 'Kowalski', '987654321', 'michal@example.com', 2),
-    ('Magdalena', 'Szymańska', '555666777', 'magdalena@example.com', 3),
-    ('Kamil', 'Wójcik', '111222333', 'kamil@example.com', 4),
-    ('Monika', 'Zając', '999888777', 'monika@example.com', 5);
+    ('Agnieszka', 'Nowak', '123456789', 'agnieszka.nowak@clinic.pl', 1),
+    ('Michał', 'Kowalski', '987654321', 'michal.kowalski@clinic.pl', 2),
+    ('Magdalena', 'Szymańska', '555666777', 'magdalena.szymanska@clinic.pl', 3),
+    ('Kamil', 'Wójcik', '111222333', 'kamil.wojcik@clinic.pl', 4),
+    ('Monika', 'Zając', '999888777', 'monika.zajac@clinic.pl', 5);
 
 -- Wprowadzenie przykładowych danych dla tabeli medical_appointment_date
 INSERT INTO medical_appointment_date (date_time, status, doctor_id)

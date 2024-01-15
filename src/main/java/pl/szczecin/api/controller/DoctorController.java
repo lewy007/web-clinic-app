@@ -30,13 +30,15 @@ public class DoctorController {
         // email zalogowanego doctora
         String loggedInDoctorEmail = doctorService.getLoggedInDoctorEmail();
 
-        // wyciagamy wszystkie przyszłe daty (dokladnie ich id) powiazane z lekarzem
+        // wyciagamy wszystkie przyszłe daty (dokladnie ich id) powiazane z lekarzem.
+        // Założenia biznesu-> zakres dat to aktualny dzień plus przyszłość,
+        // czyli w Schedule danego doctora widnieje cały czas aktualny dzień do godz. 23.59
         var allFutureMedicalAppointmentDateIdsByDoctorEmail =
                 medicalAppointmentDateService.getAllFutureDatesByDoctorEmail(loggedInDoctorEmail).stream()
                         .map(MedicalAppointmentDate::getMedicalAppointmentDateId)
                         .toList();
 
-        // wyszukujemy wszystkie wykorzystane daty wizyt (medical_appointment_date) w medical_appointment
+        // wyszukujemy wszystkie przyszłe, zarezerwowane daty wizyt (medical_appointment_date) w medical_appointment
         // dla danego lekarza
         var medicalAppointmentDTOs = medicalAppointmentService
                 .findAllMedicalAppointmentByMADateID(allFutureMedicalAppointmentDateIdsByDoctorEmail).stream()
