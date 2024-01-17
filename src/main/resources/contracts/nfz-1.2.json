@@ -1,0 +1,2248 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.2",
+    "title": "API Umowy NFZ 1.2"
+  },
+  "basePath": "/app-umw-api",
+  "paths": {
+    "/months/{id}": {
+      "get": {
+        "tags": [
+          "Umowy"
+        ],
+        "summary": "",
+        "description": "Zasób zwraca szczegóły planu miesięcznego o wskazanym id planu umowy, umowy zawartej przez NFZ ze świadczeniodawcą",
+        "operationId": "GetMonth",
+        "consumes": [
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unikalny identyfikator miesiąca w planie umowy",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Określa aktualnie wyświetlaną stronę.",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 1
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Parametr umożliwa sortowanie po wskazanym atrybucie.\r\nSkładnia: {attributeName}[:{sortDirection}]\r\n{attributeName} - atrybut po którym ma nastąpić sortowanie\r\n{sortDirection} - opcjonalny parametr kierunku sortowania\r\nDostępne wartośći:\r\nASC - Rosnąco\r\nDESC - Malejąco",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Określa liczbę pozycji wyświetlanych na stronie (domyślnie 10; maks. 25).",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 10
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Określa aktualnie wyświetlaną stronę.\r\n            Określa format odpowiedzi.\r\n            json — JavaScript object notation\r\n            xml — Extensible markup language",
+            "required": false,
+            "type": "string",
+            "default": "json"
+          },
+          {
+            "name": "api-version",
+            "in": "query",
+            "description": "The requested API version",
+            "required": false,
+            "type": "string",
+            "default": "1.2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Szczegóły miesiąca w planie umowy",
+            "schema": {
+              "$ref": "#/definitions/agreement-plan-month-response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errors-response"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/plans/{id}": {
+      "get": {
+        "tags": [
+          "Umowy"
+        ],
+        "summary": "",
+        "description": "Zasób zwraca szczegółowy plan umowy zawartej przez NFZ ze świadczeniodawcą o wskazanym id umowy",
+        "operationId": "GetPlan",
+        "consumes": [
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unikalny identyfikator planu umowy",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Parametr umożliwa sortowanie po wskazanym atrybucie.\r\nSkładnia: {attributeName}[:{sortDirection}]\r\n{attributeName} - atrybut po którym ma nastąpić sortowanie\r\n{sortDirection} - opcjonalny parametr kierunku sortowania\r\nDostępne wartośći:\r\nASC - Rosnąco\r\nDESC - Malejąco",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "strona miesięcy w planie umowy",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Ilość miesięcy na stronę",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 10
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Określa format odpowiedzi.\r\njson — JavaScript object notation\r\nxml — Extensible markup language",
+            "required": false,
+            "type": "string",
+            "default": "json"
+          },
+          {
+            "name": "api-version",
+            "in": "query",
+            "description": "The requested API version",
+            "required": false,
+            "type": "string",
+            "default": "1.2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Szczegóły planu umowy wraz z miesiącami",
+            "schema": {
+              "$ref": "#/definitions/agreement-plan-response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errors-response"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/agreements": {
+      "get": {
+        "tags": [
+          "Umowy"
+        ],
+        "summary": "",
+        "description": "Zasób zwraca listę umów zawartych przez NFZ ze świadczeniodawcami określoną parametrami wyszukiwania",
+        "operationId": "GetAllAgreements",
+        "consumes": [
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "description": "Rok podpisania umowy",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "branch",
+            "in": "query",
+            "description": "Numer oddziału NFZ z którym została podpisana umowa:\r\n            01 - Dolnonośląski\r\n            02 - Kujawsko-Pomorski\r\n            03 - Lubelski\r\n            04 - Lubuski\r\n            05 - Łódzki\r\n            06 - Małopolski\r\n            07 - Mazowiecki\r\n            08 - Opolski\r\n            09 - Podkarpacki\r\n            10 - Podlaski\r\n            11 - Pomorski\r\n            12 - Śląski\r\n            13 - Świętokrzyski\r\n            14 - Warmińsko-Mazurski\r\n            15 - Wielkopolski\r\n            16 - Zachodniopomorski",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "serviceType",
+            "in": "query",
+            "description": "Kod rodzaju świadczenia",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "productCode",
+            "in": "query",
+            "description": "Kod produktu kontraktowego lub środka ortopedycznego",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "providerCode",
+            "in": "query",
+            "description": "Kod świadczeniodawcy",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "providerName",
+            "in": "query",
+            "description": "Nazwa świadczeniodawcy",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "place",
+            "in": "query",
+            "description": "Miejscowość",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "nip",
+            "in": "query",
+            "description": "NIP świadczeniodawcy",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "regon",
+            "in": "query",
+            "description": "REGON świadczeniodawcy",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "updatedAt",
+            "in": "query",
+            "description": "Data aktualizacji umowy. Zwrócone zostąną umowy z datą aktualizacji równą lub większą przekazanej datcie",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Parametr umożliwa sortowanie po wskazanym atrybucie.\r\nSkładnia: {attributeName}[:{sortDirection}]\r\n{attributeName} - atrybut po którym ma nastąpić sortowanie - domyślnie \"origin-code\"\r\n{sortDirection} - opcjonalny parametr kierunku sortowania  - domyślnie \"asc\"\r\nDostępne wartośći:\r\nASC - Rosnąco\r\nDESC - Malejąco",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Określa aktualnie wyświetlaną stronę.",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Określa liczbę pozycji wyświetlanych na stronie (domyślnie 10; maks. 25).",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 10
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Określa aktualnie wyświetlaną stronę.\r\n            Określa format odpowiedzi.\r\n            json — JavaScript object notation\r\n            xml — Extensible markup language",
+            "required": false,
+            "type": "string",
+            "default": "json"
+          },
+          {
+            "name": "api-version",
+            "in": "query",
+            "description": "The requested API version",
+            "required": false,
+            "type": "string",
+            "default": "1.2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista umów",
+            "schema": {
+              "$ref": "#/definitions/agreement-list-response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errors-response"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/agreements/{id}": {
+      "get": {
+        "tags": [
+          "Umowy"
+        ],
+        "summary": "",
+        "description": "Zasób zwraca szczegóły umowy zawartej przez NFZ ze świadczeniodawcą o wskazanym id umowy",
+        "operationId": "GetAgreement",
+        "consumes": [
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unikalny identyfikator umowy",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Parametr umożliwa sortowanie po wskazanym atrybucie.\r\nSkładnia: {attributeName}[:{sortDirection}]\r\n{attributeName} - atrybut po którym ma nastąpić sortowanie\r\n{sortDirection} - opcjonalny parametr kierunku sortowania\r\nDostępne wartośći:\r\nASC - Rosnąco",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Określa aktualnie wyświetlaną stronę.",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Określa liczbę pozycji wyświetlanych na stronie (domyślnie 10; maks. 25).",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 10
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Określa aktualnie wyświetlaną stronę.\r\n            Określa format odpowiedzi.\r\n            json — JavaScript object notation\r\n            xml — Extensible markup language",
+            "required": false,
+            "type": "string",
+            "default": "json"
+          },
+          {
+            "name": "api-version",
+            "in": "query",
+            "description": "The requested API version",
+            "required": false,
+            "type": "string",
+            "default": "1.2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista umów",
+            "schema": {
+              "$ref": "#/definitions/agreement-response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errors-response"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/available-years": {
+      "get": {
+        "tags": [
+          "Umowy"
+        ],
+        "summary": "",
+        "description": "Zwraca informację o przedziale lat za które są dostępne dane",
+        "operationId": "GetAvailablePeriods",
+        "consumes": [
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Określa aktualnie wyświetlaną stronę.\r\n            Określa format odpowiedzi.\r\n            json — JavaScript object notation\r\n            xml — Extensible markup language",
+            "required": false,
+            "type": "string",
+            "default": "json"
+          },
+          {
+            "name": "api-version",
+            "in": "query",
+            "description": "The requested API version",
+            "required": false,
+            "type": "string",
+            "default": "1.2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista umów",
+            "schema": {
+              "$ref": "#/definitions/available-year"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errors-response"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/contract-products": {
+      "get": {
+        "tags": [
+          "Słowniki"
+        ],
+        "summary": "Słownik produktów kontraktowych",
+        "description": "Zasób zwraca liste produktów kontraktowych spełniających kryteria wyszukiwania",
+        "operationId": "GetAllContractProducts",
+        "consumes": [
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "description": "rok",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "description": "kod produktu kontraktowego",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "nazwa produktu kontraktowego",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Określa aktualnie wyświetlaną stronę.",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Określa liczbę pozycji wyświetlanych na stronie (domyślnie 10; maks. 25).",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 10
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Parametr umożliwa sortowanie po wskazanym atrybucie.\r\nSkładnia: {attributeName}[:{sortDirection}]\r\n{attributeName} - atrybut po którym ma nastąpić sortowanie - domyślnie \"name\"\r\n{sortDirection} - opcjonalny parametr kierunku sortowania  - domyślnie \"asc\"\r\nDostępne wartośći:\r\nASC - Rosnąco\r\nDESC - Malejąco",
+            "required": false,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Określa aktualnie wyświetlaną stronę.\r\n            Określa format odpowiedzi.\r\n            json — JavaScript object notation\r\n            xml — Extensible markup language",
+            "required": false,
+            "type": "string",
+            "default": "json"
+          },
+          {
+            "name": "api-version",
+            "in": "query",
+            "description": "The requested API version",
+            "required": false,
+            "type": "string",
+            "default": "1.2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista umów",
+            "schema": {
+              "$ref": "#/definitions/dictionary-entry-list-response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errors-response"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/orthopedic-supplies": {
+      "get": {
+        "tags": [
+          "Słowniki"
+        ],
+        "summary": "Słownik środków ortopedycznych",
+        "description": "Zasób zwraca liste środków ortopedycznych spełniających kryteria wyszukiwania",
+        "operationId": "GetAllOrthopedicSupplies",
+        "consumes": [
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "description": "rok.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "description": "kod środka ortopedycznego.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "nazwa środka ortopedycznego.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Parametr umożliwa sortowanie po wskazanym atrybucie.\r\nSkładnia: {attributeName}[:{sortDirection}]\r\n{attributeName} - atrybut po którym ma nastąpić sortowanie - domyślnie \"name\"\r\n{sortDirection} - opcjonalny parametr kierunku sortowania  - domyślnie \"asc\"\r\nDostępne wartośći:\r\nASC - Rosnąco\r\nDESC - Malejąco",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Określa aktualnie wyświetlaną stronę.",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Określa liczbę pozycji wyświetlanych na stronie (domyślnie 10; maks. 25).",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 10
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Określa aktualnie wyświetlaną stronę.\r\n            Określa format odpowiedzi.\r\n            json — JavaScript object notation\r\n            xml — Extensible markup language",
+            "required": false,
+            "type": "string",
+            "default": "json"
+          },
+          {
+            "name": "api-version",
+            "in": "query",
+            "description": "The requested API version",
+            "required": false,
+            "type": "string",
+            "default": "1.2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista umów",
+            "schema": {
+              "$ref": "#/definitions/dictionary-entry-list-response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errors-response"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/providers": {
+      "get": {
+        "tags": [
+          "Słowniki"
+        ],
+        "summary": "Słownik świadczeniodawców",
+        "description": "Zasób zwraca listę świadczeniodawców mających podpisaną umowę z NFZ, spełniających kryteria wyszukiwania",
+        "operationId": "GetAllDProviders",
+        "consumes": [
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "description": "Rok.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "branch",
+            "in": "query",
+            "description": "Numer oddziału NFZ z którym została podpisana umowa:\r\n            01 - Dolnonośląski\r\n            02 - Kujawsko-Pomorski\r\n            03 - Lubelski\r\n            04 - Lubuski\r\n            05 - Łódzki\r\n            06 - Małopolski\r\n            07 - Mazowiecki\r\n            08 - Opolski\r\n            09 - Podkarpacki\r\n            10 - Podlaski\r\n            11 - Pomorski\r\n            12 - Śląski\r\n            13 - Świętokrzyski\r\n            14 - Warmińsko-Mazurski\r\n            15 - Wielkopolski\r\n            16 - Zachodniopomorski",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "description": "Kod świadczeniodawcy.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Nazwa świadczeniodawcy.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "nip",
+            "in": "query",
+            "description": "NIP świadczeniodawcy.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "regon",
+            "in": "query",
+            "description": "REGON świadczeniodawcy.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "postCode",
+            "in": "query",
+            "description": "Kod pocztowy świadczeniodawcy.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "street",
+            "in": "query",
+            "description": "Ulica świadczeniodawcy.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "place",
+            "in": "query",
+            "description": "Miejscowość świadczeniodawcy.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "Numer telefonu świadczeniodawcy.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "commune",
+            "in": "query",
+            "description": "Gmina.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Parametr umożliwa sortowanie po wskazanym atrybucie.\r\nSkładnia: {attributeName}[:{sortDirection}]\r\n{attributeName} - atrybut po którym ma nastąpić sortowanie - domyślnie \"name\"\r\n{sortDirection} - opcjonalny parametr kierunku sortowania  - domyślnie \"asc\"\r\nDostępne wartośći:\r\nASC - Rosnąco\r\nDESC - Malejąco",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Określa aktualnie wyświetlaną stronę.",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Określa liczbę pozycji wyświetlanych na stronie (domyślnie 10; maks. 25).",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 10
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Określa aktualnie wyświetlaną stronę.\r\n            Określa format odpowiedzi.\r\n            json — JavaScript object notation\r\n            xml — Extensible markup language",
+            "required": false,
+            "type": "string",
+            "default": "json"
+          },
+          {
+            "name": "api-version",
+            "in": "query",
+            "description": "The requested API version",
+            "required": false,
+            "type": "string",
+            "default": "1.2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista umów",
+            "schema": {
+              "$ref": "#/definitions/dictionary-provider-entry-list-response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errors-response"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/service-types": {
+      "get": {
+        "tags": [
+          "Słowniki"
+        ],
+        "summary": "Słownik rodzajów świadczeń",
+        "description": "Zasób zwraca liste rodzajów świadczeń spełniających kryteria wyszukiwania",
+        "operationId": "GetAllServiceTypes",
+        "consumes": [
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "description": "rok.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "description": "kod rodzaju świadczenia.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "nazwa rodzaju świadczenia.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Parametr umożliwa sortowanie po wskazanym atrybucie.\r\nSkładnia: {attributeName}[:{sortDirection}]\r\n{attributeName} - atrybut po którym ma nastąpić sortowanie - domyślnie \"name\"\r\n{sortDirection} - opcjonalny parametr kierunku sortowania  - domyślnie \"asc\"\r\nDostępne wartośći:\r\nASC - Rosnąco\r\nDESC - Malejąco",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Określa aktualnie wyświetlaną stronę.",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Określa liczbę pozycji wyświetlanych na stronie (domyślnie 10; maks. 25).",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 10
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Określa aktualnie wyświetlaną stronę.\r\n            Określa format odpowiedzi.\r\n            json — JavaScript object notation\r\n            xml — Extensible markup language",
+            "required": false,
+            "type": "string",
+            "default": "json"
+          },
+          {
+            "name": "api-version",
+            "in": "query",
+            "description": "The requested API version",
+            "required": false,
+            "type": "string",
+            "default": "1.2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista umów",
+            "schema": {
+              "$ref": "#/definitions/dictionary-entry-list-response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errors-response"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/providers/{year}": {
+      "get": {
+        "tags": [
+          "Umowy"
+        ],
+        "summary": "",
+        "description": "Zasób zwraca listę świadczeniodawców, którzy mają podpisaną umowę/umowy z NFZ określonych parametrami wyszukiwania",
+        "operationId": "GetAllProviders",
+        "consumes": [
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "description": "Rok podpisania umowy",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "branch",
+            "in": "query",
+            "description": "Numer oddziału z którym została podpisana umowa",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "productCode",
+            "in": "query",
+            "description": "Kod produktu jednostkowego lub środka ortopedycznego",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "serviceType",
+            "in": "query",
+            "description": "Kod rodzaju świadczenia",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "description": "Kod świadczeniodawcy",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Nazwa świadczeniodawcy",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "postCode",
+            "in": "query",
+            "description": "Kod pocztowy",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "street",
+            "in": "query",
+            "description": "Ulica",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "place",
+            "in": "query",
+            "description": "Miejscowość",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "nip",
+            "in": "query",
+            "description": "Numer NIP",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "regon",
+            "in": "query",
+            "description": "Regon",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "Numer telefony",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "commune",
+            "in": "query",
+            "description": "Gmina",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Parametr umożliwa sortowanie po wskazanym atrybucie.\r\nSkładnia: {attributeName}[:{sortDirection}]\r\n{attributeName} - atrybut po którym ma nastąpić sortowanie - domyślnie \"provider-name\"\r\n{sortDirection} - opcjonalny parametr kierunku sortowania  - domyślnie \"asc\"\r\nDostępne wartośći:\r\nASC - Rosnąco\r\nDESC - Malejąco",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Określa aktualnie wyświetlaną stronę.",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Określa liczbę pozycji wyświetlanych na stronie (maks. 25)",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 10
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Określa format odpowiedzi.\r\njson — JavaScript object notation\r\nxml — Extensible markup language",
+            "required": false,
+            "type": "string",
+            "default": "json"
+          },
+          {
+            "name": "api-version",
+            "in": "query",
+            "description": "The requested API version",
+            "required": false,
+            "type": "string",
+            "default": "1.2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista świadczeniodawców z podpisanyą umową/umowami.",
+            "schema": {
+              "$ref": "#/definitions/providers-list-response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errors-response"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/providers/{year}/{code}": {
+      "get": {
+        "tags": [
+          "Umowy"
+        ],
+        "summary": "",
+        "description": "Zasób zwraca szczegóły świadczeniodawcy wskazanego numerem",
+        "operationId": "ProviderDetailsRoute",
+        "consumes": [
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "branch",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "in": "path",
+            "description": "Kod świadczeniodawcy",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "updatedAt",
+            "in": "query",
+            "description": "Data aktualizacji umowy. Zwrócone zostąną umowy z datą aktualizacji równą lub większą przekazanej datcie",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Określa aktualnie wyświetlaną stronę.",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Określa liczbę pozycji wyświetlanych na stronie (maks. 25)",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": 10
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Określa format odpowiedzi.\r\njson — JavaScript object notation\r\nxml — Extensible markup language",
+            "required": false,
+            "type": "string",
+            "default": "json"
+          },
+          {
+            "name": "api-version",
+            "in": "query",
+            "description": "The requested API version",
+            "required": false,
+            "type": "string",
+            "default": "1.2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Szczegóły świadczeniodawcy",
+            "schema": {
+              "$ref": "#/definitions/provider-response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errors-response"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/version": {
+      "get": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "",
+        "operationId": "Get",
+        "consumes": [
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "default": "json"
+          },
+          {
+            "name": "api-version",
+            "in": "query",
+            "description": "The requested API version",
+            "required": false,
+            "type": "string",
+            "default": "1.2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/version"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/errors-response"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "definitions": {
+    "agreement-plan-month-response": {
+      "description": "Odpowiedź na żądanie szczegółów miesiąca planu umowy\r\nSchema: https://api.nfz.gov.pl/app-umw-api/#structure",
+      "type": "object",
+      "properties": {
+        "meta": {
+          "$ref": "#/definitions/extended-metadata",
+          "description": "Metadane"
+        },
+        "links": {
+          "$ref": "#/definitions/links",
+          "description": "Linki HATEOS"
+        },
+        "data": {
+          "$ref": "#/definitions/agreement-plan-month-data",
+          "description": "Szczegóły umowy"
+        }
+      }
+    },
+    "extended-metadata": {
+      "description": "Metadane\r\nWięcej informacji: https://api.nfz.gov.pl/app-umw-api/metadata",
+      "type": "object",
+      "properties": {
+        "@context": {
+          "description": "Link do kontekstu wyjaśniającego model",
+          "type": "string"
+        },
+        "count": {
+          "format": "int32",
+          "description": "Liczba znalezionych pozycji",
+          "type": "integer"
+        },
+        "page": {
+          "format": "int32",
+          "description": "Aktualnie przeglądana strona",
+          "type": "integer"
+        },
+        "limit": {
+          "format": "int32",
+          "description": "Liczba pozycji na stronę",
+          "type": "integer"
+        },
+        "title": {
+          "description": "Tytuł",
+          "type": "string"
+        },
+        "url": {
+          "description": "Url zasobu",
+          "type": "string"
+        },
+        "provider": {
+          "description": "Dostawca",
+          "type": "string"
+        },
+        "date-published": {
+          "description": "Data publikacji zasobu",
+          "type": "string"
+        },
+        "date-modified": {
+          "description": "Data modyfikacji zasobu",
+          "type": "string"
+        },
+        "description": {
+          "description": "Opis",
+          "type": "string"
+        },
+        "keywords": {
+          "description": "Słowa kluczowe",
+          "type": "string"
+        },
+        "language": {
+          "description": "Język",
+          "type": "string"
+        },
+        "content-type": {
+          "description": "MIME",
+          "type": "string"
+        },
+        "is-part-of": {
+          "description": "Określa przynależność do grupy",
+          "type": "string"
+        },
+        "version": {
+          "description": "Wskazuję wersję API",
+          "type": "string"
+        }
+      }
+    },
+    "links": {
+      "description": "Linki nawigujące HATEOS\r\nWięcej informacji: https://api.nfz.gov.pl/app-umw-api/#links",
+      "type": "object",
+      "properties": {
+        "first": {
+          "description": "Link do pierwszej strony ze znalezionymi pozycjami",
+          "type": "string"
+        },
+        "prev": {
+          "description": "Link do poprzedniej strony ze znalezionymi pozycjami",
+          "type": "string"
+        },
+        "self": {
+          "description": "Link aktualnej strony ze znalezionymi pozycjami",
+          "type": "string"
+        },
+        "next": {
+          "description": "Link do następnej strony ze znalezionymi pozycjami",
+          "type": "string"
+        },
+        "last": {
+          "description": "Link do ostatniej strony ze znalezionymi pozycjami",
+          "type": "string"
+        },
+        "related": {
+          "description": "Link do zasobu powiązanego",
+          "type": "string"
+        }
+      }
+    },
+    "agreement-plan-month-data": {
+      "description": "Szczególy umowy\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#agreement-plan-month-data",
+      "type": "object",
+      "properties": {
+        "header": {
+          "$ref": "#/definitions/agreement-month-header",
+          "description": "Nagłówek odpowiedzi"
+        },
+        "month": {
+          "$ref": "#/definitions/agreement-plan-month",
+          "description": "Miesiąc w planie umowy"
+        },
+        "packages": {
+          "description": "Lista pakietów w miesiącu umowy",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/agreement-package"
+          }
+        }
+      }
+    },
+    "agreement-month-header": {
+      "description": "Nagłówek odpowiedzi planu umowy w rozbicu na miesiące\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#agreement-month-header",
+      "type": "object",
+      "properties": {
+        "year": {
+          "format": "int32",
+          "description": "Rok",
+          "type": "integer"
+        },
+        "branch": {
+          "description": "Oddział wojewódzki",
+          "type": "string"
+        },
+        "provider-code": {
+          "description": "Kod świadczeniodawcy",
+          "type": "string"
+        },
+        "provider-name": {
+          "description": "Nazwa świadczeniodawcy",
+          "type": "string"
+        },
+        "order": {
+          "description": "Wyróżnik",
+          "type": "string"
+        },
+        "agreement-code": {
+          "description": "Kod umowy",
+          "type": "string"
+        },
+        "service-type-name": {
+          "description": "Nazwa rodzaju świadczenia",
+          "type": "string"
+        },
+        "contract-product-code": {
+          "description": "Produkt kontraktowy",
+          "type": "string"
+        }
+      }
+    },
+    "agreement-plan-month": {
+      "description": "Szczegóły planu umowy w rozbiciu na miesiąc\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#agreement-plan-month",
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "description": "Identyfikator miesiąca",
+          "type": "string"
+        },
+        "type": {
+          "description": "Typ obiektu",
+          "type": "string"
+        },
+        "attributes": {
+          "$ref": "#/definitions/agreement-plan-month-attributes",
+          "description": "Atrybuty miesiąca"
+        },
+        "links": {
+          "$ref": "#/definitions/base-links",
+          "description": "Linki"
+        }
+      }
+    },
+    "agreement-package": {
+      "description": "Szczegóły pakietu umowy\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#agreement-package",
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "Typ obiektu",
+          "type": "string"
+        },
+        "attributes": {
+          "$ref": "#/definitions/agreement-package-attributes",
+          "description": "Atrybuty miesiąca"
+        }
+      }
+    },
+    "agreement-plan-month-attributes": {
+      "description": "Atrybuty miesiąca w planie umowy\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#agreement-plan-month-attributes",
+      "type": "object",
+      "properties": {
+        "unit-count": {
+          "format": "double",
+          "description": "Sumaryczna liczba kontraktu dla produktu",
+          "type": "number"
+        },
+        "month": {
+          "format": "int32",
+          "description": "Miesiąc",
+          "type": "integer"
+        },
+        "price": {
+          "format": "double",
+          "description": "Sumaryczna kwota kontraktu dla produktu",
+          "type": "number"
+        },
+        "avg-price": {
+          "format": "double",
+          "description": "Średnia cena produktu",
+          "type": "number"
+        },
+        "packages-type": {
+          "description": "Typ pakietów",
+          "type": "string"
+        }
+      }
+    },
+    "base-links": {
+      "description": "Podstawowe linki nawigujące\r\nWięcej informacji: https://api.nfz.gov.pl/app-umw-api/#links",
+      "type": "object",
+      "properties": {
+        "related": {
+          "description": "Link do zasobu powiązanego",
+          "type": "string"
+        }
+      }
+    },
+    "agreement-package-attributes": {
+      "description": "Atrybuty pakietu umowy\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#agreement-package-attributes",
+      "type": "object",
+      "properties": {
+        "unit-product-code": {
+          "description": "Kod produktu kontraktowego",
+          "type": "string"
+        },
+        "unit-product-name": {
+          "description": "Nazwa produktu kontraktowego",
+          "type": "string"
+        },
+        "weight": {
+          "format": "double",
+          "description": "Waga efektywna",
+          "type": "number"
+        }
+      }
+    },
+    "errors-response": {
+      "type": "object",
+      "properties": {
+        "errors": {
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/error"
+          }
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "error-result": {
+          "type": "string"
+        },
+        "error-reason": {
+          "type": "string"
+        },
+        "error-solution": {
+          "type": "string"
+        },
+        "error-help": {
+          "type": "string"
+        },
+        "error-code": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "agreement-plan-response": {
+      "description": "Odpowiedź na żądanie szczegółów planu umowy",
+      "type": "object",
+      "properties": {
+        "meta": {
+          "$ref": "#/definitions/extended-metadata",
+          "description": "Metadane"
+        },
+        "links": {
+          "$ref": "#/definitions/links",
+          "description": "Linki HATEOS"
+        },
+        "data": {
+          "$ref": "#/definitions/agreement-plan-data",
+          "description": "Szczegóły umowy"
+        }
+      }
+    },
+    "agreement-plan-data": {
+      "description": "Szczególy umowy\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#agreement-plan-data",
+      "type": "object",
+      "properties": {
+        "header": {
+          "$ref": "#/definitions/agreement-plan-header",
+          "description": "Nagłówek odpowiedzi"
+        },
+        "agreement-plan": {
+          "$ref": "#/definitions/agreement-plan",
+          "description": "Umowa"
+        },
+        "months": {
+          "description": "Lista planów umowy",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/agreement-plan-month"
+          }
+        }
+      }
+    },
+    "agreement-plan-header": {
+      "description": "Nagłówek planu umowy\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#agreement-plan-header",
+      "type": "object",
+      "properties": {
+        "year": {
+          "format": "int32",
+          "description": "Rok",
+          "type": "integer"
+        },
+        "branch": {
+          "description": "Oddział wojewódzki",
+          "type": "string"
+        },
+        "provider-code": {
+          "description": "Kod świadczeniodawcy",
+          "type": "string"
+        },
+        "provider-name": {
+          "description": "Nazwa świadczeniodawcy",
+          "type": "string"
+        },
+        "agreement-code": {
+          "description": "Kod umowy",
+          "type": "string"
+        },
+        "service-type-name": {
+          "description": "Nazwa rodzaju świadczenia",
+          "type": "string"
+        }
+      }
+    },
+    "agreement-plan": {
+      "description": "Szczegóły planu umowy\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#agreement-plan",
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "description": "Identyfikator umowy",
+          "type": "string"
+        },
+        "type": {
+          "description": "Typ obiektu",
+          "type": "string"
+        },
+        "attributes": {
+          "$ref": "#/definitions/agreement-plan-attributes",
+          "description": "Atrybuty planu umowy"
+        },
+        "links": {
+          "$ref": "#/definitions/base-links",
+          "description": "Linki"
+        }
+      }
+    },
+    "agreement-plan-attributes": {
+      "description": "Atrybuty planu umowy\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#agreement-plan-attributes",
+      "type": "object",
+      "properties": {
+        "product-code": {
+          "description": "Kod produktu kontraktowego",
+          "type": "string"
+        },
+        "product-name": {
+          "description": "Nazwa produktu kontraktowego",
+          "type": "string"
+        },
+        "order": {
+          "format": "int32",
+          "description": "Wyróżnik produktu w planie umowy",
+          "type": "integer"
+        },
+        "unit-count": {
+          "format": "double",
+          "description": "Sumaryczna liczba kontraktu dla produktu",
+          "type": "number"
+        },
+        "price": {
+          "format": "double",
+          "description": "Sumaryczna kwota kontraktu dla produktu",
+          "type": "number"
+        },
+        "avg-price": {
+          "format": "double",
+          "description": "Średnia cena produktu",
+          "type": "number"
+        },
+        "date-from": {
+          "format": "date-time",
+          "description": "Data początku obowiązywania produktu kontraktowego w planie umowy",
+          "type": "string"
+        },
+        "date-to": {
+          "format": "date-time",
+          "description": "Data końca obowiązywania produktu kontraktowego w planie umowy",
+          "type": "string"
+        }
+      }
+    },
+    "agreement-list-response": {
+      "description": "Odpowiedź na żądanie listy umów",
+      "type": "object",
+      "properties": {
+        "meta": {
+          "$ref": "#/definitions/extended-metadata",
+          "description": "Metadane"
+        },
+        "links": {
+          "$ref": "#/definitions/links",
+          "description": "Linki HATEOS"
+        },
+        "data": {
+          "$ref": "#/definitions/agreement-list-data",
+          "description": "Lista umów"
+        }
+      }
+    },
+    "agreement-list-data": {
+      "description": "Dane dotyczące listy umów\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#agreement-list-data",
+      "type": "object",
+      "properties": {
+        "agreements": {
+          "description": "Lista umów",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/agreement"
+          }
+        }
+      }
+    },
+    "agreement": {
+      "description": "Szczegóły umowy podpisanej ze świadczeniodawcą\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#agreement",
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "description": "Identyfikator umowy",
+          "type": "string"
+        },
+        "type": {
+          "description": "Typ obiektu",
+          "type": "string"
+        },
+        "attributes": {
+          "$ref": "#/definitions/agreement-attributes",
+          "description": "Atrybuty umowy"
+        },
+        "links": {
+          "$ref": "#/definitions/base-links",
+          "description": "Linki"
+        }
+      }
+    },
+    "agreement-attributes": {
+      "description": "Atrybuty umowy\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#agreement-attributes",
+      "type": "object",
+      "properties": {
+        "code": {
+          "description": "Kod umowy",
+          "type": "string"
+        },
+        "technical-code": {
+          "description": "Techniczny kod umowy przekazywany w ramach UMX, używany w ramach wymiany danych z NFZ",
+          "type": "string"
+        },
+        "origin-code": {
+          "description": "Kod pierwotny umowy",
+          "type": "string"
+        },
+        "service-type": {
+          "description": "Rodzaj świadczenia",
+          "type": "string"
+        },
+        "service-name": {
+          "description": "Nazwa rodzaju świadczenia",
+          "type": "string"
+        },
+        "amount": {
+          "format": "double",
+          "description": "Kwota",
+          "type": "number"
+        },
+        "updated-at": {
+          "format": "date-time",
+          "description": "Data aktualizacji danych w centrali",
+          "type": "string"
+        },
+        "provider-code": {
+          "description": "Kod świadczeniodawcy",
+          "type": "string"
+        },
+        "provider-nip": {
+          "description": "Numer NIP",
+          "type": "string"
+        },
+        "provider-regon": {
+          "description": "Numer REGON",
+          "type": "string"
+        },
+        "provider-registry-number": {
+          "description": "Numer księgi rejestrowej",
+          "type": "string"
+        },
+        "provider-name": {
+          "description": "Nazwa świadczeniodawcy",
+          "type": "string"
+        },
+        "provider-place": {
+          "description": "Miejscowość świadczeniodawcy",
+          "type": "string"
+        },
+        "year": {
+          "format": "int32",
+          "description": "Rok",
+          "type": "integer"
+        },
+        "branch": {
+          "description": "Oddział świadczeniodawcy",
+          "type": "string"
+        }
+      }
+    },
+    "agreement-response": {
+      "description": "Odpowiedź na żądanie szczegółów umowy",
+      "type": "object",
+      "properties": {
+        "meta": {
+          "$ref": "#/definitions/extended-metadata",
+          "description": "Metadane"
+        },
+        "links": {
+          "$ref": "#/definitions/links",
+          "description": "Linki HATEOS"
+        },
+        "data": {
+          "$ref": "#/definitions/agreement-data",
+          "description": "Szczegóły umowy"
+        }
+      }
+    },
+    "agreement-data": {
+      "description": "Szczególy umowy\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#agreement-data",
+      "type": "object",
+      "properties": {
+        "agreement": {
+          "$ref": "#/definitions/agreement",
+          "description": "Umowa"
+        },
+        "plans": {
+          "description": "Lista planów umowy",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/agreement-plan"
+          }
+        },
+        "orthopedic-supplies": {
+          "description": "Lista środków ortopedycznych",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/orthopedic-supply"
+          }
+        }
+      }
+    },
+    "orthopedic-supply": {
+      "description": "Szczegóły środka ortopedycznego\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#orthopedic-supply",
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "Typ obiektu",
+          "type": "string"
+        },
+        "attributes": {
+          "$ref": "#/definitions/orthopedic-supply-attributes",
+          "description": "Atrybuty środka ortopedycznego"
+        },
+        "links": {
+          "$ref": "#/definitions/base-links",
+          "description": "Linki"
+        }
+      }
+    },
+    "orthopedic-supply-attributes": {
+      "description": "Atrybuty planu umowy\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#orthopedic-supply-attributes",
+      "type": "object",
+      "properties": {
+        "code": {
+          "description": "Kod środka ortopedycznego",
+          "type": "string"
+        },
+        "name": {
+          "description": "Nazwa środka ortopedycznego",
+          "type": "string"
+        }
+      }
+    },
+    "available-year": {
+      "description": "Dostępny minimalny i maksymalny rok za który dostępne są dane",
+      "type": "object",
+      "properties": {
+        "start-year": {
+          "format": "int32",
+          "description": "Rok początkowy",
+          "type": "integer"
+        },
+        "end-year": {
+          "format": "int32",
+          "description": "Rok końcowy",
+          "type": "integer"
+        }
+      }
+    },
+    "dictionary-entry-list-response": {
+      "description": "Odpowiedź na żądanie zasobu słownikowego",
+      "type": "object",
+      "properties": {
+        "meta": {
+          "$ref": "#/definitions/extended-metadata",
+          "description": "Metadane"
+        },
+        "links": {
+          "$ref": "#/definitions/links",
+          "description": "Linki HATEOS"
+        },
+        "data": {
+          "$ref": "#/definitions/dictionary-entry-list-data",
+          "description": "Lista pozycji ze słownika"
+        }
+      }
+    },
+    "dictionary-entry-list-data": {
+      "description": "Dane dotyczące listy pozycji ze słownika\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#dictionary-entry-list-data",
+      "type": "object",
+      "properties": {
+        "entries": {
+          "description": "Lista pozycji ze słownika",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/dictionary-entry"
+          }
+        }
+      }
+    },
+    "dictionary-entry": {
+      "description": "Pozycja słownikowa\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#dictionary-entry",
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "Typ obiektu",
+          "type": "string"
+        },
+        "attributes": {
+          "$ref": "#/definitions/dictionary-entry-attributes",
+          "description": "Atrybuty pozycji słownikowej"
+        }
+      }
+    },
+    "dictionary-entry-attributes": {
+      "description": "Atrybuty pozycji słownikowej\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#dictionary-entry-attributes",
+      "type": "object",
+      "properties": {
+        "code": {
+          "description": "Kod pozycji",
+          "type": "string"
+        },
+        "name": {
+          "description": "Nazwa pozycji",
+          "type": "string"
+        },
+        "year": {
+          "format": "int32",
+          "description": "Rok",
+          "type": "integer"
+        }
+      }
+    },
+    "dictionary-provider-entry-list-response": {
+      "description": "Odpowiedź na żądanie zasobu słownikowego świadczeniodawców",
+      "type": "object",
+      "properties": {
+        "meta": {
+          "$ref": "#/definitions/extended-metadata",
+          "description": "Metadane"
+        },
+        "links": {
+          "$ref": "#/definitions/links",
+          "description": "Linki HATEOS"
+        },
+        "data": {
+          "$ref": "#/definitions/dictionary-provider-entry-list-data",
+          "description": "Lista pozycji ze słownika"
+        }
+      }
+    },
+    "dictionary-provider-entry-list-data": {
+      "description": "Dane dotyczące listy pozycji ze słownika śwadczeniodawców\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#dictionary-provider-list-data",
+      "type": "object",
+      "properties": {
+        "entries": {
+          "description": "Lista pozycji ze słownika",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/dictionary-provider-entry"
+          }
+        }
+      }
+    },
+    "dictionary-provider-entry": {
+      "description": "Pozycja słownikowa świadczeniodawcy\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#dictionary-provider-entry",
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "Typ obiektu",
+          "type": "string"
+        },
+        "attributes": {
+          "$ref": "#/definitions/dictionary-provider-entry-attributes",
+          "description": "Atrybuty pozycji słownika świadczeniodawców"
+        }
+      }
+    },
+    "dictionary-provider-entry-attributes": {
+      "description": "Atrybuty pozycji słownika świadczeniodawców\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#dictionary-provider-entry",
+      "type": "object",
+      "properties": {
+        "branch": {
+          "description": "Oddział Wojewódzki NFZ",
+          "type": "string"
+        },
+        "code": {
+          "description": "Kod świadczeniodawcy",
+          "type": "string"
+        },
+        "name": {
+          "description": "Nazwa świadczeniodawcy",
+          "type": "string"
+        },
+        "nip": {
+          "description": "Numer NIP",
+          "type": "string"
+        },
+        "regon": {
+          "description": "Numer REGON",
+          "type": "string"
+        },
+        "registry-number": {
+          "description": "Numer księgi rejestrowej",
+          "type": "string"
+        },
+        "post-code": {
+          "description": "Kod pocztowy",
+          "type": "string"
+        },
+        "street": {
+          "description": "Ulica",
+          "type": "string"
+        },
+        "place": {
+          "description": "Miejscowość",
+          "type": "string"
+        },
+        "phone": {
+          "description": "Numer telefonu",
+          "type": "string"
+        },
+        "commune": {
+          "description": "Gmina",
+          "type": "string"
+        }
+      }
+    },
+    "providers-list-response": {
+      "description": "Odpowiedź na żądanie listy świadczeniodawców",
+      "type": "object",
+      "properties": {
+        "meta": {
+          "$ref": "#/definitions/extended-metadata",
+          "description": "Metadane"
+        },
+        "links": {
+          "$ref": "#/definitions/links",
+          "description": "Linki HATEOS"
+        },
+        "data": {
+          "$ref": "#/definitions/provider-list-data",
+          "description": "Lista świadczeniodawców"
+        }
+      }
+    },
+    "provider-list-data": {
+      "description": "Dane dotyczące listy świadczeniodawców\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#provider-list-data",
+      "type": "object",
+      "properties": {
+        "providers": {
+          "description": "Lista świadczeniodawców",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/provider"
+          }
+        }
+      }
+    },
+    "provider": {
+      "description": "Szczegóły świadczeniodawcy\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#provider",
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "Typ obiektu",
+          "type": "string"
+        },
+        "attributes": {
+          "$ref": "#/definitions/provider-attributes",
+          "description": "Atrybuty umowy"
+        },
+        "links": {
+          "$ref": "#/definitions/base-links",
+          "description": "Linki"
+        }
+      }
+    },
+    "provider-attributes": {
+      "description": "Atrybuty świadczeniodawcy\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#provider-attributes",
+      "type": "object",
+      "properties": {
+        "branch": {
+          "description": "Oddział Wojewódzki",
+          "type": "string"
+        },
+        "code": {
+          "description": "Kod świadczniodawcy",
+          "type": "string"
+        },
+        "name": {
+          "description": "Nazwa świadczeniodawcy",
+          "type": "string"
+        },
+        "nip": {
+          "description": "Numer NIP",
+          "type": "string"
+        },
+        "regon": {
+          "description": "Regon",
+          "type": "string"
+        },
+        "registry-number": {
+          "description": "Numer księgi rejestrowej",
+          "type": "string"
+        },
+        "post-code": {
+          "description": "Kod pocztowy",
+          "type": "string"
+        },
+        "street": {
+          "description": "Ulica",
+          "type": "string"
+        },
+        "place": {
+          "description": "Miejscowość",
+          "type": "string"
+        },
+        "phone": {
+          "description": "Numer telefonu",
+          "type": "string"
+        },
+        "commune": {
+          "description": "Gmina",
+          "type": "string"
+        },
+        "amount": {
+          "format": "double",
+          "description": "Sumaryczna kwota zobowiązań",
+          "type": "number"
+        }
+      }
+    },
+    "provider-response": {
+      "description": "Odpowiedź na żądanie szczegółów świadczeniodawcy.",
+      "type": "object",
+      "properties": {
+        "meta": {
+          "$ref": "#/definitions/extended-metadata",
+          "description": "Metadane"
+        },
+        "links": {
+          "$ref": "#/definitions/links",
+          "description": "Linki HATEOS"
+        },
+        "data": {
+          "$ref": "#/definitions/provider-data",
+          "description": "Szczegóły świadczeniodawcy"
+        }
+      }
+    },
+    "provider-data": {
+      "description": "Szczegóły świadczeniodawcy\r\nSchema: https://api.nfz.gov.pl/app-umw-api/schemas/#provider-data",
+      "type": "object",
+      "properties": {
+        "provider": {
+          "$ref": "#/definitions/provider",
+          "description": "Szczegóły świadczeniodawcy"
+        },
+        "agreements": {
+          "description": "Lista umów świadczeniodawcy",
+          "uniqueItems": false,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/agreement"
+          }
+        }
+      }
+    },
+    "version": {
+      "description": "Szczegóły dotyczące wersji API",
+      "type": "object",
+      "properties": {
+        "api-version": {
+          "$ref": "#/definitions/api-version",
+          "description": "Określa numer wersji API"
+        }
+      }
+    },
+    "api-version": {
+      "description": "Szczegóły dotyczące wersji api",
+      "type": "object",
+      "properties": {
+        "major": {
+          "format": "int32",
+          "description": "Numer major wersji",
+          "type": "integer"
+        },
+        "minor": {
+          "format": "int32",
+          "description": "Numer minor wersji",
+          "type": "integer"
+        },
+        "patch": {
+          "format": "int32",
+          "description": "Numer patch wersji",
+          "type": "integer"
+        },
+        "date-mod": {
+          "description": "Data modifikacji zasobu",
+          "type": "string"
+        },
+        "deprecated": {
+          "description": "Określa czy dana wersja jest przestarzała",
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "tags": [
+  ]
+}

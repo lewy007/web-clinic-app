@@ -44,8 +44,8 @@ dependencies {
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocOpenApiVersion}"
 
     // Po wygenerowaniu klienta (plugin generator), trzeba bedzie dodać poniższe zależności, żeby kod się kompilował
-//    implementation "org.openapitools:jackson-databind-nullable:${jacksonDatabindNullableVersion}"
-//    implementation "javax.annotation:javax.annotation-api:${javaxAnnotationApiVersion}"
+    implementation "org.openapitools:jackson-databind-nullable:${jacksonDatabindNullableVersion}"
+    implementation "javax.annotation:javax.annotation-api:${javaxAnnotationApiVersion}"
 //    implementation "io.swagger:swagger-annotations:${swaggerAnnotationVersion}"
 
     // warning: unknown enum constant When.MAYBE
@@ -71,38 +71,38 @@ dependencies {
 //https://github.com/OpenAPITools/openapi-generator/tree/master/modules
 //https://openapi-generator.tech/docs/generators/java/
 //https://openapi-generator.tech/docs/plugins
-//http://www.cepik.gov.pl/interfejs-dla-cepik
-//https://api.cepik.gov.pl/doc
 
-//openApiGenerate {
-//    generatorName = "java"
-//    library = "webclient"
-//    configOptions = [
-//            serializableModel   : "true",
-//            dateLibrary         : "java8",
-//            serializationLibrary: "jackson"
-//    ]
-//
-//    // wygenerowane klasy
-//    outputDir = "$buildDir/generated-sources/openapi".toString()
-//    // plik z kontraktem
-//    inputSpec = "$rootDir/src/main/resources/contracts/cepik-1.1.3.json".toString()
-//    // miejsce wygenerowania klientow
-//    apiPackage = "pl.zajavka.infrastructure.cepik.api"
-//    // miejsce zmapowania jsnow na obiekty javowe
-//    modelPackage = "pl.zajavka.infrastructure.cepik.model"
-//}
-//
-//// wygenerowane klasy maja byc traktowane jako kod zrodlowy
-//sourceSets {
-//    main {
-//        java.srcDirs += "$buildDir/generated-sources/openapi/src/main/java"
-//    }
-//}
-//
-//// zanim kod zacznie sie kompilowac na etapie builda, najpierw uruchomiony ma zostac task openApiGenerate
-//// czyli kod ma się kompilować po wygenrowaniu klas z kontraktu
-//compileJava.dependsOn tasks.openApiGenerate
+openApiGenerate {
+    generatorName = "java"
+    library = "webclient"
+    configOptions = [
+            serializableModel   : "true",
+            dateLibrary         : "java8",
+            serializationLibrary: "jackson"
+    ]
+
+    // Nazwa katalogu, w którym będzie można znaleźć wygenerowane klasy
+    outputDir = "$buildDir/generated-sources/openapi".toString()
+    // Lokalizacja pliku z kontraktem OpenAPI
+    inputSpec = "$rootDir/src/main/resources/contracts/nfz-1.2.json".toString()
+    // Nazwa (miejsce) paczki, która zostanie nadana wygenerowanym klientom
+    apiPackage = "pl.zajavka.infrastructure.nfz.api"
+    // Nazwa paczki, która zostanie nadana wygenerowanym klasom modelu
+    // Miejsce zmapowania jsnow na obiekty javowe
+    modelPackage = "pl.zajavka.infrastructure.nfz.model"
+}
+
+// wygenerowane klasy maja byc traktowane jako kod zrodlowy naszej aplikacji
+sourceSets {
+    main {
+        java.srcDirs += "$buildDir/generated-sources/openapi/src/main/java"
+    }
+}
+
+// Ta linijka natomiast wymusza wygenerowanie potrzebnych klas przed kompilacją kodu Java w
+// trakcie trwania gradle build, czyli zanim kod zacznie sie kompilowac na etapie builda,
+// najpierw uruchomiony ma zostac task openApiGenerate w celu wygenerowania klas z kontraktu
+compileJava.dependsOn tasks.openApiGenerate
 
 test {
     useJUnitPlatform()
