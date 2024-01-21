@@ -39,7 +39,7 @@ public class DoctorScheduleRestController {
     public List<MedicalAppointmentDTO> doctorMedicalAppointmentSchedule(
             @Parameter(
                     description = "Please use a correct doctor email according to the example",
-                    example = "name_surname@clinic.pl")
+                    example = "name.surname@clinic.pl")
             @PathVariable String doctorEmail
     ) {
 

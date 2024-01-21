@@ -34,11 +34,11 @@ public class PatientMakeAppointmentRestController {
     public MedicalAppointmentDTO makeAppointment(
             @Parameter(
                     description = "Please use a correct patient email according to the example",
-                    example = "name@example.com")
+                    example = "name.surname@clinic.pl")
             @PathVariable String patientEmail,
             @Parameter(
                     description = "Please use a correct doctor email according to the example",
-                    example = "name_surname@clinic.pl")
+                    example = "name.surname@clinic.pl")
             @RequestParam(value = "doctorEmail")
             String doctorEmail,
             @Parameter(

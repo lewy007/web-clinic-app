@@ -1,15 +1,13 @@
 package pl.szczecin.api.dto;
 
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@With
 @Data
 @Builder
 @NoArgsConstructor
@@ -60,13 +58,14 @@ public class MedicalAppointmentRequestDTO {
                 .patientPhone("+48 754 552 234")
                 .patientEmail("stefan.chorowity@clinic.pl")
                 .patientAddressCountry("Polska")
-                .patientAddressCity("Wrocław")
+                .patientAddressCity("Wroclaw")
                 .patientAddressPostalCode("50-001")
                 .patientAddressStreet("ul. Woronicza 15")
                 .password("test")
                 .build();
     }
 
+    // metoda wykorzystana do sprawdzenia  walidacji danych wejsciowych -> RegistrationControllerWebMvcTest
     // Mapa z polami klasy, jesli istnieje dane pole to dodajemy do mapy jako klucz nazwe pola a wartosc w postaci Stringa
     public Map<String, String> asMap() {
         Map<String, String> result = new HashMap<>();

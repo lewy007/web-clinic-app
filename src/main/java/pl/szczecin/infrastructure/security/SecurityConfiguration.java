@@ -48,8 +48,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityEnabled(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf()
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .and()
+                .disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/login", "/registration", "/error", "/images/oh_no.png").permitAll()
                 .requestMatchers("/patient/**").hasAnyAuthority("PATIENT")
@@ -77,8 +76,8 @@ public class SecurityConfiguration {
     @ConditionalOnProperty(value = "spring.security.enabled", havingValue = "false")
     public SecurityFilterChain securityDisabled(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-//                .csrf()
-//                .disable()
+                .csrf()
+                .disable()
                 .authorizeHttpRequests()
                 .anyRequest()
                 .permitAll();
@@ -88,5 +87,6 @@ public class SecurityConfiguration {
 }
 
 // TODO csrf wylaczone na potrzeby sprawdzenia komuniakcji z zewnetrznym API
-//  nie zaleca sie wylaczania csrf, ze wzgledu na ataki csrf,
+//  oraz rejestracja uzykownika metoda POST zwraca error csrf, po wylaczeniu dodanie usera działa.
+//  Nie zaleca sie wylaczania csrf, ze wzgledu na ataki csrf,
 //  pozniej w projekcie trzeba to wlaczyc

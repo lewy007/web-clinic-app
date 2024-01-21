@@ -9,9 +9,9 @@ import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.http.codec.json.Jackson2JsonEncoder;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
-import pl.zajavka.infrastructure.nfz.ApiClient;
-import pl.zajavka.infrastructure.nfz.api.SownikiApi;
-import pl.zajavka.infrastructure.nfz.api.UmowyApi;
+import pl.szczecin.infrastructure.nfz.ApiClient;
+import pl.szczecin.infrastructure.nfz.api.SownikiApi;
+import pl.szczecin.infrastructure.nfz.api.UmowyApi;
 
 @Configuration
 public class WebClientConfiguration {

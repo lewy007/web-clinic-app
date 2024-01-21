@@ -22,10 +22,20 @@ Entity Relationship Diagram illustrates the relationship of entities in the data
 
 ## REST API Endpoints
 
-|               ENDPOINT               | METHOD |         REQUEST          |     RESPONSE     |                           FUNCTION                           |
-|:------------------------------------:|:------:|:------------------------:|:----------------:|:------------------------------------------------------------:|
-|             /api/doctors             |  GET   |            -             |  JSON (doctors)  |             returns a list of available doctors              |
-| /api/doctors/{doctorEmail}/schedule  |  GET   | JSON BODY (doctor email) | JSON (schedule)  | returns medical appointment schedule with given email doctor |
+|                   ENDPOINT                   | METHOD |                                           REQUEST                                           |             RESPONSE             |                                              FUNCTION                                              |
+|:--------------------------------------------:|:------:|:-------------------------------------------------------------------------------------------:|:--------------------------------:|:--------------------------------------------------------------------------------------------------:|
+|                 /api/doctors                 |  GET   |                                              -                                              |          JSON (doctors)          |                                Returns a list of available doctors                                 |
+|     /api/doctors/{doctorEmail}/schedule      |  GET   |                                PATH VARIABLE (doctor email)                                 |         JSON (schedule)          |                    Returns medical appointment schedule with given email doctor                    |
+|   /api/doctors/{doctorEmail}/schedule/note   | PATCH  | PATH VARIABLE (doctor email), REQUEST PARAM (date, patientName, patientSurname, doctorNote) |         JSON (schedule)          | Doctor can add note to appointment after patient visit.Returns medical appointment with added note |
+|      /api/doctors/{doctorEmail}/history      |  GET   |                                PATH VARIABLE (doctor email)                                 |       JSON (doctorHistory)       |                    Returns medical appointment history with given email doctor                     |
+|       /api/doctors/{doctorEmail}/dates       |  GET   |                                PATH VARIABLE (doctor email)                                 |         JSON (schedule)          |                    Returns medical appointment schedule with given email doctor                    |
+|                /api/patients                 |  GET   |                                              -                                              |         JSON (patients)          |                                Returns a list of available patients                                |
+|     /api/patients/{patientEmail}/history     |  GET   |                                PATH VARIABLE (patient email)                                |      JSON (patientHistory)       |                    Returns medical appointment history with given email patient                    |
+|   /api/patients/{patientEmail}/appointment   |  POST  |         PATH VARIABLE (patient email), REQUEST PARAM (doctorEmail, appointmentDate)         |    JSON (medicalAppointment)     |                      Patient can make medical appointment to selected doctor                       |
+|    /api/patients/{patientEmail}/schedule     |  GET   |                                PATH VARIABLE (patient email)                                |    JSON (medicalAppointment)     |          Returns future medical appointments (minimum 24h after now) to selected patient           |
+| /api/patients/{patientEmail}/schedule/cancel | DELETE |         PATH VARIABLE (patient email), REQUEST PARAM (doctorEmail, appointmentDate)         |    JSON (medicalAppointment)     |         Patient can cancel medical appointment (minimum 24h after now) to selected doctor          |
+|              /api/registration               |  GET   |                                              -                                              | JSON (medicalAppointmentRequest) |                             Returns example patient registration data                              |
+|              /api/registration               |  POST  |                            JSON BODY (MedicalAppointmentRequest)                            |          JSON (patient)          |                Make Registration Patient To System. Returns patient added to system                |
 
 ## TECHNICAL REQUIREMENTS
 

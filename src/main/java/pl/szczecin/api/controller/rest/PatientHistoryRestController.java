@@ -34,7 +34,7 @@ public class PatientHistoryRestController {
             @Parameter(
                     description = "Please use a correct patient email according to the example." +
                             " Available patient emails can be checked using method GET /api/patients",
-                    example = "name@example.com")
+                    example = "name.surname@clinic.pl")
             @PathVariable String patientEmail
     ) {
 

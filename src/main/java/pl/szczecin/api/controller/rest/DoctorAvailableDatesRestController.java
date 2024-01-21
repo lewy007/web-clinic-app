@@ -34,7 +34,7 @@ public class DoctorAvailableDatesRestController {
             @Parameter(
                     description = "Please use a correct doctor email according to the example. " +
                             "Available emails can be checked using method GET /api/doctors",
-                    example = "name_surname@clinic.pl")
+                    example = "name.surname@clinic.pl")
             @PathVariable String doctorEmail
     ) {
 
