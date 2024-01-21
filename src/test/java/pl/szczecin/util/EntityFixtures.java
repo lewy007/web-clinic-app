@@ -65,6 +65,17 @@ public class EntityFixtures {
                 .build();
     }
 
+    public static DoctorsDTO someDoctorListDTO() {
+        return DoctorsDTO.builder()
+                .doctorsDTO(
+                        List.of(
+                                someDoctorDTO1(),
+                                someDoctorDTO2(),
+                                someDoctorDTO3())
+                )
+                .build();
+    }
+
     public static Optional<DoctorEntity> someDoctorEntity1() {
         return Optional.of(DoctorEntity.builder()
                 .doctorId(3)
@@ -80,6 +91,65 @@ public class EntityFixtures {
                 .surname("Pacjentowska")
                 .phone("+48 372 54 56")
                 .email("janina.pacjentowska@clinic.pl")
+                .userEntity(someUserEntity1())
+                .build();
+    }
+
+    public static Patient somePatient2() {
+        return Patient.builder()
+                .name("Ryszarda")
+                .surname("Konopnicka")
+                .phone("+48 348 21 66")
+                .email("ryszarda.konopnicka@clinic.pl")
+                .userEntity(someUserEntity2())
+                .build();
+    }
+
+    public static Patient somePatient3() {
+        return Patient.builder()
+                .name("Angelika")
+                .surname("Czarna")
+                .phone("+48 267 16 69")
+                .email("angelika.czarna@clinic.pl")
+                .userEntity(someUserEntity2())
+                .build();
+    }
+
+    public static PatientDTO somePatientDTO1() {
+        return PatientDTO.builder()
+                .name("Janina")
+                .surname("Pacjentowska")
+                .phone("+48 372 54 56")
+                .email("janina.pacjentowska@clinic.pl")
+                .build();
+    }
+
+    public static PatientDTO somePatientDTO2() {
+        return PatientDTO.builder()
+                .name("Ryszarda")
+                .surname("Konopnicka")
+                .phone("+48 348 21 66")
+                .email("ryszarda.konopnicka@clinic.pl")
+                .build();
+    }
+
+    public static PatientDTO somePatientDTO3() {
+        return PatientDTO.builder()
+                .name("Angelika")
+                .surname("Czarna")
+                .phone("+48 267 16 69")
+                .email("angelika.czarna@clinic.pl")
+                .build();
+    }
+
+    public static PatientsDTO somePatientListDTO() {
+        return PatientsDTO.builder()
+                .patientsDTO(
+                        List.of(
+                                somePatientDTO1(),
+                                somePatientDTO2(),
+                                somePatientDTO3())
+                )
                 .build();
     }
 
@@ -102,6 +172,24 @@ public class EntityFixtures {
                         .password("test")
                         .active(true)
                         .build())
+                .build();
+    }
+
+    public static UserEntity someUserEntity1() {
+        return UserEntity.builder()
+                .userId(1)
+                .build();
+    }
+
+    public static UserEntity someUserEntity2() {
+        return UserEntity.builder()
+                .userId(2)
+                .build();
+    }
+
+    public static UserEntity someUserEntity3() {
+        return UserEntity.builder()
+                .userId(3)
                 .build();
     }
 

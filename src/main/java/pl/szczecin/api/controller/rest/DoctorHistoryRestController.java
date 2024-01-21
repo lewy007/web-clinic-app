@@ -36,8 +36,8 @@ public class DoctorHistoryRestController {
     public List<MedicalAppointmentDTO> doctorMedicalAppointmentHistory(
             @Parameter(
                     description = "Please use a correct doctor email according to the example. " +
-                            "Available patient emails can be checked using method GET /api/doctors",
-                    example = "name_surname@clinic.pl")
+                            "Available doctor emails can be checked using method GET /api/doctors",
+                    example = "name.surname@clinic.pl")
             @PathVariable String doctorEmail
     ) {
 

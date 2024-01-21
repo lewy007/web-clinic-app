@@ -2,7 +2,7 @@ package pl.szczecin.infrastructure.nfz;
 
 import org.springframework.stereotype.Component;
 import pl.szczecin.domain.NfzProvider;
-import pl.zajavka.infrastructure.nfz.model.DictionaryProviderEntry;
+import pl.szczecin.infrastructure.nfz.model.DictionaryProviderEntry;
 
 import java.util.Optional;
 

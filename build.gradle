@@ -86,10 +86,10 @@ openApiGenerate {
     // Lokalizacja pliku z kontraktem OpenAPI
     inputSpec = "$rootDir/src/main/resources/contracts/nfz-1.2.json".toString()
     // Nazwa (miejsce) paczki, która zostanie nadana wygenerowanym klientom
-    apiPackage = "pl.zajavka.infrastructure.nfz.api"
+    apiPackage = "pl.szczecin.infrastructure.nfz.api"
     // Nazwa paczki, która zostanie nadana wygenerowanym klasom modelu
     // Miejsce zmapowania jsnow na obiekty javowe
-    modelPackage = "pl.zajavka.infrastructure.nfz.model"
+    modelPackage = "pl.szczecin.infrastructure.nfz.model"
 }
 
 // wygenerowane klasy maja byc traktowane jako kod zrodlowy naszej aplikacji

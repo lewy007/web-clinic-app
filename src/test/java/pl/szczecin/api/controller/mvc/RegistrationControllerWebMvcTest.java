@@ -64,7 +64,6 @@ class RegistrationControllerWebMvcTest {
         LinkedMultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
         MedicalAppointmentRequestDTO.buildDefaultData().asMap().forEach(parameters::add);
 
-        // Mocking the behavior of the patientService to save the patient
         Patient expectedPatient = Patient.builder()
                 .email("jan_testowy@example.com")
                 .name("Test")
@@ -74,6 +73,7 @@ class RegistrationControllerWebMvcTest {
                                 .build())
                 .build();
 
+        // Mockowanie usługi patientService w celu zapisania pacjenta
         Mockito.when(patientService.savePatient(Mockito.any())).thenReturn(expectedPatient);
 
         // when, then

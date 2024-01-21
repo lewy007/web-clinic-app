@@ -2,6 +2,7 @@ package pl.szczecin.api.controller.rest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,19 +30,19 @@ public class PatientRestController {
             description = "This endpoint returns a list of available patients.",
             tags = {"Patients"} // TAG do grupowania endpointów
     )
-    public PatientsDTO availablePatients() {
+    public ResponseEntity<PatientsDTO> availablePatients() {
         return getAvailablePatientsDTO();
     }
 
 
-    private PatientsDTO getAvailablePatientsDTO() {
-        return PatientsDTO.builder()
+    private ResponseEntity<PatientsDTO> getAvailablePatientsDTO() {
+        return ResponseEntity.ok(PatientsDTO.builder()
                 .patientsDTO(getPatientDTOList())
-                .build();
+                .build());
     }
 
     private List<PatientDTO> getPatientDTOList() {
-        return patientService.findAvailablePatients().stream()
-                .map(patientMapper::map).toList();
+        return (patientService.findAvailablePatients().stream()
+                .map(patientMapper::map).toList());
     }
 }

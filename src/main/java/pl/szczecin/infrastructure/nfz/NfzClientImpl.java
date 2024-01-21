@@ -5,12 +5,12 @@ import org.springframework.stereotype.Service;
 import pl.szczecin.business.dao.NfzProviderDAO;
 import pl.szczecin.domain.NfzProvider;
 import pl.szczecin.domain.exception.NotFoundException;
-import pl.zajavka.infrastructure.nfz.api.InfoApi;
-import pl.zajavka.infrastructure.nfz.api.SownikiApi;
-import pl.zajavka.infrastructure.nfz.api.UmowyApi;
-import pl.zajavka.infrastructure.nfz.model.DictionaryProviderEntry;
-import pl.zajavka.infrastructure.nfz.model.DictionaryProviderEntryListData;
-import pl.zajavka.infrastructure.nfz.model.DictionaryProviderEntryListResponse;
+import pl.szczecin.infrastructure.nfz.api.InfoApi;
+import pl.szczecin.infrastructure.nfz.api.SownikiApi;
+import pl.szczecin.infrastructure.nfz.api.UmowyApi;
+import pl.szczecin.infrastructure.nfz.model.DictionaryProviderEntry;
+import pl.szczecin.infrastructure.nfz.model.DictionaryProviderEntryListData;
+import pl.szczecin.infrastructure.nfz.model.DictionaryProviderEntryListResponse;
 
 import java.util.List;
 import java.util.Optional;
