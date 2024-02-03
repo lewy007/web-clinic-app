@@ -7,7 +7,7 @@ It is directed to two groups: patients and doctors.
 Each group has access to a different area of the application.
 After build the project according to the directions in the section `How to build the project on your own`
 You can check this project out by yourself
-on [Web-Clinic-Application](http://localhost:8087/web-clinic-application).
+on [Web-Clinic-Application](http://localhost:8087/web-clinic-application) - ThymeLeaf.
 If you want to see API, you can
 go to [Swagger UI](http://localhost:8087/web-clinic-application/swagger-ui/index.html).
 If you want to see the documentation of my API, you can
@@ -22,20 +22,21 @@ Entity Relationship Diagram illustrates the relationship of entities in the data
 
 ## REST API Endpoints
 
-|                   ENDPOINT                   | METHOD |                                           REQUEST                                           |             RESPONSE             |                                              FUNCTION                                              |
-|:--------------------------------------------:|:------:|:-------------------------------------------------------------------------------------------:|:--------------------------------:|:--------------------------------------------------------------------------------------------------:|
-|                 /api/doctors                 |  GET   |                                              -                                              |          JSON (doctors)          |                                Returns a list of available doctors                                 |
-|     /api/doctors/{doctorEmail}/schedule      |  GET   |                                PATH VARIABLE (doctor email)                                 |         JSON (schedule)          |                    Returns medical appointment schedule with given email doctor                    |
-|   /api/doctors/{doctorEmail}/schedule/note   | PATCH  | PATH VARIABLE (doctor email), REQUEST PARAM (date, patientName, patientSurname, doctorNote) |         JSON (schedule)          | Doctor can add note to appointment after patient visit.Returns medical appointment with added note |
-|      /api/doctors/{doctorEmail}/history      |  GET   |                                PATH VARIABLE (doctor email)                                 |       JSON (doctorHistory)       |                    Returns medical appointment history with given email doctor                     |
-|       /api/doctors/{doctorEmail}/dates       |  GET   |                                PATH VARIABLE (doctor email)                                 |         JSON (schedule)          |                    Returns medical appointment schedule with given email doctor                    |
-|                /api/patients                 |  GET   |                                              -                                              |         JSON (patients)          |                                Returns a list of available patients                                |
-|     /api/patients/{patientEmail}/history     |  GET   |                                PATH VARIABLE (patient email)                                |      JSON (patientHistory)       |                    Returns medical appointment history with given email patient                    |
-|   /api/patients/{patientEmail}/appointment   |  POST  |         PATH VARIABLE (patient email), REQUEST PARAM (doctorEmail, appointmentDate)         |    JSON (medicalAppointment)     |                      Patient can make medical appointment to selected doctor                       |
-|    /api/patients/{patientEmail}/schedule     |  GET   |                                PATH VARIABLE (patient email)                                |    JSON (medicalAppointment)     |          Returns future medical appointments (minimum 24h after now) to selected patient           |
-| /api/patients/{patientEmail}/schedule/cancel | DELETE |         PATH VARIABLE (patient email), REQUEST PARAM (doctorEmail, appointmentDate)         |    JSON (medicalAppointment)     |         Patient can cancel medical appointment (minimum 24h after now) to selected doctor          |
-|              /api/registration               |  GET   |                                              -                                              | JSON (medicalAppointmentRequest) |                             Returns example patient registration data                              |
-|              /api/registration               |  POST  |                            JSON BODY (MedicalAppointmentRequest)                            |          JSON (patient)          |                Make Registration Patient To System. Returns patient added to system                |
+|                   ENDPOINT                    | METHOD |                                           REQUEST                                           |             RESPONSE             |                                              FUNCTION                                              |
+|:---------------------------------------------:|:------:|:-------------------------------------------------------------------------------------------:|:--------------------------------:|:--------------------------------------------------------------------------------------------------:|
+|                 /api/doctors                  |  GET   |                                              -                                              |          JSON (doctors)          |                                Returns a list of available doctors                                 |
+|     /api/doctors /{doctorEmail}/schedule      |  GET   |                                PATH VARIABLE (doctor email)                                 |         JSON (schedule)          |                    Returns medical appointment schedule with given email doctor                    |
+|   /api/doctors /{doctorEmail}/schedule/note   | PATCH  | PATH VARIABLE (doctor email), REQUEST PARAM (date, patientName, patientSurname, doctorNote) |         JSON (schedule)          | Doctor can add note to appointment after patient visit.Returns medical appointment with added note |
+|      /api/doctors /{doctorEmail}/history      |  GET   |                                PATH VARIABLE (doctor email)                                 |       JSON (doctorHistory)       |                    Returns medical appointment history with given email doctor                     |
+|       /api/doctors/{doctorEmail}/dates        |  GET   |                                PATH VARIABLE (doctor email)                                 |         JSON (schedule)          |                    Returns medical appointment schedule with given email doctor                    |
+|                 /api/patients                 |  GET   |                                              -                                              |         JSON (patients)          |                                Returns a list of available patients                                |
+|     /api/patients /{patientEmail}/history     |  GET   |                                PATH VARIABLE (patient email)                                |      JSON (patientHistory)       |                    Returns medical appointment history with given email patient                    |
+|   /api/patients /{patientEmail}/appointment   |  POST  |         PATH VARIABLE (patient email), REQUEST PARAM (doctorEmail, appointmentDate)         |    JSON (medicalAppointment)     |                      Patient can make medical appointment to selected doctor                       |
+|    /api/patients /{patientEmail}/schedule     |  GET   |                                PATH VARIABLE (patient email)                                |    JSON (medicalAppointment)     |          Returns future medical appointments (minimum 24h after now) to selected patient           |
+| /api/patients /{patientEmail}/schedule/cancel | DELETE |         PATH VARIABLE (patient email), REQUEST PARAM (doctorEmail, appointmentDate)         |    JSON (medicalAppointment)     |         Patient can cancel medical appointment (minimum 24h after now) to selected doctor          |
+|               /api/registration               |  GET   |                                              -                                              | JSON (medicalAppointmentRequest) |                             Returns example patient registration data                              |
+|               /api/registration               |  POST  |                            JSON BODY (MedicalAppointmentRequest)                            |          JSON (patient)          |                Make Registration Patient To System. Returns patient added to system                |
+|                   /api/nfz                    |  GET   |                                    REQUEST PARAM (year)                                     |      JSON (nfzProviderDTO)       |  Returns a list of available providers for branch 16 - Zachodniopomorski from external API - NFZ.  |
 
 ## TECHNICAL REQUIREMENTS
 
@@ -59,6 +60,7 @@ During the development of this project I had to face of a bunch of problems. The
     <li>Write unit tests (Mockito), @DataJpaTest, @WebMvcTest and @SpringBootTest</li>
     <li>Expose my REST API that allows you to call GET, POST, PUT and DELETE endpoints</li>
     <li>Expose SwaggerUI</li>
+    <li>Use some external API that you consume in your application</li>
     <li>Use Docker Compose</li>
 </ul>
 
@@ -68,7 +70,6 @@ There are many things that I'm going to do in this project in the future. Few of
 <ul>
     <li>Pagination of displayed results</li>
     <li>Write RestAssured tests to cover the case of each of the listed HTTP methods in your REST API</li>
-    <li>Use some external API that you consume in your application</li>
     <li>Write Wiremock tests for an external API</li>
     <li>Authorization with JWT token and Spring Security</li>
     <li>Continuous integration and Continuous Deployment with CircleCi (to ECR AWS) or Jenkins</li>
