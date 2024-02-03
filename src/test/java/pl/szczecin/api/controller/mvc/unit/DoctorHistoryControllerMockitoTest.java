@@ -1,4 +1,4 @@
-package pl.szczecin.api.controller.unit;
+package pl.szczecin.api.controller.mvc.unit;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
