@@ -33,7 +33,7 @@ public class PatientCancelRestController {
     @GetMapping()
     @Operation(
             summary = "Get Medical Appointments Schedule For Selected Patient",
-            description = "This endpoint returns future medical appointments (minimum 24h after now)" +
+            description = "This endpoint returns today and future medical appointments (updated every day)" +
                     " for selected patient.",
             tags = {"Patients"} // TAG do grupowania endpointów
     )
@@ -53,8 +53,8 @@ public class PatientCancelRestController {
     @DeleteMapping(value = CANCEL)
     @Operation(
             summary = "Cancel Appointment For Selected Patient and Doctor",
-            description = "Selected patient can cancel appointment to selected doctor. " +
-                    "This endpoint returns data about cancelled appointment. " +
+            description = "Selected patient can cancel appointment to selected doctor (minimum 24h after now). " +
+                    "This endpoint returns data about cancelled medical appointment. " +
                     "NOTICE: Required fields can be checked using the GET /api/patients/{patientEmail}/schedule",
             tags = {"Patients"}
     )

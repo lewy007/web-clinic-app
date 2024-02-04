@@ -39,7 +39,7 @@ class PatientRestControllerWebMvcTest {
     private PatientMapper patientMapper;
 
     @Test
-    @DisplayName("That method should return correct List DTO Patients")
+    @DisplayName("That method should return correct DTO List Patients")
     void shouldReturnCorrectListDTOPatients() throws Exception {
         //given
         PatientsDTO somePatientListDTO = EntityFixtures.somePatientListDTO();

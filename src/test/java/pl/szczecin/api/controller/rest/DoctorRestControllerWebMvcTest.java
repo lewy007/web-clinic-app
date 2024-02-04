@@ -39,9 +39,9 @@ class DoctorRestControllerWebMvcTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    DoctorService doctorService;
+    private DoctorService doctorService;
     @MockBean
-    DoctorMapper doctorMapper;
+    private DoctorMapper doctorMapper;
 
     @Test
     @DisplayName("GET Method should return the correct DTO List Doctors")
@@ -64,6 +64,7 @@ class DoctorRestControllerWebMvcTest {
                 EntityFixtures.someDoctor3()
         );
 
+        //when
         Mockito.when(doctorService.findAvailableDoctors()).thenReturn(doctorList);
         Mockito.when(doctorMapper.map(Mockito.any(Doctor.class)))
                 .thenReturn(doctorDTOList.get(0))
@@ -71,7 +72,7 @@ class DoctorRestControllerWebMvcTest {
                 .thenReturn(doctorDTOList.get(2));
 
 
-        //when, then
+        //then
         //Wykorzystana w tym przypadku została biblioteka Hamcrest, to z niej pochodzi klasa Matchers.
         // doctorsDTO to nazwa zmiennej z klasy DoctorsDTO
         MvcResult result = mockMvc.perform(get(DoctorRestController.DOCTOR_API)
