@@ -70,7 +70,7 @@ class PatientCancelControllerWebMvcTest {
     @Test
     @DisplayName("POST Method should correctly cancel an appointment")
     void patientCancelControllerShouldCancelAppointment() throws Exception {
-        // given
+        // given, when
         MedicalAppointmentRequest expectedRequest = EntityFixtures.someMedicalAppointmentRequest();
         String patientEmail = "patient.test@clinic.pl";
         Patient expectedPatient = EntityFixtures.somePatient1();
@@ -88,7 +88,7 @@ class PatientCancelControllerWebMvcTest {
         Mockito.when(medicalAppointmentService.addNoteToMedicalAppointment(expectedRequest))
                 .thenReturn(expectedMedicalAppointment);
 
-        // when, then
+        // then
         mockMvc.perform(post(PatientCancelController.PATIENT_CANCEL)
                         .param("patientEmail", patientEmail)
                         .param("appointmentDate", appointmentDate)
