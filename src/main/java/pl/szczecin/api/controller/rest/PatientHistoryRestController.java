@@ -26,8 +26,7 @@ public class PatientHistoryRestController {
     @GetMapping()
     @Operation(
             summary = "Get Medical Appointment History For Selected Patient",
-            description = "This endpoint returns medical appointment history (include future appointments)" +
-                    " for selected patient.",
+            description = "This endpoint returns medical appointment history for selected patient.",
             tags = {"Patients"} // TAG do grupowania endpointów
     )
     public PatientHistoryDTO patientMedicalAppointmentHistory(

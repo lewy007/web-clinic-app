@@ -41,26 +41,27 @@ public class DoctorHistoryRestController {
             @PathVariable String doctorEmail
     ) {
 
+        // wyciagamy wszystkie daty (dokladnie ich id) powiazane z lekarzem
         var allMedicalAppointmentDateIdsByDoctorEmail =
                 getAllMedicalAppointmentDateIdsByDoctorEmail(doctorEmail);
 
+        // wyszukujemy wszystkie wykorzystane daty wizyt (medical_appointment_date) w medical_appointment
+        // dla danego lekarza
         return getMedicalAppointmentDTOS(allMedicalAppointmentDateIdsByDoctorEmail);
     }
 
-    // wyszukujemy wszystkie wykorzystane daty wizyt (medical_appointment_date) w medical_appointment
-    // dla danego lekarza
-    private List<MedicalAppointmentDTO> getMedicalAppointmentDTOS(List<Integer> allMedicalAppointmentDateIdsByDoctorEmail) {
-        return medicalAppointmentService
-                .findAllMedicalAppointmentByMADateID(allMedicalAppointmentDateIdsByDoctorEmail).stream()
-                .map(medicalAppointmentMapper::map)
-                .toList();
-    }
 
-    // wyciagamy wszystkie daty (dokladnie ich id) powiazane z lekarzem
     private List<Integer> getAllMedicalAppointmentDateIdsByDoctorEmail(String doctorEmail) {
         return medicalAppointmentDateService.getAllHistoryDatesByDoctorEmail(doctorEmail).stream()
                 .map(MedicalAppointmentDate::getMedicalAppointmentDateId)
                 .toList();
     }
 
+
+    private List<MedicalAppointmentDTO> getMedicalAppointmentDTOS(List<Integer> allMedicalAppointmentDateIdsByDoctorEmail) {
+        return medicalAppointmentService
+                .findAllMedicalAppointmentByMADateID(allMedicalAppointmentDateIdsByDoctorEmail).stream()
+                .map(medicalAppointmentMapper::map)
+                .toList();
+    }
 }
