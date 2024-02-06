@@ -42,7 +42,7 @@ class PatientRestControllerWebMvcTest {
     @DisplayName("That method should return correct DTO List Patients")
     void shouldReturnCorrectListDTOPatients() throws Exception {
         //given
-        PatientsDTO somePatientListDTO = EntityFixtures.somePatientListDTO();
+        PatientsDTO somePatientListDTO = EntityFixtures.somePatientsDTO();
         String responseBody = objectMapper.writeValueAsString(somePatientListDTO);
 
         // Do mockowania

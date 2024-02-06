@@ -44,12 +44,12 @@ class DoctorRestControllerWebMvcTest {
     private DoctorMapper doctorMapper;
 
     @Test
-    @DisplayName("GET Method should return the correct DTO List Doctors")
+    @DisplayName("GET Method should return the correct DoctorsDTO - List of DoctorDTO")
     void doctorRestControllerMethodGetWorksCorrectly() throws Exception {
 
         //given
-        DoctorsDTO someDoctorListDTO = someDoctorListDTO();
-        String responseBody = objectMapper.writeValueAsString(someDoctorListDTO);
+        DoctorsDTO someDoctorsDTO = someDoctorListDTO();
+        String responseBody = objectMapper.writeValueAsString(someDoctorsDTO);
 
 
         // dane do mockowania

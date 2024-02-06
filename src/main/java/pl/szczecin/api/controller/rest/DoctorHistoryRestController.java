@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.szczecin.api.dto.MedicalAppointmentDTO;
+import pl.szczecin.api.dto.MedicalAppointmentsDTO;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentMapper;
 import pl.szczecin.business.MedicalAppointmentDateService;
 import pl.szczecin.business.MedicalAppointmentService;
@@ -33,7 +34,7 @@ public class DoctorHistoryRestController {
             description = "This endpoint returns medical appointment history for selected doctor.",
             tags = {"Doctors"} // TAG do grupowania end-pointów
     )
-    public List<MedicalAppointmentDTO> doctorMedicalAppointmentHistory(
+    public MedicalAppointmentsDTO doctorMedicalAppointmentHistory(
             @Parameter(
                     description = "Please use a correct doctor email according to the example. " +
                             "Available doctor emails can be checked using method GET /api/doctors",
@@ -41,27 +42,32 @@ public class DoctorHistoryRestController {
             @PathVariable String doctorEmail
     ) {
 
-        // wyciagamy wszystkie daty (dokladnie ich id) powiazane z lekarzem
-        var allMedicalAppointmentDateIdsByDoctorEmail =
-                getAllMedicalAppointmentDateIdsByDoctorEmail(doctorEmail);
-
-        // wyszukujemy wszystkie wykorzystane daty wizyt (medical_appointment_date) w medical_appointment
-        // dla danego lekarza
-        return getMedicalAppointmentDTOS(allMedicalAppointmentDateIdsByDoctorEmail);
+        return getMedicalAppointmentsDTO(doctorEmail);
     }
 
 
-    private List<Integer> getAllMedicalAppointmentDateIdsByDoctorEmail(String doctorEmail) {
-        return medicalAppointmentDateService.getAllHistoryDatesByDoctorEmail(doctorEmail).stream()
-                .map(MedicalAppointmentDate::getMedicalAppointmentDateId)
-                .toList();
+    // tworzymy MedicalAppointmentsDTO, czyli liste MedicalAppointmentDTO
+    private MedicalAppointmentsDTO getMedicalAppointmentsDTO(String doctorEmail) {
+        return MedicalAppointmentsDTO.builder()
+                .medicalAppointmentsDTO(
+                        getMedicalAppointmentListDTO(
+                                getAllMedicalAppointmentDateIdsByDoctorEmail(doctorEmail)))
+                .build();
     }
 
-
-    private List<MedicalAppointmentDTO> getMedicalAppointmentDTOS(List<Integer> allMedicalAppointmentDateIdsByDoctorEmail) {
+    // wyszukujemy wszystkie wykorzystane daty wizyt (medical_appointment_date) w medical_appointment
+    // dla danego lekarza
+    private List<MedicalAppointmentDTO> getMedicalAppointmentListDTO(List<Integer> allMedicalAppointmentDateIdsByDoctorEmail) {
         return medicalAppointmentService
                 .findAllMedicalAppointmentByMADateID(allMedicalAppointmentDateIdsByDoctorEmail).stream()
                 .map(medicalAppointmentMapper::map)
+                .toList();
+    }
+
+    // wyciagamy wszystkie daty (dokladnie ich id) powiazane z lekarzem
+    private List<Integer> getAllMedicalAppointmentDateIdsByDoctorEmail(String doctorEmail) {
+        return medicalAppointmentDateService.getAllHistoryDatesByDoctorEmail(doctorEmail).stream()
+                .map(MedicalAppointmentDate::getMedicalAppointmentDateId)
                 .toList();
     }
 }

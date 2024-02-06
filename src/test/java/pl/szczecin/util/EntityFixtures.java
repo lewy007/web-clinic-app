@@ -142,7 +142,7 @@ public class EntityFixtures {
                 .build();
     }
 
-    public static PatientsDTO somePatientListDTO() {
+    public static PatientsDTO somePatientsDTO() {
         return PatientsDTO.builder()
                 .patientsDTO(
                         List.of(
@@ -203,21 +203,27 @@ public class EntityFixtures {
     public static MedicalAppointment someMedicalAppointment1() {
         return MedicalAppointment.builder()
                 .doctorNote("some note 1")
-                .medicalAppointmentDate(someMedicalAppointmentDate1())
+                .medicalAppointmentDate(
+                        someMedicalAppointmentDate1()
+                )
                 .build();
     }
 
     public static MedicalAppointment someMedicalAppointment2() {
         return MedicalAppointment.builder()
                 .doctorNote("some note 2")
-                .medicalAppointmentDate(someMedicalAppointmentDate2())
+                .medicalAppointmentDate(
+                        someMedicalAppointmentDate2()
+                )
                 .build();
     }
 
     public static MedicalAppointment someMedicalAppointment3() {
         return MedicalAppointment.builder()
                 .doctorNote("some note 3")
-                .medicalAppointmentDate(someMedicalAppointmentDate3())
+                .medicalAppointmentDate(
+                        someMedicalAppointmentDate3()
+                )
                 .build();
     }
 
@@ -245,6 +251,17 @@ public class EntityFixtures {
                 .dateTime("2023-11-18 10:00:00")
                 .patientName("Jan")
                 .patientSurname("Kowalski")
+                .build();
+    }
+
+    public static MedicalAppointmentsDTO someMedicalAppointmentsDTO() {
+        return MedicalAppointmentsDTO.builder()
+                .medicalAppointmentsDTO(
+                        List.of(
+                                someMedicalAppointmentDTO1(),
+                                someMedicalAppointmentDTO2(),
+                                someMedicalAppointmentDTO3()
+                        ))
                 .build();
     }
 

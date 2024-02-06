@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import pl.szczecin.api.dto.MedicalAppointmentDTO;
+import pl.szczecin.api.dto.MedicalAppointmentsDTO;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentMapper;
 import pl.szczecin.business.MedicalAppointmentDateService;
 import pl.szczecin.business.MedicalAppointmentService;
@@ -25,6 +26,10 @@ import pl.szczecin.domain.MedicalAppointmentDate;
 import pl.szczecin.util.EntityFixtures;
 
 import java.util.List;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static pl.szczecin.util.EntityFixtures.*;
 
 @WebMvcTest(controllers = DoctorHistoryRestController.class)
 @AutoConfigureMockMvc(addFilters = false) //wylaczenie konfiguracji security na potrzeby testow
@@ -48,14 +53,29 @@ class DoctorHistoryRestControllerWebMvcTest {
     void shouldReturnCorrectMedicalAppointmentHistoryForDoctor() throws Exception {
         //given
         String doctorEmail = "anna.nowak@clinic.pl";
-        List<MedicalAppointmentDate> medicalAppointmentDateList = List.of(EntityFixtures.someMedicalAppointmentDate1());
-        List<MedicalAppointment> medicalAppointmentList = List.of(EntityFixtures.someMedicalAppointment());
-        List<Integer> someMedicalAppointmentDateIdsByDoctorEmail = List.of(1, 3, 7, 9, 11);
+        MedicalAppointmentsDTO someMedicalAppointmentsDTO = EntityFixtures.someMedicalAppointmentsDTO();
+        String responseBody = objectMapper.writeValueAsString(someMedicalAppointmentsDTO);
 
-        MedicalAppointment someMedicalAppointment = EntityFixtures.someMedicalAppointment();
-        MedicalAppointmentDTO someMedicalAppointmentDTO = EntityFixtures.someMedicalAppointmentDTO1();
+        // dane do mockowania
+        List<MedicalAppointmentDate> medicalAppointmentDateList = List.of(
+                someMedicalAppointmentDate1(),
+                someMedicalAppointmentDate2(),
+                someMedicalAppointmentDate3()
+        );
+        List<Integer> someMedicalAppointmentDateIdsByDoctorEmail = List.of(1, 2, 3);
 
-        String responseBody = objectMapper.writeValueAsString(someMedicalAppointmentDTO);
+        List<MedicalAppointment> medicalAppointmentList = List.of(
+                someMedicalAppointment1(),
+                someMedicalAppointment2(),
+                someMedicalAppointment3()
+        );
+
+        List<MedicalAppointmentDTO> medicalAppointmentDTOList = List.of(
+                someMedicalAppointmentDTO1(),
+                someMedicalAppointmentDTO2(),
+                someMedicalAppointmentDTO3()
+        );
+
 
         //when
         Mockito.when(medicalAppointmentDateService.getAllHistoryDatesByDoctorEmail(doctorEmail))
@@ -63,28 +83,26 @@ class DoctorHistoryRestControllerWebMvcTest {
         Mockito.when(medicalAppointmentService.findAllMedicalAppointmentByMADateID(someMedicalAppointmentDateIdsByDoctorEmail))
                 .thenReturn(medicalAppointmentList);
         Mockito.when(medicalAppointmentMapper.map(Mockito.any(MedicalAppointment.class)))
-                .thenReturn(someMedicalAppointmentDTO);
+                .thenReturn(medicalAppointmentDTOList.get(0))
+                .thenReturn(medicalAppointmentDTOList.get(1))
+                .thenReturn(medicalAppointmentDTOList.get(2));
 
         //then
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(DoctorHistoryRestController.API_DOCTOR_HISTORY, doctorEmail)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.patientName",
-//                        Matchers.is(someMedicalAppointmentDTO.getPatientName())))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.patientSurname",
-//                        Matchers.is(someMedicalAppointmentDTO.getPatientSurname())))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.doctorNote",
-//                        Matchers.is(someMedicalAppointmentDTO.getDoctorNote())))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.dateTime",
-//                        Matchers.is(someMedicalAppointmentDTO.getDateTime())))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.medicalAppointmentsDTO", Matchers.hasSize(3)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.medicalAppointmentsDTO[0].patientName",
+                        Matchers.is(medicalAppointmentDTOList.get(0).getPatientName())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.medicalAppointmentsDTO[0].patientSurname",
+                        Matchers.is(medicalAppointmentDTOList.get(0).getPatientSurname())))
+                .andExpect(jsonPath("$.medicalAppointmentsDTO[0].doctorNote",
+                        Matchers.is(medicalAppointmentDTOList.get(0).getDoctorNote())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.medicalAppointmentsDTO[0].dateTime",
+                        Matchers.is(medicalAppointmentDTOList.get(0).getDateTime())))
                 .andReturn();
 
-//        Assertions.assertThat(result.getResponse().getContentAsString()).isEqualTo(responseBody);
+        Assertions.assertThat(result.getResponse().getContentAsString()).isEqualTo(responseBody);
     }
 
 }
-
-//.doctorNote("some note 1")
-//        .dateTime("2023-11-16 10:00:00")
-//        .patientName("Jan")
-//        .patientSurname(
