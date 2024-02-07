@@ -2,6 +2,8 @@ package pl.szczecin.api.controller.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import org.assertj.core.api.Assertions;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -42,38 +45,43 @@ class DoctorAvailableDatesRestControllerWebMvcTest {
     void shouldReturnCorrectAvailableAppointmentDatesForDoctor() throws Exception {
         //given
         String doctorEmail = "anna.nowak@clinic.pl";
-        List<MedicalAppointmentDate> someMedicalAppointmentDateList = List.of(
-                EntityFixtures.someMedicalAppointmentDate1(),
-                EntityFixtures.someMedicalAppointmentDate2(),
-                EntityFixtures.someMedicalAppointmentDate3()
-        );
-
-        MedicalAppointmentDateDTO someMedicalAppointmentDateDTO = EntityFixtures.someMedicalAppointmentDateDTO1();
         List<String> expectedDatesList = List.of(
                 "2023-11-15 10:00:00",
-                "2023-11-16 10:00:00",
-                "2023-11-17 10:00:00"
+                "2023-11-16 10:00:00"
         );
 
-        //when
+        String responseBody = objectMapper.writeValueAsString(expectedDatesList);
+
+        // dane do mockowania
+        List<MedicalAppointmentDate> someMedicalAppointmentDateList = List.of(
+                EntityFixtures.someMedicalAppointmentDate1(),
+                EntityFixtures.someMedicalAppointmentDate2()
+        );
+        List<MedicalAppointmentDateDTO> someMedicalAppointmentDateDTOList = List.of(
+                EntityFixtures.someMedicalAppointmentDateDTO1(),
+                EntityFixtures.someMedicalAppointmentDateDTO2()
+        );
+
+
+        // Konfiguracja mockow
         Mockito.when(medicalAppointmentDateService.getAvailableDatesByDoctorEmail(doctorEmail))
                 .thenReturn(someMedicalAppointmentDateList);
-        Mockito.when(medicalAppointmentDateMapper.map(someMedicalAppointmentDateList.get(0)))
-                .thenReturn(someMedicalAppointmentDateDTO);
+
+        Mockito.when(medicalAppointmentDateMapper.map(Mockito.any(MedicalAppointmentDate.class)))
+                .thenReturn(someMedicalAppointmentDateDTOList.get(0), someMedicalAppointmentDateDTOList.get(1));
 
         //then
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(
                                 DoctorAvailableDatesRestController.API_DOCTOR_AVAILABLE_DATES, doctorEmail)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath(
+                        "$", Matchers.containsInAnyOrder(expectedDatesList.toArray())))
+                .andExpect(MockMvcResultMatchers.header().string(
+                        HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
                 .andReturn();
+
+        Assertions.assertThat(result.getResponse().getContentAsString()).isEqualTo(responseBody);
 
     }
 }
-
-//    private List<String> getAvailableDatesByDoctorEmail(String doctorEmail) {
-//        return medicalAppointmentDateService.getAvailableDatesByDoctorEmail(doctorEmail).stream()
-//                .map(medicalAppointmentDateMapper::map)
-//                .map(MedicalAppointmentDateDTO::getDateTime)
-//                .toList();
-//    }

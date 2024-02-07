@@ -114,6 +114,7 @@ gradle build -x test
 ```
 
 <li>In folder build/libs you should find a file named: web-clinic-app-{version}.jar</li>
+<li>Run WebClinicApplication class</li>
 </ol>
 
 #### To build the docker image with Docker Compose:
@@ -126,6 +127,12 @@ git clone https://github.com/lewy007/web-clinic-app.git
 ```
 
 <li>Go to the folder with cloned repository</li> 
+
+```
+gradle build -x test
+```
+
+<li>In folder build/libs you should find a file named: web-clinic-app-{version}.jar</li>
 <li>Run the command:</li>
 
 ```
