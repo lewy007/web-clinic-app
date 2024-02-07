@@ -32,7 +32,7 @@ public class DoctorHistoryRestController {
     @Operation(
             summary = "Get Medical Appointment History For Selected Doctor",
             description = "This endpoint returns medical appointment history for selected doctor.",
-            tags = {"Doctors"} // TAG do grupowania end-pointów
+            tags = {"Doctors"} // TAG do grupowania endpointów
     )
     public MedicalAppointmentsDTO doctorMedicalAppointmentHistory(
             @Parameter(
@@ -51,7 +51,7 @@ public class DoctorHistoryRestController {
         return MedicalAppointmentsDTO.builder()
                 .medicalAppointmentsDTO(
                         getMedicalAppointmentListDTO(
-                                getAllMedicalAppointmentDateIdsByDoctorEmail(doctorEmail)))
+                                getAllHistoryMedicalAppointmentDateIdsByDoctorEmail(doctorEmail)))
                 .build();
     }
 
@@ -65,7 +65,7 @@ public class DoctorHistoryRestController {
     }
 
     // wyciagamy wszystkie daty (dokladnie ich id) powiazane z lekarzem
-    private List<Integer> getAllMedicalAppointmentDateIdsByDoctorEmail(String doctorEmail) {
+    private List<Integer> getAllHistoryMedicalAppointmentDateIdsByDoctorEmail(String doctorEmail) {
         return medicalAppointmentDateService.getAllHistoryDatesByDoctorEmail(doctorEmail).stream()
                 .map(MedicalAppointmentDate::getMedicalAppointmentDateId)
                 .toList();

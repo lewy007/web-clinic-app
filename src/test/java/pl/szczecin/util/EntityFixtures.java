@@ -203,6 +203,7 @@ public class EntityFixtures {
     public static MedicalAppointment someMedicalAppointment1() {
         return MedicalAppointment.builder()
                 .doctorNote("some note 1")
+                .patient(somePatient1())
                 .medicalAppointmentDate(
                         someMedicalAppointmentDate1()
                 )
@@ -318,12 +319,21 @@ public class EntityFixtures {
 
     public static MedicalAppointmentRequest someMedicalAppointmentRequest() {
         return MedicalAppointmentRequest.builder()
-                .patientEmail("patient@example.com")
+                .doctorNote("some added note to test")
                 .patientName("Piotr")
                 .patientSurname("Piotrowski")
                 .medicalAppointmentDate(
                         OffsetDateTime.of(2022, 8, 15,
                                 0, 0, 0, 0, ZoneOffset.UTC))
+                .doctorEmail("doctor@clinic.pl")
+                .build();
+    }
+    public static MedicalAppointmentRequestDTO someMedicalAppointmentRequestDTO() {
+        return MedicalAppointmentRequestDTO.builder()
+                .doctorNote("some added note to test")
+                .patientName("Piotr")
+                .patientSurname("Piotrowski")
+                .medicalAppointmentDate("2022-08-15 00:00:00")
                 .doctorEmail("doctor@clinic.pl")
                 .build();
     }

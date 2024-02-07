@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.szczecin.api.dto.MedicalAppointmentDTO;
 import pl.szczecin.api.dto.MedicalAppointmentRequestDTO;
+import pl.szczecin.api.dto.MedicalAppointmentsDTO;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentMapper;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentRequestMapper;
 import pl.szczecin.business.MedicalAppointmentDateService;
@@ -36,22 +37,29 @@ public class DoctorScheduleRestController {
             description = "This endpoint returns medical appointment schedule for selected doctor.",
             tags = {"Doctors"} // TAG do grupowania endpointów
     )
-    public List<MedicalAppointmentDTO> doctorMedicalAppointmentSchedule(
+    public MedicalAppointmentsDTO doctorMedicalAppointmentSchedule(
             @Parameter(
-                    description = "Please use a correct doctor email according to the example",
+                    description = "Please use a correct doctor email according to the example." +
+                            "Available doctor emails can be checked using method GET /api/doctors",
                     example = "name.surname@clinic.pl")
             @PathVariable String doctorEmail
     ) {
 
-        var allMedicalAppointmentDateIdsByDoctorEmail =
-                getAllMedicalAppointmentDateIdsByDoctorEmail(doctorEmail);
+        return getFutureMedicalAppointmentsDTO(doctorEmail);
+    }
 
-        return getMedicalAppointmentDTOS(allMedicalAppointmentDateIdsByDoctorEmail);
+    // tworzymy MedicalAppointmentsDTO, czyli liste MedicalAppointmentDTO
+    private MedicalAppointmentsDTO getFutureMedicalAppointmentsDTO(String doctorEmail) {
+        return MedicalAppointmentsDTO.builder()
+                .medicalAppointmentsDTO(
+                        getFutureMedicalAppointmentListDTO(
+                                getAllFutureMedicalAppointmentDateIdsByDoctorEmail(doctorEmail)))
+                .build();
     }
 
     // wyszukujemy wszystkie wykorzystane daty wizyt (medical_appointment_date) w medical_appointment
     // dla danego lekarza
-    private List<MedicalAppointmentDTO> getMedicalAppointmentDTOS(List<Integer> allMedicalAppointmentDateIdsByDoctorEmail) {
+    private List<MedicalAppointmentDTO> getFutureMedicalAppointmentListDTO(List<Integer> allMedicalAppointmentDateIdsByDoctorEmail) {
         return medicalAppointmentService
                 .findAllMedicalAppointmentByMADateID(allMedicalAppointmentDateIdsByDoctorEmail).stream()
                 .map(medicalAppointmentMapper::map)
@@ -59,7 +67,7 @@ public class DoctorScheduleRestController {
     }
 
     // wyciagamy wszystkie daty (dokladnie ich id) powiazane z lekarzem
-    private List<Integer> getAllMedicalAppointmentDateIdsByDoctorEmail(String doctorEmail) {
+    private List<Integer> getAllFutureMedicalAppointmentDateIdsByDoctorEmail(String doctorEmail) {
         return medicalAppointmentDateService.getAllFutureDatesByDoctorEmail(doctorEmail).stream()
                 .map(MedicalAppointmentDate::getMedicalAppointmentDateId)
                 .toList();
@@ -102,7 +110,7 @@ public class DoctorScheduleRestController {
             @PathVariable String doctorEmail,
             @Parameter(
                     description = "Please add a note for patient after visit.")
-            @RequestParam(value = "doctor note")
+            @RequestParam(value = "doctorNote")
             String doctorNote) {
 
         MedicalAppointmentRequest request
