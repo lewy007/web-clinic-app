@@ -319,21 +319,13 @@ public class EntityFixtures {
 
     public static MedicalAppointmentRequest someMedicalAppointmentRequest() {
         return MedicalAppointmentRequest.builder()
+                .patientEmail("piotr.piotrowski@clinic.pl")
                 .doctorNote("some added note to test")
                 .patientName("Piotr")
                 .patientSurname("Piotrowski")
                 .medicalAppointmentDate(
                         OffsetDateTime.of(2022, 8, 15,
                                 0, 0, 0, 0, ZoneOffset.UTC))
-                .doctorEmail("doctor@clinic.pl")
-                .build();
-    }
-    public static MedicalAppointmentRequestDTO someMedicalAppointmentRequestDTO() {
-        return MedicalAppointmentRequestDTO.builder()
-                .doctorNote("some added note to test")
-                .patientName("Piotr")
-                .patientSurname("Piotrowski")
-                .medicalAppointmentDate("2022-08-15 00:00:00")
                 .doctorEmail("doctor@clinic.pl")
                 .build();
     }

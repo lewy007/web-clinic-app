@@ -30,7 +30,9 @@ import java.util.List;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 class PatientRestControllerWebMvcTest {
 
+    //klasa symuluje wywolania przegladarki
     private MockMvc mockMvc;
+    // do zamiany jsonow na obiekty i odwrotnie
     private ObjectMapper objectMapper;
 
     @MockBean
