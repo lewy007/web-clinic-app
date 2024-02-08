@@ -5,9 +5,10 @@ This project is a web application created in Spring Boot.
 The application is an online clinic designed to medical appointments.
 It is directed to two groups: patients and doctors.
 Each group has access to a different area of the application.
+In this project, the controller layer is divided into two groups: REST API and Thymeleaf.
 After build the project according to the directions in the section `How to build the project on your own`
-You can check this project out by yourself
-on [Web-Clinic-Application](http://localhost:8087/web-clinic-application) - ThymeLeaf.
+You can check this project out by yourself using Thymeleaf
+on [Web-Clinic-Application](http://localhost:8087/web-clinic-application).
 If you want to see API, you can
 go to [Swagger UI](http://localhost:8087/web-clinic-application/swagger-ui/index.html).
 If you want to see the documentation of my API, you can

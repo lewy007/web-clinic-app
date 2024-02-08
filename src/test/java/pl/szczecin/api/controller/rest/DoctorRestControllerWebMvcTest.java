@@ -46,11 +46,9 @@ class DoctorRestControllerWebMvcTest {
     @Test
     @DisplayName("GET Method should return the correct DoctorsDTO - List of DoctorDTO")
     void doctorRestControllerMethodGetWorksCorrectly() throws Exception {
-
         //given
         DoctorsDTO someDoctorsDTO = someDoctorListDTO();
         String responseBody = objectMapper.writeValueAsString(someDoctorsDTO);
-
 
         // dane do mockowania
         List<DoctorDTO> doctorDTOList = List.of(

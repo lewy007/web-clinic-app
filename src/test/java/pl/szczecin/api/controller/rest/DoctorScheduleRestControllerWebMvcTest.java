@@ -121,10 +121,9 @@ class DoctorScheduleRestControllerWebMvcTest {
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
         parameters.add("patientName", "Jan");
         parameters.add("patientSurname", "Kowalski");
-        parameters.add("appointmentDate", "2024-10-23 09:30:00");
-        parameters.add("doctorNote", "some added note to test");
+        parameters.add("appointmentDate", "2023-11-16 10:00:00");
+        parameters.add("doctorNote", "some note 11");
 
-        MedicalAppointmentRequestDTO medicalAppointmentRequestDTO = EntityFixtures.someMedicalAppointmentRequestDTO();
         MedicalAppointmentRequest medicalAppointmentRequest = EntityFixtures.someMedicalAppointmentRequest();
         MedicalAppointment medicalAppointment = EntityFixtures.someMedicalAppointment1();
         MedicalAppointmentDTO medicalAppointmentDTO = EntityFixtures.someMedicalAppointmentDTO1();
@@ -132,9 +131,12 @@ class DoctorScheduleRestControllerWebMvcTest {
         String responseBody = objectMapper.writeValueAsString(medicalAppointmentDTO);
 
         //when
-        Mockito.when(medicalAppointmentRequestMapper.map(medicalAppointmentRequestDTO)).thenReturn(medicalAppointmentRequest);
-        Mockito.when(medicalAppointmentService.addNoteToMedicalAppointment(medicalAppointmentRequest)).thenReturn(medicalAppointment);
-        Mockito.when(medicalAppointmentMapper.map(Mockito.any(MedicalAppointment.class))).thenReturn(medicalAppointmentDTO);
+        Mockito.when(medicalAppointmentRequestMapper.map(Mockito.any(MedicalAppointmentRequestDTO.class)))
+                .thenReturn(medicalAppointmentRequest);
+        Mockito.when(medicalAppointmentService.addNoteToMedicalAppointment(medicalAppointmentRequest))
+                .thenReturn(medicalAppointment);
+        Mockito.when(medicalAppointmentMapper.map(Mockito.any(MedicalAppointment.class)))
+                .thenReturn(medicalAppointmentDTO);
 
         //then
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.patch(
