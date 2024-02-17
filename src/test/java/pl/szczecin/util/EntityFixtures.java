@@ -202,6 +202,7 @@ public class EntityFixtures {
 
     public static MedicalAppointment someMedicalAppointment1() {
         return MedicalAppointment.builder()
+                .medicalAppointmentId(1)
                 .doctorNote("some note 1")
                 .patient(somePatient1())
                 .medicalAppointmentDate(
@@ -212,6 +213,7 @@ public class EntityFixtures {
 
     public static MedicalAppointment someMedicalAppointment2() {
         return MedicalAppointment.builder()
+                .medicalAppointmentId(2)
                 .doctorNote("some note 2")
                 .medicalAppointmentDate(
                         someMedicalAppointmentDate2()
@@ -221,6 +223,7 @@ public class EntityFixtures {
 
     public static MedicalAppointment someMedicalAppointment3() {
         return MedicalAppointment.builder()
+                .medicalAppointmentId(3)
                 .doctorNote("some note 3")
                 .medicalAppointmentDate(
                         someMedicalAppointmentDate3()
