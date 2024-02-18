@@ -9,14 +9,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.szczecin.api.controller.rest.DoctorHistoryRestController;
+import pl.szczecin.api.controller.rest.DoctorScheduleRestController;
 import pl.szczecin.api.dto.MedicalAppointmentDTO;
 import pl.szczecin.api.dto.MedicalAppointmentsDTO;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentMapper;
+import pl.szczecin.api.dto.mapper.MedicalAppointmentRequestMapper;
 import pl.szczecin.business.MedicalAppointmentDateService;
 import pl.szczecin.business.MedicalAppointmentService;
 import pl.szczecin.domain.MedicalAppointment;
 import pl.szczecin.domain.MedicalAppointmentDate;
+import pl.szczecin.domain.MedicalAppointmentRequest;
 import pl.szczecin.util.EntityFixtures;
 
 import java.util.List;
@@ -24,7 +26,7 @@ import java.util.List;
 import static pl.szczecin.util.EntityFixtures.*;
 
 @ExtendWith(MockitoExtension.class)
-class DoctorHistoryRestControllerMockitoTest {
+class DoctorScheduleRestControllerMockitoTest {
 
 
     @Mock
@@ -33,9 +35,11 @@ class DoctorHistoryRestControllerMockitoTest {
     private MedicalAppointmentMapper medicalAppointmentMapper;
     @Mock
     private MedicalAppointmentDateService medicalAppointmentDateService;
+    @Mock
+    private MedicalAppointmentRequestMapper medicalAppointmentRequestMapper;
 
     @InjectMocks
-    private DoctorHistoryRestController doctorHistoryRestController;
+    private DoctorScheduleRestController doctorScheduleRestController;
 
 
     @BeforeEach
@@ -44,12 +48,13 @@ class DoctorHistoryRestControllerMockitoTest {
         Assertions.assertNotNull(medicalAppointmentService);
         Assertions.assertNotNull(medicalAppointmentMapper);
         Assertions.assertNotNull(medicalAppointmentDateService);
+        Assertions.assertNotNull(medicalAppointmentRequestMapper);
     }
 
 
     @Test
-    @DisplayName("That method should return correct all history medical appointment date Ids for doctor")
-    void shouldReturnCorrectAllHistoryMedicalAppointmentDateIdsForDoctor() throws Exception {
+    @DisplayName("GET - That method should return correct all future medical appointment date Ids for doctor")
+    void shouldReturnCorrectAllFutureMedicalAppointmentDateIdsForDoctor() throws Exception {
         //given
         String doctorEmail = "anna.nowak@clinic.pl";
 
@@ -63,11 +68,11 @@ class DoctorHistoryRestControllerMockitoTest {
                 someMedicalAppointmentDate3()
         );
 
-        Mockito.when(medicalAppointmentDateService.getAllHistoryDatesByDoctorEmail(doctorEmail))
+        Mockito.when(medicalAppointmentDateService.getAllFutureDatesByDoctorEmail(doctorEmail))
                 .thenReturn(medicalAppointmentDateList);
 
         //when
-        List<Integer> result = medicalAppointmentDateService.getAllHistoryDatesByDoctorEmail(doctorEmail).stream()
+        List<Integer> result = medicalAppointmentDateService.getAllFutureDatesByDoctorEmail(doctorEmail).stream()
                 .map(MedicalAppointmentDate::getMedicalAppointmentDateId)
                 .toList();
 
@@ -79,7 +84,7 @@ class DoctorHistoryRestControllerMockitoTest {
     }
 
     @Test
-    @DisplayName("That method should return correct all history medical appointment DTO for doctor")
+    @DisplayName("GET - That method should return correct all history medical appointment DTO for doctor")
     void shouldReturnCorrectAllHistoryMedicalAppointmentDTOForDoctor() throws Exception {
         //given
         List<Integer> someIds = List.of(1, 2, 3);
@@ -122,8 +127,9 @@ class DoctorHistoryRestControllerMockitoTest {
     }
 
     @Test
-    @DisplayName("That method should return correct medical appointment history for doctor - list of (MedicalAppointmentsDTO)")
-    void shouldReturnCorrectHistoryMedicalAppointmentsDTOForDoctor() throws Exception {
+    @DisplayName("GET - That method should return correct medical appointment schedule " +
+            "for doctor - list of (MedicalAppointmentsDTO)")
+    void shouldReturnCorrectFutureMedicalAppointmentsDTOForDoctor() throws Exception {
         //given
         String doctorEmail = "anna.nowak@clinic.pl";
         List<Integer> someIds = List.of(1, 2, 3);
@@ -152,7 +158,7 @@ class DoctorHistoryRestControllerMockitoTest {
         );
 
 
-        Mockito.when(medicalAppointmentDateService.getAllHistoryDatesByDoctorEmail(doctorEmail))
+        Mockito.when(medicalAppointmentDateService.getAllFutureDatesByDoctorEmail(doctorEmail))
                 .thenReturn(medicalAppointmentDateList);
         Mockito.when(medicalAppointmentService.findAllMedicalAppointmentByMADateID(someIds))
                 .thenReturn(someMedicalAppointmentList);
@@ -162,7 +168,7 @@ class DoctorHistoryRestControllerMockitoTest {
                 .thenReturn(expectedMedicalAppointmentsDTO.getMedicalAppointmentsDTO().get(2));
 
         //when
-        MedicalAppointmentsDTO result = doctorHistoryRestController.doctorMedicalAppointmentHistory(doctorEmail);
+        MedicalAppointmentsDTO result = doctorScheduleRestController.doctorMedicalAppointmentSchedule(doctorEmail);
 
         //then
         Assertions.assertEquals(result.getMedicalAppointmentsDTO().size(),
@@ -171,6 +177,25 @@ class DoctorHistoryRestControllerMockitoTest {
 
         //lista z inna iloscia elementow nie jest rowna, wiec test przechodzi
         Assertions.assertNotEquals(result, notExpectedMedicalAppointmentsDTO);
+    }
+
+
+    @Test
+    @DisplayName("PATCH - That method should return correct medical appointment with added note.")
+    void shouldReturnCorrectMedicalAppointmentWithAddedNote() {
+        //given
+        MedicalAppointmentRequest request = someMedicalAppointmentRequest();
+        MedicalAppointment expectedMedicalAppointment = EntityFixtures.someMedicalAppointment1();
+
+        Mockito.when(medicalAppointmentService.addNoteToMedicalAppointment(request))
+                .thenReturn(expectedMedicalAppointment);
+
+        //when
+        MedicalAppointment result = medicalAppointmentService.addNoteToMedicalAppointment(request);
+
+        //then
+        Assertions.assertEquals(result, expectedMedicalAppointment);
+        Assertions.assertNotEquals(result.getDoctorNote(), "some not equal note");
     }
 
 }

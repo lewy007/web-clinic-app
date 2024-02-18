@@ -42,22 +42,22 @@ public class DoctorHistoryRestController {
             @PathVariable String doctorEmail
     ) {
 
-        return getMedicalAppointmentsDTO(doctorEmail);
+        return getHistoryMedicalAppointmentsDTO(doctorEmail);
     }
 
 
     // tworzymy MedicalAppointmentsDTO, czyli liste MedicalAppointmentDTO
-    private MedicalAppointmentsDTO getMedicalAppointmentsDTO(String doctorEmail) {
+    private MedicalAppointmentsDTO getHistoryMedicalAppointmentsDTO(String doctorEmail) {
         return MedicalAppointmentsDTO.builder()
                 .medicalAppointmentsDTO(
-                        getMedicalAppointmentListDTO(
+                        getHistoryMedicalAppointmentListDTO(
                                 getAllHistoryMedicalAppointmentDateIdsByDoctorEmail(doctorEmail)))
                 .build();
     }
 
     // wyszukujemy wszystkie wykorzystane daty wizyt (medical_appointment_date) w medical_appointment
     // dla danego lekarza
-    private List<MedicalAppointmentDTO> getMedicalAppointmentListDTO(List<Integer> allMedicalAppointmentDateIdsByDoctorEmail) {
+    private List<MedicalAppointmentDTO> getHistoryMedicalAppointmentListDTO(List<Integer> allMedicalAppointmentDateIdsByDoctorEmail) {
         return medicalAppointmentService
                 .findAllMedicalAppointmentByMADateID(allMedicalAppointmentDateIdsByDoctorEmail).stream()
                 .map(medicalAppointmentMapper::map)
