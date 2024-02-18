@@ -34,7 +34,8 @@ public class DoctorScheduleRestController {
     @GetMapping()
     @Operation(
             summary = "Get Medical Appointment Schedule For Selected Doctor",
-            description = "This endpoint returns medical appointment schedule for selected doctor.",
+            description = "This endpoint returns schedule (today and future medical appointments updated every day)" +
+                    " for selected doctor.",
             tags = {"Doctors"} // TAG do grupowania endpointów
     )
     public MedicalAppointmentsDTO doctorMedicalAppointmentSchedule(
