@@ -385,4 +385,24 @@ public class EntityFixtures {
                 .build();
     }
 
+    public static PatientHistoryDTO somePatientHistoryDTO2() {
+        return PatientHistoryDTO.builder()
+                .patientEmail("patient.another@example.com")
+                .medicalAppointments(List.of(
+                        PatientHistoryDTO.MedicalAppointmentDTO.builder()
+                                .doctorName("nameTest1")
+                                .doctorSurname("surnameTest1")
+                                .dateTime("2023-11-17 10:00:00")
+                                .doctorNote("some test note1")
+                                .build(),
+                        PatientHistoryDTO.MedicalAppointmentDTO.builder()
+                                .doctorName("nameTest2")
+                                .doctorSurname("surnameTest2")
+                                .dateTime("2023-11-18 10:00:00")
+                                .doctorNote("some test note2")
+                                .build())
+                )
+                .build();
+    }
+
 }
