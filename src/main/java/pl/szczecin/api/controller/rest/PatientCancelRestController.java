@@ -37,7 +37,7 @@ public class PatientCancelRestController {
                     " for selected patient.",
             tags = {"Patients"} // TAG do grupowania endpointów
     )
-    public PatientHistoryDTO patientCancelAppointmentPage(
+    public PatientHistoryDTO patientMedicalAppointmentSchedule(
             @Parameter(
                     description = "Please use a correct patient email according to the example",
                     example = "name.surname@clinic.pl")

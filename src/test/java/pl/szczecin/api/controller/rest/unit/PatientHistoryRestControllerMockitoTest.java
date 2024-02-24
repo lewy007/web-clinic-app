@@ -57,8 +57,7 @@ class PatientHistoryRestControllerMockitoTest {
 
         // Then
         Assertions.assertEquals(result, expectedPatientHistoryDTO);
-
-        //lista z inna iloscia elementow nie jest rowna, wiec test przechodzi
+        //lista z inna iloscia elementow nie jest taka sama, wiec test przechodzi
         Assertions.assertNotEquals(result, notExpectedPatientHistoryDTO);
     }
 }
