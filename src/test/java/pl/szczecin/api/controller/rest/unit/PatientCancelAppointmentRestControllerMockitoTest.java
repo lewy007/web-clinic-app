@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -65,7 +66,7 @@ class PatientCancelAppointmentRestControllerMockitoTest {
 
 
         Mockito.when(patientService.findPatientScheduleByEmail(patientEmail)).thenReturn(somePatientHistory);
-        Mockito.when(patientMapper.map(Mockito.any(PatientHistory.class)))
+        Mockito.when(patientMapper.map(ArgumentMatchers.any(PatientHistory.class)))
                 .thenReturn(expectedPatientHistoryDTO);
 
         // When
@@ -75,6 +76,17 @@ class PatientCancelAppointmentRestControllerMockitoTest {
         Assertions.assertEquals(result, expectedPatientHistoryDTO);
         //lista z inna iloscia elementow nie jest taka sama, wiec test przechodzi
         Assertions.assertNotEquals(result, notExpectedPatientHistoryDTO);
+
+        Mockito.verify(patientService, Mockito.times(1))
+                .findPatientScheduleByEmail(Mockito.anyString());
+        Mockito.verify(patientService, Mockito.never())
+                .findPatientScheduleByEmail("someValue");
+        Mockito.verify(patientMapper, Mockito.times(1))
+                .map(Mockito.any(PatientHistory.class));
+
+        Mockito.verifyNoInteractions(medicalAppointmentService);
+        Mockito.verifyNoInteractions(medicalAppointmentRequestMapper);
+        Mockito.verifyNoInteractions(medicalAppointmentMapper);
     }
 
 
@@ -107,6 +119,16 @@ class PatientCancelAppointmentRestControllerMockitoTest {
         Assertions.assertEquals(result, expectedMedicalAppointmentDTO);
         //lista z inna iloscia elementow nie jest taka sama, wiec test przechodzi
         Assertions.assertNotEquals(result, notExpextedMedicalAppointmentDTO);
+
+        Mockito.verify(medicalAppointmentRequestMapper, Mockito.times(1))
+                .map(Mockito.any(MedicalAppointmentRequestDTO.class));
+        Mockito.verify(medicalAppointmentService, Mockito.times(1))
+                .cancelAppointment(request);
+        Mockito.verify(medicalAppointmentMapper, Mockito.times(1))
+                .map(Mockito.any(MedicalAppointment.class));
+
+        Mockito.verifyNoInteractions(patientService);
+        Mockito.verifyNoInteractions(patientMapper);
     }
 
 }
