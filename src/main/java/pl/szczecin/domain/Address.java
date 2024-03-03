@@ -10,7 +10,7 @@ import lombok.With;
 @Value
 @Builder
 @EqualsAndHashCode(of = "addressId")
-@ToString(of = {"addressId", "country", "city", "postalCode","address"})
+@ToString(of = {"addressId", "country", "city", "postalCode", "address"})
 public class Address {
 
     Integer addressId;

@@ -1,6 +1,5 @@
 package pl.szczecin.business;
 
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -8,6 +7,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import pl.szczecin.business.dao.PatientDAO;
 import pl.szczecin.domain.Address;
 import pl.szczecin.domain.MedicalAppointmentRequest;
@@ -27,7 +29,10 @@ public class PatientService {
     private final PatientDAO patientDAO;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional
+    @Transactional(
+            propagation = Propagation.REQUIRED,
+            isolation = Isolation.DEFAULT
+    )
     public Patient savePatient(MedicalAppointmentRequest medicalAppointmentRequest) {
 
         Patient newPatient = buildPatient(medicalAppointmentRequest);
@@ -43,7 +48,10 @@ public class PatientService {
         return availablePatients;
     }
 
-    @Transactional
+    @Transactional(
+            propagation = Propagation.REQUIRED,
+            isolation = Isolation.DEFAULT
+    )
     public Patient findPatientByEmail(String email) {
         Optional<Patient> patient = patientDAO.findPatientByEmail(email);
         if (patient.isEmpty()) {

@@ -15,11 +15,29 @@ If you want to see the documentation of my API, you can
 go to [API documentation](http://localhost:8087/web-clinic-application/v3/api-docs/default).
 This is the contract. This is the actual documentation that sticks to the OpenApi specification.
 
+## Application Architecture
+
+In my application I used a three-tier architecture. 
+Three-layer architecture is the concept of simply dividing an application into three layers.
+Each layer can operate independently of the others on its own infrastructure,
+so they can be developed and modified separately.
+* Controller layer - this part of the application is used to expose the backend to the world 
+and for the frontend to talk to our backend.
+* Service layer - this part of the application is used for implementation of business logic.
+* DAO layer - this part of the application is responsible for accessing database. 
+I used the DAO (Data Access Object) pattern, which provides access to the data source.
+The DAO pattern is a structural pattern, which allows us to isolate the business layer of the application 
+from the data access layer by means of some level of abstraction. 
+Using this pattern allows to hide from the business layer all the complexity of performing
+CRUD (Create Read Update Delete) operations contained in the mechanism that implements access to application data.
+
+<img src="readmeimages/architektura_aplikacji.png">
+
 ## Diagram ERD
 
 Entity Relationship Diagram illustrates the relationship of entities in the database.
 
-<img src="web_clinic_erd.png">
+<img src="readmeimages/web_clinic_erd.png">
 
 ## REST API Endpoints
 

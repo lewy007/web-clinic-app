@@ -1,9 +1,11 @@
 package pl.szczecin.business;
 
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import pl.szczecin.business.dao.MedicalAppointmentDAO;
 import pl.szczecin.domain.*;
 
@@ -29,7 +31,10 @@ public class MedicalAppointmentService {
         return allMedicalAppointments;
     }
 
-    @Transactional
+    @Transactional(
+            propagation = Propagation.REQUIRED,
+            isolation = Isolation.DEFAULT
+    )
     public MedicalAppointment makeAppointment(MedicalAppointmentRequest request) {
 
         // pobieramy pacjenta, doktora oraz date
@@ -51,7 +56,10 @@ public class MedicalAppointmentService {
         return medicalAppointment;
     }
 
-    @Transactional
+    @Transactional(
+            propagation = Propagation.REQUIRED,
+            isolation = Isolation.DEFAULT
+    )
     public MedicalAppointment cancelAppointment(MedicalAppointmentRequest request) {
 
         // tutaj szukam na podstawie daty i lekarza, bo moze byc kilku lekarzy przyjmujacych na te sama godzine
@@ -68,9 +76,12 @@ public class MedicalAppointmentService {
 
     }
 
-    @Transactional
+    @Transactional(
+            propagation = Propagation.REQUIRED,
+            isolation = Isolation.DEFAULT
+    )
     public MedicalAppointment addNoteToMedicalAppointment(MedicalAppointmentRequest request) {
-       return medicalAppointmentDAO.addNoteToMedicalAppointment(request);
+        return medicalAppointmentDAO.addNoteToMedicalAppointment(request);
     }
 
 
