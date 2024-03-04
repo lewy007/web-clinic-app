@@ -1,6 +1,7 @@
 package pl.szczecin.api.controller.mvc.unit;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +21,8 @@ import pl.szczecin.util.EntityFixtures;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 @ExtendWith(MockitoExtension.class)
 class PatientControllerMockitoTest {
@@ -33,6 +36,15 @@ class PatientControllerMockitoTest {
 
     @InjectMocks
     private PatientController patientController;
+
+
+    @BeforeEach
+    public void setUp() {
+        System.out.println("checking for nulls");
+        assertNotNull(doctorService);
+        assertNotNull(patientService);
+        assertNotNull(doctorMapper);
+    }
 
 
     @Test
@@ -61,6 +73,12 @@ class PatientControllerMockitoTest {
 
         // then
         Assertions.assertThat(result).isEqualTo(patientEmail);
+
+        Mockito.verify(patientService, Mockito.times(1))
+                .getLoggedInPatientEmail();
+
+        Mockito.verifyNoInteractions(doctorService);
+        Mockito.verifyNoInteractions(doctorMapper);
 
     }
 
@@ -117,6 +135,16 @@ class PatientControllerMockitoTest {
         // then
         Assertions.assertThat(patientEmail).isEqualTo(model.getAttribute("loggedInPatientEmail"));
         Assertions.assertThat(doctorsListDTO).isEqualTo(model.getAttribute("availableDoctorsDTOs"));
+
+        Mockito.verify(patientService, Mockito.times(1))
+                .getLoggedInPatientEmail();
+        Mockito.verify(doctorService, Mockito.times(1))
+                .findAvailableDoctors();
+        Mockito.verify(doctorMapper, Mockito.times(3))
+                .map(Mockito.any(Doctor.class));
+        Mockito.verify(doctorMapper, Mockito.never())
+                .map(doctorsList.get(0).withEmail("other.email@clinic.pl"));
+
     }
 
 }

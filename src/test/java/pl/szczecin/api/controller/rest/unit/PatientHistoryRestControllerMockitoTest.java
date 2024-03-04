@@ -59,5 +59,12 @@ class PatientHistoryRestControllerMockitoTest {
         Assertions.assertEquals(result, expectedPatientHistoryDTO);
         //lista z inna iloscia elementow nie jest taka sama, wiec test przechodzi
         Assertions.assertNotEquals(result, notExpectedPatientHistoryDTO);
+
+        Mockito.verify(patientService, Mockito.times(1))
+                .findPatientHistoryByEmail(Mockito.anyString());
+        Mockito.verify(patientService, Mockito.never())
+                .findPatientHistoryByEmail("other.email@clinic.pl");
+        Mockito.verify(patientMapper, Mockito.times(1))
+                .map(Mockito.any(PatientHistory.class));
     }
 }

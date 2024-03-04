@@ -17,6 +17,7 @@ import pl.szczecin.api.dto.mapper.MedicalAppointmentRequestMapper;
 import pl.szczecin.business.MedicalAppointmentService;
 import pl.szczecin.domain.MedicalAppointment;
 import pl.szczecin.domain.MedicalAppointmentRequest;
+import pl.szczecin.domain.PatientHistory;
 import pl.szczecin.util.EntityFixtures;
 
 
@@ -45,7 +46,7 @@ class PatientMakeAppointmentRestControllerMockitoTest {
 
 
     @Test
-    @DisplayName("POST - That method should add correctly a medical appointment and return medical appointment.")
+    @DisplayName("POST - That method should correctly add a medical appointment and return medical appointment.")
     void shouldAddCorrectlyMedicalAppointmentAndReturnMedicalAppointment() {
         // Given
         MedicalAppointmentRequest request = EntityFixtures.someMedicalAppointmentRequest();
@@ -62,10 +63,18 @@ class PatientMakeAppointmentRestControllerMockitoTest {
         Assertions.assertEquals(result, expectedMedicalAppointment);
         //lista z inna iloscia elementow nie jest taka sama, wiec test przechodzi
         Assertions.assertNotEquals(result, notExpectedMedicalAppointment);
+
+        Mockito.verify(medicalAppointmentService, Mockito.times(1))
+                .makeAppointment(Mockito.any(MedicalAppointmentRequest.class));
+        Mockito.verify(medicalAppointmentService, Mockito.never())
+                .makeAppointment(request.withPatientEmail("other.email@clinic.pl"));
+
+        Mockito.verifyNoInteractions(medicalAppointmentRequestMapper);
+        Mockito.verifyNoInteractions(medicalAppointmentMapper);
     }
 
     @Test
-    @DisplayName("POST - That method should add correctly a medical appointment and return data (medicalAppointmentDTO).")
+    @DisplayName("POST - That method should correctly add a medical appointment and return data (medicalAppointmentDTO).")
     void shouldAddCorrectlyMedicalAppointmentAndReturnMedicalAppointmentDTO() {
         // Given
         String doctorEmail = "doctor.doctor@clinic.pl";
@@ -92,5 +101,14 @@ class PatientMakeAppointmentRestControllerMockitoTest {
         Assertions.assertEquals(result, expectedMedicalAppointmentDTO);
         //lista z inna iloscia elementow nie jest taka sama, wiec test przechodzi
         Assertions.assertNotEquals(result, notExpectedMedicalAppointmentDTO);
+
+        Mockito.verify(medicalAppointmentService, Mockito.times(1))
+                .makeAppointment(Mockito.any(MedicalAppointmentRequest.class));
+        Mockito.verify(medicalAppointmentService, Mockito.never())
+                .makeAppointment(request.withPatientEmail("other.email@clinic.pl"));
+        Mockito.verify(medicalAppointmentRequestMapper, Mockito.times(1))
+                .map(Mockito.any(MedicalAppointmentRequestDTO.class));
+        Mockito.verify(medicalAppointmentMapper, Mockito.times(1))
+                .map(Mockito.any(MedicalAppointment.class));
     }
 }

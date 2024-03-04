@@ -72,6 +72,11 @@ class DoctorRestControllerMockitoTest {
         Assertions.assertEquals(result.getDoctorsDTO(), expectedDoctorsDTO.getDoctorsDTO());
         //lista z inna iloscia elementow nie jest rowna, wiec test przechodzi
         Assertions.assertNotEquals(result.getDoctorsDTO().size(), notExpectedDoctorsDTO.getDoctorsDTO().size());
+
+        Mockito.verify(doctorService, Mockito.times(1))
+                .findAvailableDoctors();
+        Mockito.verify(doctorMapper, Mockito.times(2))
+                .map(Mockito.any(Doctor.class));
     }
 
     @Test
@@ -104,6 +109,11 @@ class DoctorRestControllerMockitoTest {
         Assertions.assertEquals(result, expectedDoctorDTOList);
         //lista z inna iloscia elementow nie jest rowna, wiec test przechodzi
         Assertions.assertNotEquals(result, notExpectedDoctorDTOList);
+
+        Mockito.verify(doctorService, Mockito.times(1))
+                .findAvailableDoctors();
+        Mockito.verify(doctorMapper, Mockito.times(2))
+                .map(Mockito.any(Doctor.class));
     }
 
 }

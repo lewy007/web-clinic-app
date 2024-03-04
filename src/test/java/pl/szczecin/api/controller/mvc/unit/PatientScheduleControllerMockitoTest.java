@@ -1,6 +1,7 @@
 package pl.szczecin.api.controller.mvc.unit;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +17,8 @@ import pl.szczecin.business.PatientService;
 import pl.szczecin.domain.PatientHistory;
 import pl.szczecin.util.EntityFixtures;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @ExtendWith(MockitoExtension.class)
 class PatientScheduleControllerMockitoTest {
 
@@ -26,6 +29,14 @@ class PatientScheduleControllerMockitoTest {
 
     @InjectMocks
     private PatientScheduleController patientScheduleController;
+
+
+    @BeforeEach
+    public void setUp() {
+        System.out.println("checking for nulls");
+        assertNotNull(patientService);
+        assertNotNull(patientMapper);
+    }
 
     @Test
     @DisplayName("That method should return correct view")
@@ -53,6 +64,11 @@ class PatientScheduleControllerMockitoTest {
 
         // then
         Assertions.assertThat(result).isEqualTo(patientEmail);
+
+        Mockito.verify(patientService, Mockito.times(1))
+                .getLoggedInPatientEmail();
+
+        Mockito.verifyNoInteractions(patientMapper);
 
     }
 
@@ -84,6 +100,13 @@ class PatientScheduleControllerMockitoTest {
         // then
         Assertions.assertThat(result).isEqualTo(expected);
 
+        Mockito.verify(patientService, Mockito.times(1))
+                .findPatientScheduleByEmail(Mockito.anyString());
+        Mockito.verify(patientService, Mockito.never())
+                .findPatientScheduleByEmail("other.email@clinic.pl");
+
+        Mockito.verifyNoInteractions(patientMapper);
+
     }
 
     @Test
@@ -101,6 +124,13 @@ class PatientScheduleControllerMockitoTest {
 
         // then
         Assertions.assertThat(resultPatientHistoryDTO).isEqualTo(expectedPatientHistoryDTO);
+
+        Mockito.verify(patientMapper, Mockito.times(1))
+                .map(Mockito.any(PatientHistory.class));
+        Mockito.verify(patientMapper, Mockito.never())
+                .map(somePatientHistory.withPatientEmail("other.email@clinic.pl"));
+
+        Mockito.verifyNoInteractions(patientService);
 
     }
 
