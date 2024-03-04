@@ -76,6 +76,14 @@ class DoctorHistoryRestControllerMockitoTest {
         Assertions.assertEquals(result, expectedList);
         //lista z inna iloscia elementow nie jest rowna, wiec test przechodzi
         Assertions.assertNotEquals(result, notExpectedList);
+
+        Mockito.verify(medicalAppointmentDateService, Mockito.times(1))
+                .getAllHistoryDatesByDoctorEmail(Mockito.anyString());
+        Mockito.verify(medicalAppointmentDateService, Mockito.never())
+                .getAllHistoryDatesByDoctorEmail("other.email@clinic.pl");
+
+        Mockito.verifyNoInteractions(medicalAppointmentService);
+        Mockito.verifyNoInteractions(medicalAppointmentMapper);
     }
 
     @Test
@@ -119,6 +127,15 @@ class DoctorHistoryRestControllerMockitoTest {
         Assertions.assertEquals(result, expectedList);
         //lista z inna iloscia elementow nie jest rowna, wiec test przechodzi
         Assertions.assertNotEquals(result, notExpectedList);
+
+        Mockito.verify(medicalAppointmentService, Mockito.times(1))
+                .findAllMedicalAppointmentByMADateID(someIds);
+        Mockito.verify(medicalAppointmentService, Mockito.never())
+                .findAllMedicalAppointmentByMADateID(List.of(4, 5, 6));
+        Mockito.verify(medicalAppointmentMapper, Mockito.times(3))
+                .map(Mockito.any(MedicalAppointment.class));
+
+        Mockito.verifyNoInteractions(medicalAppointmentDateService);
     }
 
     @Test
@@ -171,6 +188,19 @@ class DoctorHistoryRestControllerMockitoTest {
 
         //lista z inna iloscia elementow nie jest rowna, wiec test przechodzi
         Assertions.assertNotEquals(result, notExpectedMedicalAppointmentsDTO);
+
+        Mockito.verify(medicalAppointmentDateService, Mockito.times(1))
+                .getAllHistoryDatesByDoctorEmail(Mockito.anyString());
+        Mockito.verify(medicalAppointmentDateService, Mockito.never())
+                .getAllHistoryDatesByDoctorEmail("other.email@clinic.pl");
+
+        Mockito.verify(medicalAppointmentService, Mockito.times(1))
+                .findAllMedicalAppointmentByMADateID(someIds);
+        Mockito.verify(medicalAppointmentService, Mockito.never())
+                .findAllMedicalAppointmentByMADateID(List.of(4, 5, 6));
+
+        Mockito.verify(medicalAppointmentMapper, Mockito.times(3))
+                .map(Mockito.any(MedicalAppointment.class));
     }
 
 }

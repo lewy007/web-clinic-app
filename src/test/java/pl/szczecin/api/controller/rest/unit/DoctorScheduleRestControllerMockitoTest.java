@@ -81,6 +81,15 @@ class DoctorScheduleRestControllerMockitoTest {
         Assertions.assertEquals(result, expectedList);
         //lista z inna iloscia elementow nie jest rowna, wiec test przechodzi
         Assertions.assertNotEquals(result, notExpectedList);
+
+        Mockito.verify(medicalAppointmentDateService, Mockito.times(1))
+                .getAllFutureDatesByDoctorEmail(Mockito.anyString());
+        Mockito.verify(medicalAppointmentDateService, Mockito.never())
+                .getAllFutureDatesByDoctorEmail("other.email@clinic.pl");
+
+        Mockito.verifyNoInteractions(medicalAppointmentService);
+        Mockito.verifyNoInteractions(medicalAppointmentMapper);
+        Mockito.verifyNoInteractions(medicalAppointmentRequestMapper);
     }
 
     @Test
@@ -124,6 +133,16 @@ class DoctorScheduleRestControllerMockitoTest {
         Assertions.assertEquals(result, expectedList);
         //lista z inna iloscia elementow nie jest rowna, wiec test przechodzi
         Assertions.assertNotEquals(result, notExpectedList);
+
+        Mockito.verify(medicalAppointmentService, Mockito.times(1))
+                .findAllMedicalAppointmentByMADateID(someIds);
+        Mockito.verify(medicalAppointmentService, Mockito.never())
+                .findAllMedicalAppointmentByMADateID(List.of(4, 5, 6));
+        Mockito.verify(medicalAppointmentMapper, Mockito.times(3))
+                .map(Mockito.any(MedicalAppointment.class));
+
+        Mockito.verifyNoInteractions(medicalAppointmentDateService);
+        Mockito.verifyNoInteractions(medicalAppointmentRequestMapper);
     }
 
     @Test
@@ -177,6 +196,19 @@ class DoctorScheduleRestControllerMockitoTest {
 
         //lista z inna iloscia elementow nie jest rowna, wiec test przechodzi
         Assertions.assertNotEquals(result, notExpectedMedicalAppointmentsDTO);
+
+        Mockito.verify(medicalAppointmentDateService, Mockito.times(1))
+                .getAllFutureDatesByDoctorEmail(Mockito.anyString());
+        Mockito.verify(medicalAppointmentDateService, Mockito.never())
+                .getAllFutureDatesByDoctorEmail("other.email@clinic.pl");
+        Mockito.verify(medicalAppointmentService, Mockito.times(1))
+                .findAllMedicalAppointmentByMADateID(someIds);
+        Mockito.verify(medicalAppointmentService, Mockito.never())
+                .findAllMedicalAppointmentByMADateID(List.of(4, 5, 6));
+        Mockito.verify(medicalAppointmentMapper, Mockito.times(3))
+                .map(Mockito.any(MedicalAppointment.class));
+
+        Mockito.verifyNoInteractions(medicalAppointmentRequestMapper);
     }
 
 
@@ -196,6 +228,15 @@ class DoctorScheduleRestControllerMockitoTest {
         //then
         Assertions.assertEquals(result, expectedMedicalAppointment);
         Assertions.assertNotEquals(result.getDoctorNote(), "some not equal note");
+
+        Mockito.verify(medicalAppointmentService, Mockito.times(1))
+                .addNoteToMedicalAppointment(Mockito.any(MedicalAppointmentRequest.class));
+        Mockito.verify(medicalAppointmentService, Mockito.never())
+                .addNoteToMedicalAppointment(request.withPatientEmail("other.email@clinic.pl"));
+
+        Mockito.verifyNoInteractions(medicalAppointmentRequestMapper);
+        Mockito.verifyNoInteractions(medicalAppointmentDateService);
+        Mockito.verifyNoInteractions(medicalAppointmentMapper);
     }
 
 }

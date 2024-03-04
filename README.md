@@ -33,7 +33,14 @@ CRUD (Create Read Update Delete) operations contained in the mechanism that impl
 
 <img src="readmeimages/architektura_aplikacji.png">
 
-## Diagram ERD
+## UML Diagram
+
+According to the application architecture described above,
+below is a diagram which illustrates a communication between controllers for the query of available doctors.
+
+<img src="readmeimages/doctorUML.png">
+
+## ERD Diagram
 
 Entity Relationship Diagram illustrates the relationship of entities in the database.
 

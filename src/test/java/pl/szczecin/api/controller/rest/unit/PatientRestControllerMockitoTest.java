@@ -16,6 +16,7 @@ import pl.szczecin.api.dto.PatientsDTO;
 import pl.szczecin.api.dto.mapper.PatientMapper;
 import pl.szczecin.business.PatientService;
 import pl.szczecin.domain.Patient;
+import pl.szczecin.domain.PatientHistory;
 import pl.szczecin.util.EntityFixtures;
 
 import java.util.List;
@@ -76,6 +77,13 @@ class PatientRestControllerMockitoTest {
         //lista z inna iloscia elementow nie jest rowna, wiec test przechodzi
         Assertions.assertNotEquals(result.getBody().getPatientsDTO().size(),
                 notExpectedPatientsDTO.getPatientsDTO().size());
+
+        Mockito.verify(patientService, Mockito.times(1))
+                .findAvailablePatients();
+        Mockito.verify(patientMapper, Mockito.times(2))
+                .map(Mockito.any(Patient.class));
+        Mockito.verify(patientMapper, Mockito.never())
+                .map(Mockito.any(PatientHistory.class));
     }
 
     @Test
@@ -108,6 +116,13 @@ class PatientRestControllerMockitoTest {
         Assertions.assertEquals(result, expectedPatientDTOList);
         //lista z inna iloscia elementow nie jest rowna, wiec test przechodzi
         Assertions.assertNotEquals(result, notExpectedPatientDTOList);
+
+        Mockito.verify(patientService, Mockito.times(1))
+                .findAvailablePatients();
+        Mockito.verify(patientMapper, Mockito.times(2))
+                .map(Mockito.any(Patient.class));
+        Mockito.verify(patientMapper, Mockito.never())
+                .map(Mockito.any(PatientHistory.class));
     }
 
 }

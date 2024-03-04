@@ -1,6 +1,7 @@
 package pl.szczecin.api.controller.mvc.unit;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +26,8 @@ import pl.szczecin.util.EntityFixtures;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @ExtendWith(MockitoExtension.class)
 class DoctorScheduleControllerMockitoTest {
 
@@ -33,15 +36,26 @@ class DoctorScheduleControllerMockitoTest {
     @Mock
     private MedicalAppointmentService medicalAppointmentService;
     @Mock
-    private MedicalAppointmentMapper medicalAppointmentMapper;
-    @Mock
     private MedicalAppointmentDateService medicalAppointmentDateService;
+    @Mock
+    private MedicalAppointmentMapper medicalAppointmentMapper;
     @Mock
     private MedicalAppointmentRequestMapper medicalAppointmentRequestMapper;
 
 
     @InjectMocks
     private DoctorScheduleController doctorScheduleController;
+
+
+    @BeforeEach
+    public void setUp() {
+        System.out.println("checking for nulls");
+        assertNotNull(doctorService);
+        assertNotNull(medicalAppointmentService);
+        assertNotNull(medicalAppointmentDateService);
+        assertNotNull(medicalAppointmentMapper);
+        assertNotNull(medicalAppointmentRequestMapper);
+    }
 
     @Test
     @DisplayName("That method should return correct view")
@@ -69,6 +83,14 @@ class DoctorScheduleControllerMockitoTest {
 
         // then
         Assertions.assertThat(result).isEqualTo(doctorEmail);
+
+        Mockito.verify(doctorService, Mockito.times(1))
+                .getLoggedInDoctorEmail();
+
+        Mockito.verifyNoInteractions(medicalAppointmentService);
+        Mockito.verifyNoInteractions(medicalAppointmentDateService);
+        Mockito.verifyNoInteractions(medicalAppointmentMapper);
+        Mockito.verifyNoInteractions(medicalAppointmentRequestMapper);
 
     }
 
@@ -110,6 +132,16 @@ class DoctorScheduleControllerMockitoTest {
         Assertions.assertThat(result).containsExactly(1, 2, 3);
         Assertions.assertThat(result).size().isEqualTo(3);
 
+        Mockito.verify(medicalAppointmentDateService, Mockito.times(1))
+                .getAllFutureDatesByDoctorEmail(Mockito.anyString());
+        Mockito.verify(medicalAppointmentDateService, Mockito.never())
+                .getAllFutureDatesByDoctorEmail("other.email@clinic.pl");
+
+        Mockito.verifyNoInteractions(doctorService);
+        Mockito.verifyNoInteractions(medicalAppointmentService);
+        Mockito.verifyNoInteractions(medicalAppointmentMapper);
+        Mockito.verifyNoInteractions(medicalAppointmentRequestMapper);
+
     }
 
     @Test
@@ -145,13 +177,23 @@ class DoctorScheduleControllerMockitoTest {
 
         // Then
         Assertions.assertThat(result).containsExactlyElementsOf(medicalAppointmentDTOs);
-    }
 
+        Mockito.verify(medicalAppointmentService, Mockito.times(1))
+                .findAllMedicalAppointmentByMADateID(medicalAppointmentDateIds);
+        Mockito.verify(medicalAppointmentService, Mockito.never())
+                .findAllMedicalAppointmentByMADateID(List.of(4, 5, 6));
+        Mockito.verify(medicalAppointmentMapper, Mockito.times(3))
+                .map(Mockito.any(MedicalAppointment.class));
+
+        Mockito.verifyNoInteractions(doctorService);
+        Mockito.verifyNoInteractions(medicalAppointmentDateService);
+        Mockito.verifyNoInteractions(medicalAppointmentRequestMapper);
+    }
 
 
     // Metoda POST
     @Test
-    @DisplayName("That method should correctly mapped MedicalAppointmentRequestDTO to MedicalAppointmentRequest")
+    @DisplayName("POST - That method should correctly mapped MedicalAppointmentRequestDTO to MedicalAppointmentRequest")
     void medicalAppointmentRequestMapperShouldReturnCorrectRequest() {
         // given
         String patientName = "Agnieszka";
@@ -175,10 +217,18 @@ class DoctorScheduleControllerMockitoTest {
 
         // then
         Assertions.assertThat(resultRequest).isEqualTo(expectedRequest);
+
+        Mockito.verify(medicalAppointmentRequestMapper, Mockito.times(1))
+                .map(Mockito.any(MedicalAppointmentRequestDTO.class));
+
+        Mockito.verifyNoInteractions(doctorService);
+        Mockito.verifyNoInteractions(medicalAppointmentService);
+        Mockito.verifyNoInteractions(medicalAppointmentDateService);
+        Mockito.verifyNoInteractions(medicalAppointmentMapper);
     }
 
     @Test
-    @DisplayName("That method should return a correct note doctor")
+    @DisplayName("POST - That method should return a correct note doctor")
     void medicalAppointmentServiceShouldCorrectlyAddNoteToMedicalAppointment() {
         // given
 
@@ -192,6 +242,16 @@ class DoctorScheduleControllerMockitoTest {
                 medicalAppointmentService.addNoteToMedicalAppointment(request);
         // then
         Assertions.assertThat(resultMedicalAppointment).isEqualTo(expectedMedicalAppointment);
+
+        Mockito.verify(medicalAppointmentService, Mockito.times(1))
+                .addNoteToMedicalAppointment(Mockito.any(MedicalAppointmentRequest.class));
+        Mockito.verify(medicalAppointmentService, Mockito.never())
+                .addNoteToMedicalAppointment(request.withDoctorEmail("other.email@clinic.pl"));
+
+        Mockito.verifyNoInteractions(doctorService);
+        Mockito.verifyNoInteractions(medicalAppointmentDateService);
+        Mockito.verifyNoInteractions(medicalAppointmentMapper);
+        Mockito.verifyNoInteractions(medicalAppointmentRequestMapper);
     }
 
 }

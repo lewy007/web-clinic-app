@@ -33,9 +33,9 @@ class DoctorControllerMockitoTest {
     @Mock
     private MedicalAppointmentService medicalAppointmentService;
     @Mock
-    private MedicalAppointmentMapper medicalAppointmentMapper;
-    @Mock
     private MedicalAppointmentDateService medicalAppointmentDateService;
+    @Mock
+    private MedicalAppointmentMapper medicalAppointmentMapper;
 
     @InjectMocks
     private DoctorController doctorController;
@@ -47,8 +47,8 @@ class DoctorControllerMockitoTest {
         System.out.println("checking for nulls");
         assertNotNull(doctorService);
         assertNotNull(medicalAppointmentService);
-        assertNotNull(medicalAppointmentMapper);
         assertNotNull(medicalAppointmentDateService);
+        assertNotNull(medicalAppointmentMapper);
     }
 
 
@@ -78,6 +78,13 @@ class DoctorControllerMockitoTest {
 
         // then
         Assertions.assertThat(result).isEqualTo(doctorEmail);
+
+        Mockito.verify(doctorService, Mockito.times(1))
+                .getLoggedInDoctorEmail();
+
+        Mockito.verifyNoInteractions(medicalAppointmentService);
+        Mockito.verifyNoInteractions(medicalAppointmentDateService);
+        Mockito.verifyNoInteractions(medicalAppointmentMapper);
 
     }
 
@@ -119,6 +126,15 @@ class DoctorControllerMockitoTest {
         Assertions.assertThat(result).containsExactly(1, 2, 3);
         Assertions.assertThat(result).size().isEqualTo(3);
 
+        Mockito.verify(medicalAppointmentDateService, Mockito.times(1))
+                .getAllFutureDatesByDoctorEmail(Mockito.anyString());
+        Mockito.verify(medicalAppointmentDateService, Mockito.never())
+                .getAllFutureDatesByDoctorEmail("other.email@clinic.pl");
+
+        Mockito.verifyNoInteractions(doctorService);
+        Mockito.verifyNoInteractions(medicalAppointmentService);
+        Mockito.verifyNoInteractions(medicalAppointmentMapper);
+
     }
 
 
@@ -155,5 +171,15 @@ class DoctorControllerMockitoTest {
 
         // Then
         Assertions.assertThat(result).containsExactlyElementsOf(medicalAppointmentDTOs);
+
+        Mockito.verify(medicalAppointmentService, Mockito.times(1))
+                .findAllMedicalAppointmentByMADateID(medicalAppointmentDateIds);
+        Mockito.verify(medicalAppointmentService, Mockito.never())
+                .findAllMedicalAppointmentByMADateID(List.of(4, 5, 6));
+        Mockito.verify(medicalAppointmentMapper, Mockito.times(3))
+                .map(Mockito.any(MedicalAppointment.class));
+
+        Mockito.verifyNoInteractions(doctorService);
+        Mockito.verifyNoInteractions(medicalAppointmentDateService);
     }
 }

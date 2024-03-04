@@ -1,6 +1,7 @@
 package pl.szczecin.api.controller.mvc.unit;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +20,8 @@ import pl.szczecin.util.EntityFixtures;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @ExtendWith(MockitoExtension.class)
 class DoctorAvailableDatesControllerMockitoTest {
 
@@ -33,6 +36,14 @@ class DoctorAvailableDatesControllerMockitoTest {
     @InjectMocks
     private DoctorAvailableDatesController doctorAvailableDatesController;
 
+
+    @BeforeEach
+    public void setUp() {
+        System.out.println("checking for nulls");
+        assertNotNull(doctorService);
+        assertNotNull(medicalAppointmentDateService);
+        assertNotNull(medicalAppointmentDateMapper);
+    }
 
     @Test
     @DisplayName("That method should return correct view")
@@ -60,6 +71,12 @@ class DoctorAvailableDatesControllerMockitoTest {
 
         // then
         Assertions.assertThat(result).isEqualTo(doctorEmail);
+
+        Mockito.verify(doctorService, Mockito.times(1))
+                .getLoggedInDoctorEmail();
+
+        Mockito.verifyNoInteractions(medicalAppointmentDateService);
+        Mockito.verifyNoInteractions(medicalAppointmentDateMapper);
 
     }
 
@@ -98,8 +115,17 @@ class DoctorAvailableDatesControllerMockitoTest {
                 .toList();
 
         // then
-//        Assertions.assertThat(resultDatesList).isEqualTo(ex);
+        Assertions.assertThat(resultDatesList).isEqualTo(expectedDatesList);
         Assertions.assertThat(resultDatesList).containsExactlyElementsOf(expectedDatesList);
+
+        Mockito.verify(medicalAppointmentDateService, Mockito.times(1))
+                .getAvailableDatesByDoctorEmail(Mockito.anyString());
+        Mockito.verify(medicalAppointmentDateService, Mockito.never())
+                .getAvailableDatesByDoctorEmail("other.email@clinic.pl");
+        Mockito.verify(medicalAppointmentDateMapper,Mockito.times(3))
+                .map(Mockito.any(MedicalAppointmentDate.class));
+
+        Mockito.verifyNoInteractions(doctorService);
 
     }
 

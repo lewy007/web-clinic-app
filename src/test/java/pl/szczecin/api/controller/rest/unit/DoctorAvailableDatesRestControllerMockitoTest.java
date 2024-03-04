@@ -14,6 +14,8 @@ import pl.szczecin.api.dto.MedicalAppointmentDateDTO;
 import pl.szczecin.api.dto.mapper.MedicalAppointmentDateMapper;
 import pl.szczecin.business.MedicalAppointmentDateService;
 import pl.szczecin.domain.MedicalAppointmentDate;
+import pl.szczecin.domain.Patient;
+import pl.szczecin.domain.PatientHistory;
 import pl.szczecin.util.EntityFixtures;
 
 import java.util.List;
@@ -82,6 +84,13 @@ class DoctorAvailableDatesRestControllerMockitoTest {
 
         //lista z inna iloscia elementow nie jest rowna, wiec test przechodzi
         Assertions.assertNotEquals(result, notExpectedDates);
+
+        Mockito.verify(medicalAppointmentDateService, Mockito.times(1))
+                .getAvailableDatesByDoctorEmail(Mockito.anyString());
+        Mockito.verify(medicalAppointmentDateService, Mockito.never())
+                .getAvailableDatesByDoctorEmail("other.email@clinic.pl");
+        Mockito.verify(medicalAppointmentDateMapper, Mockito.times(3))
+                .map(Mockito.any(MedicalAppointmentDate.class));
     }
 
 }

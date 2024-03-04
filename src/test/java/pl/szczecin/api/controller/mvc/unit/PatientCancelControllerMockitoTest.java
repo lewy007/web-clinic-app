@@ -1,6 +1,7 @@
 package pl.szczecin.api.controller.mvc.unit;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,22 +21,35 @@ import pl.szczecin.business.PatientService;
 import pl.szczecin.domain.*;
 import pl.szczecin.util.EntityFixtures;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @ExtendWith(MockitoExtension.class)
 class PatientCancelControllerMockitoTest {
 
     @Mock
-    private MedicalAppointmentService medicalAppointmentService;
-    @Mock
-    private MedicalAppointmentRequestMapper medicalAppointmentRequestMapper;
+    private DoctorService doctorService;
     @Mock
     private PatientService patientService;
     @Mock
+    private MedicalAppointmentService medicalAppointmentService;
+    @Mock
     private PatientMapper patientMapper;
     @Mock
-    private DoctorService doctorService;
+    private MedicalAppointmentRequestMapper medicalAppointmentRequestMapper;
 
     @InjectMocks
     private PatientCancelController patientCancelController;
+
+
+    @BeforeEach
+    public void setUp() {
+        System.out.println("checking for nulls");
+        assertNotNull(doctorService);
+        assertNotNull(patientService);
+        assertNotNull(medicalAppointmentService);
+        assertNotNull(patientMapper);
+        assertNotNull(medicalAppointmentRequestMapper);
+    }
 
     @Test
     @DisplayName("That method should return correct view")
@@ -63,6 +77,14 @@ class PatientCancelControllerMockitoTest {
 
         // then
         Assertions.assertThat(result).isEqualTo(patientEmail);
+
+        Mockito.verify(patientService, Mockito.times(1))
+                .getLoggedInPatientEmail();
+
+        Mockito.verifyNoInteractions(doctorService);
+        Mockito.verifyNoInteractions(medicalAppointmentService);
+        Mockito.verifyNoInteractions(patientMapper);
+        Mockito.verifyNoInteractions(medicalAppointmentRequestMapper);
 
     }
 
@@ -96,6 +118,16 @@ class PatientCancelControllerMockitoTest {
         // then
         Assertions.assertThat(resultPatientHistory).isEqualTo(expectedPatientHistory);
 
+        Mockito.verify(patientService, Mockito.times(1))
+                .findPatientAppointmentsToCancelByEmail(Mockito.anyString());
+        Mockito.verify(patientService, Mockito.never())
+                .findPatientAppointmentsToCancelByEmail("other.email@clinic.pl");
+
+        Mockito.verifyNoInteractions(doctorService);
+        Mockito.verifyNoInteractions(medicalAppointmentService);
+        Mockito.verifyNoInteractions(patientMapper);
+        Mockito.verifyNoInteractions(medicalAppointmentRequestMapper);
+
     }
 
     @Test
@@ -114,12 +146,22 @@ class PatientCancelControllerMockitoTest {
         // then
         Assertions.assertThat(resultPatientHistoryDTO).isEqualTo(expectedPatientHistoryDTO);
 
+        Mockito.verify(patientMapper, Mockito.times(1))
+                .map(Mockito.any(PatientHistory.class));
+        Mockito.verify(patientMapper, Mockito.never())
+                .map(somePatientHistory.withPatientEmail("other.email@clinic.pl"));
+
+        Mockito.verifyNoInteractions(doctorService);
+        Mockito.verifyNoInteractions(patientService);
+        Mockito.verifyNoInteractions(medicalAppointmentService);
+        Mockito.verifyNoInteractions(medicalAppointmentRequestMapper);
+
     }
 
 
     // metoda POST
     @Test
-    @DisplayName("That method should correctly mapped MedicalAppointmentRequestDTO to MedicalAppointmentRequest")
+    @DisplayName("POST - That method should correctly mapped MedicalAppointmentRequestDTO to MedicalAppointmentRequest")
     void medicalAppointmentRequestMapperShouldReturnCorrectRequest() {
         // given
         String patientName = "Agnieszka";
@@ -147,10 +189,18 @@ class PatientCancelControllerMockitoTest {
 
         // then
         Assertions.assertThat(resultRequest).isEqualTo(expectedRequest);
+
+        Mockito.verify(medicalAppointmentRequestMapper, Mockito.times(1))
+                .map(Mockito.any(MedicalAppointmentRequestDTO.class));
+
+        Mockito.verifyNoInteractions(doctorService);
+        Mockito.verifyNoInteractions(patientService);
+        Mockito.verifyNoInteractions(medicalAppointmentService);
+        Mockito.verifyNoInteractions(patientMapper);
     }
 
     @Test
-    @DisplayName("That method should return correct Patient")
+    @DisplayName("POST - That method should return correct Patient")
     void findPatientByEmailShouldReturnCorrectPatient() {
         // given
         String patientEmail = "patient.test@clinic.pl";
@@ -164,6 +214,16 @@ class PatientCancelControllerMockitoTest {
 
         // then
         Assertions.assertThat(resultPatient).isEqualTo(expectedPatient);
+
+        Mockito.verify(patientService, Mockito.times(1))
+                .findPatientByEmail(Mockito.anyString());
+        Mockito.verify(patientService, Mockito.never())
+                .findPatientByEmail("other.email@clinic.pl");
+
+        Mockito.verifyNoInteractions(doctorService);
+        Mockito.verifyNoInteractions(medicalAppointmentService);
+        Mockito.verifyNoInteractions(patientMapper);
+        Mockito.verifyNoInteractions(medicalAppointmentRequestMapper);
 
     }
 
@@ -183,6 +243,16 @@ class PatientCancelControllerMockitoTest {
         // then
         Assertions.assertThat(resultDoctor).isEqualTo(expectedDoctor);
 
+        Mockito.verify(doctorService, Mockito.times(1))
+                .findDoctorByEmail(Mockito.anyString());
+        Mockito.verify(doctorService, Mockito.never())
+                .findDoctorByEmail("other.email@clinic.pl");
+
+        Mockito.verifyNoInteractions(patientService);
+        Mockito.verifyNoInteractions(medicalAppointmentService);
+        Mockito.verifyNoInteractions(patientMapper);
+        Mockito.verifyNoInteractions(medicalAppointmentRequestMapper);
+
     }
 
     @Test
@@ -200,6 +270,16 @@ class PatientCancelControllerMockitoTest {
 
         // then
         Assertions.assertThat(resultMedicalAppointment).isEqualTo(expectedMedicalAppointment);
+
+        Mockito.verify(medicalAppointmentService, Mockito.times(1))
+                .cancelAppointment(Mockito.any(MedicalAppointmentRequest.class));
+        Mockito.verify(medicalAppointmentService, Mockito.never())
+                .cancelAppointment(request.withDoctorEmail("other.email@clinic.pl"));
+
+        Mockito.verifyNoInteractions(patientService);
+        Mockito.verifyNoInteractions(doctorService);
+        Mockito.verifyNoInteractions(patientMapper);
+        Mockito.verifyNoInteractions(medicalAppointmentRequestMapper);
 
     }
 
