@@ -19,26 +19,12 @@ public class MedicalAppointmentDateRepository implements MedicalAppointmentDateD
     private final MedicalAppointmentDateJpaRepository medicalAppointmentDateJpaRepository;
     private final MedicalAppointmentDateEntityMapper medicalAppointmentDateEntityMapper;
 
-    @Override
-    public List<MedicalAppointmentDate> findAvailableMedicalAppointmentDates() {
-        return medicalAppointmentDateJpaRepository.findAll().stream()
-                .map(medicalAppointmentDateEntityMapper::mapFromEntity)
-                .toList();
-    }
-
 
     @Override
     public List<MedicalAppointmentDate> findAvailableDatesByDoctorEmail(String doctorEmail) {
         return medicalAppointmentDateJpaRepository.findAvailableDatesByDoctorEmail(doctorEmail).stream()
                 .filter(appointmentDate -> appointmentDate
                         .getDateTime().isAfter(OffsetDateTime.now().plusHours(1)))
-                .map(medicalAppointmentDateEntityMapper::mapFromEntity)
-                .toList();
-    }
-
-    @Override
-    public List<MedicalAppointmentDate> findAllDatesByDoctorEmail(String doctorEmail) {
-        return medicalAppointmentDateJpaRepository.findAllDatesByDoctorEmail(doctorEmail).stream()
                 .map(medicalAppointmentDateEntityMapper::mapFromEntity)
                 .toList();
     }
@@ -58,13 +44,6 @@ public class MedicalAppointmentDateRepository implements MedicalAppointmentDateD
     }
 
 
-    @Override
-    public List<MedicalAppointmentDate> findMedicalAppointmentDateByDate(
-            OffsetDateTime medicalAppointmentDate) {
-        return medicalAppointmentDateJpaRepository.findByDateTime(medicalAppointmentDate).stream()
-                .map(medicalAppointmentDateEntityMapper::mapFromEntity)
-                .toList();
-    }
     @Override
     public Optional<MedicalAppointmentDate> findMedicalAppointmentDateByDateAndDoctor(
             OffsetDateTime medicalAppointmentDate,

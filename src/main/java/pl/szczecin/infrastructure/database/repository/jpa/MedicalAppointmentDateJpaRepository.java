@@ -17,14 +17,6 @@ public interface MedicalAppointmentDateJpaRepository extends JpaRepository<Medic
     @Query("""
             SELECT mad FROM MedicalAppointmentDateEntity mad
             WHERE mad.dateTime = :dateTime
-            """)
-    List<MedicalAppointmentDateEntity> findByDateTime(
-            final @Param("dateTime") OffsetDateTime medicalAppointmentDate);
-
-
-    @Query("""
-            SELECT mad FROM MedicalAppointmentDateEntity mad
-            WHERE mad.dateTime = :dateTime
             AND mad.doctor.email = :doctorEmail
             """)
     Optional<MedicalAppointmentDateEntity> findByDateTimeAndDoctor(
@@ -40,12 +32,6 @@ public interface MedicalAppointmentDateJpaRepository extends JpaRepository<Medic
                            WHERE ma.medicalAppointmentDateEntity = mad)
                            """)
     List<MedicalAppointmentDateEntity> findAvailableDatesByDoctorEmail(final @Param("doctorEmail") String doctorEmail);
-
-    @Query("""
-            SELECT mad FROM MedicalAppointmentDateEntity mad 
-            WHERE mad.doctor.email = :doctorEmail 
-                           """)
-    List<MedicalAppointmentDateEntity> findAllDatesByDoctorEmail(final @Param("doctorEmail") String doctorEmail);
 
 
     @Query("""

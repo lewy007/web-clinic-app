@@ -10,7 +10,7 @@ public interface MedicalAppointmentDAO {
 
     List<MedicalAppointment> findAllMedicalAppointmentByMADateID(List<Integer> allMedicalAppointmentDateIdForDoctor);
 
-    void makeAppointment(MedicalAppointment medicalAppointment);
+    MedicalAppointment makeAppointment(MedicalAppointment medicalAppointment);
 
     MedicalAppointment cancelMedicalAppointment(Integer medicalAppointmentDate);
 

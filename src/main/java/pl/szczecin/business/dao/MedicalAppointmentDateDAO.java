@@ -8,17 +8,11 @@ import java.util.Optional;
 
 public interface MedicalAppointmentDateDAO {
 
-    List<MedicalAppointmentDate> findAvailableMedicalAppointmentDates();
-
     List<MedicalAppointmentDate> findAvailableDatesByDoctorEmail(String doctorEmail);
-
-    List<MedicalAppointmentDate> findAllDatesByDoctorEmail(String doctorEmail);
 
     List<MedicalAppointmentDate> findAllFutureDatesByDoctorEmail(String doctorEmail);
 
     List<MedicalAppointmentDate> findAllHistoryDatesByDoctorEmail(String doctorEmail);
-
-    List<MedicalAppointmentDate> findMedicalAppointmentDateByDate(OffsetDateTime medicalAppointmentDate);
 
     Optional<MedicalAppointmentDate> findMedicalAppointmentDateByDateAndDoctor(
             OffsetDateTime medicalAppointmentDate,

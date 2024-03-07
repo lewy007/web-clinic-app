@@ -15,6 +15,7 @@ import pl.szczecin.business.DoctorService;
 import pl.szczecin.business.MedicalAppointmentDateService;
 import pl.szczecin.business.MedicalAppointmentService;
 import pl.szczecin.business.PatientService;
+import pl.szczecin.domain.Doctor;
 import pl.szczecin.domain.MedicalAppointment;
 import pl.szczecin.domain.MedicalAppointmentRequest;
 
@@ -40,7 +41,7 @@ public class DoctorTorbeController {
         String loggedInPatientEmail = patientService.getLoggedInPatientEmail();
 
         // wyciagamy email doctora danej strony
-        var doctorTorbeEmail = getDoctorTorbeEmail();
+        var doctorTorbeEmail = getDoctorTorbe().getEmail();
 
         // wyciagamy wolne terminy dla danego lekarza
         var availableDates =
@@ -67,7 +68,7 @@ public class DoctorTorbeController {
         String loggedInPatientEmail = patientService.getLoggedInPatientEmail();
 
         // wyciagamy email doctora danej strony
-        String doctorTorbeEmail = getDoctorTorbeEmail();
+        String doctorTorbeEmail = getDoctorTorbe().getEmail();
 
         // tworzymy request z parametrow
         MedicalAppointmentRequest request = medicalAppointmentRequestMapper.map(
@@ -86,16 +87,16 @@ public class DoctorTorbeController {
         model.addAttribute("patientSurname", request.getPatientSurname());
         model.addAttribute("patientEmail", request.getPatientEmail());
         model.addAttribute("medicalAppointmentDate", medicalAppointmentDate);
-        model.addAttribute("doctorName", medicalAppointment.getMedicalAppointmentDate().getDoctor().getName());
-        model.addAttribute("doctorSurname", medicalAppointment.getMedicalAppointmentDate().getDoctor().getSurname());
+        model.addAttribute("doctorName", getDoctorTorbe().getName());
+        model.addAttribute("doctorSurname", getDoctorTorbe().getSurname());
 
         return "medical_appointment_done";
     }
 
     // TODO mozna zmienic metode i znalezc maila na podstawie peselu badz na chwile nazwiska
-    private String getDoctorTorbeEmail() {
+    private Doctor getDoctorTorbe() {
         String doctorSurname = "Torbe";
-        return doctorService.findDoctorBySurname(doctorSurname).getEmail();
+        return doctorService.findDoctorBySurname(doctorSurname);
     }
 
 }

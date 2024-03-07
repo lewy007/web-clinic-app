@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class MedicalAppointmentService {
 
-    private MedicalAppointmentDAO medicalAppointmentDAO;
+    private final MedicalAppointmentDAO medicalAppointmentDAO;
     private final DoctorService doctorService;
     private final PatientService patientService;
     private final MedicalAppointmentDateService medicalAppointmentDateService;
@@ -51,9 +51,8 @@ public class MedicalAppointmentService {
 
         MedicalAppointment medicalAppointment = buildMedicalAppointment(existingPatient, medicalAppointmentDateToSave);
 
-        medicalAppointmentDAO.makeAppointment(medicalAppointment);
+        return medicalAppointmentDAO.makeAppointment(medicalAppointment);
 
-        return medicalAppointment;
     }
 
     @Transactional(
@@ -96,7 +95,7 @@ public class MedicalAppointmentService {
     }
 
 
-    // TODO nie uzywana metoda - do weryfikacji
+    // TODO nie uzywana metoda - do weryfikacji, ale testy do niej sa napisane
     public List<MedicalAppointment> findAllMedicalAppointment() {
         List<MedicalAppointment> allMedicalAppointments = medicalAppointmentDAO.findAllMedicalAppointment();
         log.info("Available doctors: [{}]", allMedicalAppointments.size());

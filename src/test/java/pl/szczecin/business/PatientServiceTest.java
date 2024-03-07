@@ -1,6 +1,7 @@
 package pl.szczecin.business;
 
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,10 +11,13 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.szczecin.business.dao.PatientDAO;
+import pl.szczecin.domain.MedicalAppointmentRequest;
 import pl.szczecin.domain.Patient;
 import pl.szczecin.domain.PatientHistory;
+import pl.szczecin.domain.exception.NotFoundException;
 import pl.szczecin.util.EntityFixtures;
 
+import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,64 +32,160 @@ class PatientServiceTest {
     private PatientService patientService;
 
 
+    @BeforeEach
+    public void setUp() {
+        System.out.println("checking for nulls");
+        Assertions.assertNotNull(patientDAO);
+        Assertions.assertNotNull(passwordEncoder);
+    }
+
+
     @Test
-    @DisplayName("That method should save and return correct patient")
-    void savePatientShouldReturnCorrectPatient() {
+    @DisplayName("That method should correctly save and return correct patient")
+    void shouldCorrectlySavePatientAndReturnCorrectPatient() {
         //given
-//        MedicalAppointmentRequest medicalAppointmentRequest = EntityFixtures.someMedicalAppointmentRequest();
+        MedicalAppointmentRequest medicalAppointmentRequest = EntityFixtures.someMedicalAppointmentRequest();
         Patient expectedPatient = EntityFixtures.somePatient1();
-        Mockito.when(patientDAO.savePatient(expectedPatient)).thenReturn(expectedPatient);
+        Mockito.when(patientDAO.savePatient(Mockito.any(Patient.class))).thenReturn(expectedPatient);
 
         //when
-        Patient resultPatient = patientDAO.savePatient(expectedPatient);
+        Patient resultPatient = patientService.savePatient(medicalAppointmentRequest);
 
         //then
-        Assertions.assertThat(resultPatient).isEqualTo(expectedPatient);
+        Assertions.assertEquals(expectedPatient, resultPatient);
+
+        Mockito.verify(patientDAO, Mockito.times(1))
+                .savePatient(Mockito.any(Patient.class));
+        Mockito.verify(patientDAO, Mockito.never())
+                .savePatient(expectedPatient.withName("other"));
+        Mockito.verify(passwordEncoder, Mockito.times(1))
+                .encode(Mockito.any());
     }
 
     @Test
-    @DisplayName("That method should return correct patient by email")
-    void findPatientByEmailShouldReturnCorrectPatient() {
+    @DisplayName("That method should correctly return available patients")
+    void shouldCorrectlyReturnAvailablePatients() {
+        //given
+        List<Patient> expectedPatients = List.of(
+                EntityFixtures.somePatient1(),
+                EntityFixtures.somePatient2(),
+                EntityFixtures.somePatient3()
+        );
+        Mockito.when(patientDAO.findAvailablePatients()).thenReturn(expectedPatients);
+
+        //when
+        List<Patient> resultPatient = patientService.findAvailablePatients();
+
+        //then
+        Assertions.assertEquals(expectedPatients, resultPatient);
+
+        Mockito.verify(patientDAO, Mockito.times(1)).findAvailablePatients();
+
+        Mockito.verifyNoInteractions(passwordEncoder);
+    }
+
+    @Test
+    @DisplayName("That method should return correct patient with given email")
+    void shouldReturnCorrectPatientWithGivenPatientEmail() {
         //given
         String patientEmail = "janusz.pacjent@clinic.pl";
         Patient expectedPatient = EntityFixtures.somePatient1();
         Mockito.when(patientDAO.findPatientByEmail(patientEmail)).thenReturn(Optional.of(expectedPatient));
 
         //when
-        Patient resultPatient = patientDAO.findPatientByEmail(patientEmail).orElseThrow();
+        Patient resultPatient = patientService.findPatientByEmail(patientEmail);
 
         //then
-        Assertions.assertThat(resultPatient).isEqualTo(expectedPatient);
+        Assertions.assertEquals(expectedPatient, resultPatient);
+
+        Mockito.verify(patientDAO, Mockito.times(1))
+                .findPatientByEmail(Mockito.anyString());
+        Mockito.verify(patientDAO, Mockito.never())
+                .findPatientByEmail("other.email@clinic.pl");
+
+        Mockito.verifyNoInteractions(passwordEncoder);
     }
 
     @Test
-    @DisplayName("That method should return correct patient history by email")
-    void findPatientHistoryByEmailShouldReturnCorrectPatientHistory() {
+    @DisplayName("That method should return empty patient and throw NotFoundException with given email")
+    void shouldReturnEmptyPatientAndThrowNotFoundExceptionWithGivenPatientEmail() {
+        //given
+        String patientEmail = "janusz.pacjent@clinic.pl";
+        Optional<Patient> expectedPatient = Optional.empty();
+        Mockito.when(patientDAO.findPatientByEmail(patientEmail)).thenReturn(expectedPatient);
+
+        // when, then
+        NotFoundException exception =
+                Assertions.assertThrows(NotFoundException.class, () -> patientService.findPatientByEmail(patientEmail));
+        Assertions.assertEquals((
+                        "Could not find patient by email: [%s]".formatted(patientEmail)),
+                exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("That method should return correct patient history with given patient email")
+    void shouldReturnCorrectPatientHistoryWithGivenPatientEmail() {
         //given
         String patientEmail = "janusz.pacjent@clinic.pl";
         PatientHistory expectedPatientHistory = EntityFixtures.somePatientHistory();
         Mockito.when(patientDAO.findPatientHistoryByEmail(patientEmail)).thenReturn(expectedPatientHistory);
 
         //when
-        PatientHistory resultPatientHistory = patientDAO.findPatientHistoryByEmail(patientEmail);
+        PatientHistory resultPatientHistory = patientService.findPatientHistoryByEmail(patientEmail);
 
         //then
-        Assertions.assertThat(resultPatientHistory).isEqualTo(expectedPatientHistory);
+        Assertions.assertEquals(expectedPatientHistory, resultPatientHistory);
+
+        Mockito.verify(patientDAO, Mockito.times(1))
+                .findPatientHistoryByEmail(Mockito.anyString());
+        Mockito.verify(patientDAO, Mockito.never())
+                .findPatientHistoryByEmail("other.email@clinic.pl");
+
+        Mockito.verifyNoInteractions(passwordEncoder);
     }
 
     @Test
-    @DisplayName("That method should return correct patient appointments by email")
-    void indCurrentPatientAppointmentsByEmailShouldReturnCorrectPatientAppointments() {
+    @DisplayName("That method should return correct patient schedule with given patient email")
+    void shouldReturnCorrectPatientScheduleWithGivenPatientEmail() {
         //given
         String patientEmail = "janusz.pacjent@clinic.pl";
-        PatientHistory expectedPatientHistory = EntityFixtures.somePatientHistory();
-        Mockito.when(patientDAO.findPatientScheduleByEmail(patientEmail)).thenReturn(expectedPatientHistory);
+        PatientHistory expectedPatientSchedule = EntityFixtures.somePatientHistory();
+        Mockito.when(patientDAO.findPatientScheduleByEmail(patientEmail)).thenReturn(expectedPatientSchedule);
 
         //when
-        PatientHistory resultPatientHistory = patientDAO.findPatientScheduleByEmail(patientEmail);
+        PatientHistory result = patientService.findPatientScheduleByEmail(patientEmail);
 
         //then
-        Assertions.assertThat(resultPatientHistory).isEqualTo(expectedPatientHistory);
+        Assertions.assertEquals(expectedPatientSchedule, result);
+
+        Mockito.verify(patientDAO, Mockito.times(1))
+                .findPatientScheduleByEmail(Mockito.anyString());
+        Mockito.verify(patientDAO, Mockito.never())
+                .findPatientScheduleByEmail("other.email@clinic.pl");
+
+        Mockito.verifyNoInteractions(passwordEncoder);
+    }
+
+    @Test
+    @DisplayName("That method should return correct patient appointments to cancel with given email")
+    void shouldReturnCorrectPatientAppointmentsToCancelWithGivenEmail() {
+        //given
+        String patientEmail = "janusz.pacjent@clinic.pl";
+        PatientHistory expectedPatientAppointmentsToCancel = EntityFixtures.somePatientHistory();
+        Mockito.when(patientDAO.findPatientAppointmentsToCancelByEmail(patientEmail)).thenReturn(expectedPatientAppointmentsToCancel);
+
+        //when
+        PatientHistory result = patientService.findPatientAppointmentsToCancelByEmail(patientEmail);
+
+        //then
+        Assertions.assertEquals(expectedPatientAppointmentsToCancel, result);
+
+        Mockito.verify(patientDAO, Mockito.times(1))
+                .findPatientAppointmentsToCancelByEmail(Mockito.anyString());
+        Mockito.verify(patientDAO, Mockito.never())
+                .findPatientAppointmentsToCancelByEmail("other.email@clinic.pl");
+
+        Mockito.verifyNoInteractions(passwordEncoder);
     }
 
 

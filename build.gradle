@@ -110,12 +110,46 @@ test {
     testLogging {
         events "passed", "skipped", "failed"
     }
-    finalizedBy jacocoTestReport
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+jacoco {
+    toolVersion = "0.8.8"
 }
 
 jacocoTestReport {
-    dependsOn test
+    dependsOn test // tests are required to run before generating the report
+    reports {
+        xml.required = false
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir('jacocoHtmlReport')
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    "pl/szczecin/**/GlobalExceptionHandler.class",
+                    "pl/szczecin/**/GlobalExceptionRestHandler.class",
+                    "pl/szczecin/**/GlobalExceptionRestHandler.class",
+                    "**/nfz/*"
+            ])
+        }))
+    }
 }
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                counter = 'LINE'
+//                counter = 'CLASS'
+                value = 'COVEREDRATIO'
+                minimum = 0.45
+            }
+        }
+    }
+}
+
+check.dependsOn jacocoTestCoverageVerification
 
 bootJar {
     archiveFileName = "web-clinic-app-1.0.${archiveExtension.get()}"

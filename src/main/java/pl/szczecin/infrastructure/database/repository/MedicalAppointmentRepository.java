@@ -39,12 +39,14 @@ public class MedicalAppointmentRepository implements MedicalAppointmentDAO {
 
 
     @Override
-    public void makeAppointment(MedicalAppointment medicalAppointment) {
+    public MedicalAppointment makeAppointment(MedicalAppointment medicalAppointment) {
 
         MedicalAppointmentEntity medicalAppointmentToSave =
                 medicalAppointmentEntityMapper.mapToEntity(medicalAppointment);
 
-        medicalAppointmentJpaRepository.saveAndFlush(medicalAppointmentToSave);
+        MedicalAppointmentEntity saved = medicalAppointmentJpaRepository.saveAndFlush(medicalAppointmentToSave);
+
+        return medicalAppointmentEntityMapper.mapFromEntity(saved);
 
     }
 

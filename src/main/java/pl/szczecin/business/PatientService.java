@@ -79,8 +79,8 @@ public class PatientService {
         return patientScheduleByEmail;
     }
 
-    // wyciagamy z securityContext emaila zalogowanego pacjenta
 
+    // wyciagamy z securityContext emaila zalogowanego pacjenta
     public String getLoggedInPatientEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {

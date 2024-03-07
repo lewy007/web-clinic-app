@@ -21,13 +21,6 @@ public class MedicalAppointmentDateService {
     private final MedicalAppointmentDateDAO medicalAppointmentDateDAO;
 
 
-    public List<MedicalAppointmentDate> findAvailableMedicalAppointmentDates() {
-        List<MedicalAppointmentDate> availableDates = medicalAppointmentDateDAO.findAvailableMedicalAppointmentDates();
-        log.info("Available medicalAppointmentDates: [{}]", availableDates.size());
-        return availableDates;
-    }
-
-
     public MedicalAppointmentDate findMedicalAppointmentDateByDateAndDoctor(
             OffsetDateTime medicalAppointmentDate,
             String doctorEmail) {
@@ -65,29 +58,11 @@ public class MedicalAppointmentDateService {
         return allFutureDatesByDoctorEmail;
     }
 
-    // ta metoda zluzyla do wyciagania wszytskich dat (przeszlych i przyszlych) do History
-    //    public List<MedicalAppointmentDate> getAllDatesByDoctorEmail(String doctorEmail) {
-    //        List<MedicalAppointmentDate> allDatesByDoctorEmail =
-    //                medicalAppointmentDateDAO.findAllDatesByDoctorEmail(doctorEmail);
-    //        log.info("All dates for Doctor: [{}]", allDatesByDoctorEmail.size());
-    //        return allDatesByDoctorEmail;
-    //    }
 
-
-    // TODO nie uzywane metody - do weryfikacji
-
+    // TODO nie uzywane metody - do weryfikacji, ale testy do niej sa napisane
     @Transactional
     public MedicalAppointmentDate saveMedicalAppointmentDate(MedicalAppointmentDate medicalAppointmentDate) {
         return medicalAppointmentDateDAO.saveMedicalAppointmentDate(medicalAppointmentDate);
     }
 
-
-    public List<MedicalAppointmentDate> findMedicalAppointmentDateByDate(
-            OffsetDateTime medicalAppointmentDate) {
-        List<MedicalAppointmentDate> date =
-                medicalAppointmentDateDAO.findMedicalAppointmentDateByDate(medicalAppointmentDate);
-        log.info("Available medicalAppointmentDates: [{}]", date.size());
-        // lista z takimi samymi datami dla roznych lekarzy, wiec nas interesuje data
-        return date;
-    }
 }

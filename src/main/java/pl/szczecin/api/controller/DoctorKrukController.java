@@ -15,6 +15,7 @@ import pl.szczecin.business.DoctorService;
 import pl.szczecin.business.MedicalAppointmentDateService;
 import pl.szczecin.business.MedicalAppointmentService;
 import pl.szczecin.business.PatientService;
+import pl.szczecin.domain.Doctor;
 import pl.szczecin.domain.MedicalAppointment;
 import pl.szczecin.domain.MedicalAppointmentRequest;
 
@@ -40,7 +41,7 @@ public class DoctorKrukController {
         String loggedInPatientEmail = patientService.getLoggedInPatientEmail();
 
         // wyciagamy email doctora danej strony
-        var doctorKrukEmail = getDoctorKrukEmail();
+        var doctorKrukEmail = getDoctorKruk().getEmail();
 
         // wyciagamy wolne terminy dla danego lekarza
         var availableDates =
@@ -67,7 +68,7 @@ public class DoctorKrukController {
         String loggedInPatientEmail = patientService.getLoggedInPatientEmail();
 
         // wyciagamy email doctora danej strony
-        var doctorKrukEmail = getDoctorKrukEmail();
+        var doctorKrukEmail = getDoctorKruk().getEmail();
 
         // tworzymy request z parametrow
         MedicalAppointmentRequest request = medicalAppointmentRequestMapper.map(
@@ -86,16 +87,16 @@ public class DoctorKrukController {
         model.addAttribute("patientSurname", request.getPatientSurname());
         model.addAttribute("patientEmail", request.getPatientEmail());
         model.addAttribute("medicalAppointmentDate", medicalAppointmentDate);
-        model.addAttribute("doctorName", medicalAppointment.getMedicalAppointmentDate().getDoctor().getName());
-        model.addAttribute("doctorSurname", medicalAppointment.getMedicalAppointmentDate().getDoctor().getSurname());
+        model.addAttribute("doctorName", getDoctorKruk().getName());
+        model.addAttribute("doctorSurname", getDoctorKruk().getSurname());
 
         return "medical_appointment_done";
     }
 
     // TODO mozna zmienic metode i znalezc maila na podstawie peselu badz na chwile nazwiska
-    private String getDoctorKrukEmail() {
+    private Doctor getDoctorKruk() {
         String doctorSurname = "Kruk";
-        return doctorService.findDoctorBySurname(doctorSurname).getEmail();
+        return doctorService.findDoctorBySurname(doctorSurname);
     }
 
 }

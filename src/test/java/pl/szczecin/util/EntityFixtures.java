@@ -329,7 +329,7 @@ public class EntityFixtures {
                 .medicalAppointmentDate(
                         OffsetDateTime.of(2022, 8, 15,
                                 0, 0, 0, 0, ZoneOffset.UTC))
-                .doctorEmail("doctor@clinic.pl")
+                .doctorEmail("edyta.kowalska@clinic.pl")
                 .build();
     }
 

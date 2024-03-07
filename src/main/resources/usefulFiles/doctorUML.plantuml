@@ -1,0 +1,62 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class DoctorController {
+  - medicalAppointmentService: MedicalAppointmentService
+  - medicalAppointmentDateService: MedicalAppointmentDateService
+  + DOCTOR: String
+  - doctorService: DoctorService
+  - medicalAppointmentMapper: MedicalAppointmentMapper
+  + doctorPage(Model): String
+}
+interface DoctorDAO << interface >> {
+  + findAvailableDoctors(): List<Doctor>
+  + findDoctorByEmail(String): Optional<Doctor>
+  + findDoctorBySurname(String): Optional<Doctor>
+}
+interface DoctorEntityMapper << interface >> {
+  + mapFromEntity(DoctorEntity): Doctor
+  + mapToEntity(Doctor): DoctorEntity
+}
+interface DoctorJpaRepository << interface >> {
+  + findByEmail(String): Optional<DoctorEntity>
+  + findBySurname(String): Optional<DoctorEntity>
+}
+interface DoctorMapper << interface >> {
+  + map(Doctor): DoctorDTO
+}
+class DoctorRepository {
+  - doctorJpaRepository: DoctorJpaRepository
+  - doctorEntityMapper: DoctorEntityMapper
+  + findDoctorBySurname(String): Optional<Doctor>
+  + findDoctorByEmail(String): Optional<Doctor>
+  + findAvailableDoctors(): List<Doctor>
+}
+class DoctorRestController {
+  + DOCTOR_API: String
+  - doctorMapper: DoctorMapper
+  - doctorService: DoctorService
+  + availableDoctors(): DoctorsDTO
+  - getAvailableDoctorsDTO(): DoctorsDTO
+  - getDoctorDTOList(): List<DoctorDTO>
+}
+class DoctorService {
+  - doctorDAO: DoctorDAO
+  - log: Logger
+  + findAvailableDoctors(): List<Doctor>
+  + findDoctorByEmail(String): Doctor
+  + getLoggedInDoctorEmail(): String
+  + findDoctorBySurname(String): Doctor
+}
+
+DoctorController     "1" *-[#595959,plain]-> "doctorService\n1" DoctorService        
+DoctorRepository      -[#008200,dashed]-^  DoctorDAO            
+DoctorRepository     "1" *-[#595959,plain]-> "doctorEntityMapper\n1" DoctorEntityMapper   
+DoctorRepository     "1" *-[#595959,plain]-> "doctorJpaRepository\n1" DoctorJpaRepository  
+DoctorRestController "1" *-[#595959,plain]-> "doctorMapper\n1" DoctorMapper         
+DoctorRestController "1" *-[#595959,plain]-> "doctorService\n1" DoctorService        
+DoctorService        "1" *-[#595959,plain]-> "doctorDAO\n1" DoctorDAO            
+@enduml

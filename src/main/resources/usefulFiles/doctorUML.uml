@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>D:/JAVA/Projekty/!!! PROJEKT KOŃCOWY/web-clinic-application/src/main/java/pl/szczecin</OriginalElement>
+  <nodes>
+    <node x="-1539.9598289472447" y="-1298.812878616712">pl.szczecin.api.dto.mapper.DoctorMapper</node>
+    <node x="-2478.1359994789163" y="-759.2221363450116">pl.szczecin.business.dao.DoctorDAO</node>
+    <node x="-1859.183504061171" y="-483.45551554415897">pl.szczecin.infrastructure.database.repository.mapper.DoctorEntityMapper</node>
+    <node x="-2485.9561328573614" y="-539.785356526813">pl.szczecin.infrastructure.database.repository.DoctorRepository</node>
+    <node x="-2963.7544402585263" y="-1325.820781499895">pl.szczecin.api.controller.DoctorController</node>
+    <node x="-2058.39500395057" y="-1350.3266601137293">pl.szczecin.api.controller.rest.DoctorRestController</node>
+    <node x="-2478.1359994789163" y="-1054.7743982293705">pl.szczecin.business.DoctorService</node>
+    <node x="-2487.983748088226" y="-300.17965144015517">pl.szczecin.infrastructure.database.repository.jpa.DoctorJpaRepository</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="pl.szczecin.infrastructure.database.repository.DoctorRepository" target="pl.szczecin.infrastructure.database.repository.jpa.DoctorJpaRepository" relationship="TO_ONE">
+      <point x="-5.52761523086474" y="80.0" />
+      <point x="0.0" y="-43.5" />
+    </edge>
+    <edge source="pl.szczecin.infrastructure.database.repository.DoctorRepository" target="pl.szczecin.business.dao.DoctorDAO" relationship="REALIZATION">
+      <point x="7.820133378445007" y="-80.0" />
+      <point x="0.0" y="55.5" />
+    </edge>
+    <edge source="pl.szczecin.api.controller.rest.DoctorRestController" target="pl.szczecin.business.DoctorService" relationship="TO_ONE">
+      <point x="-146.5" y="0.0" />
+      <point x="-1912.8680659670165" y="-1258.3266601137293" />
+      <point x="-1912.8680659670165" y="-962.7743982293705" />
+      <point x="-2338.1359994789163" y="-962.7743982293705" />
+      <point x="0.0" y="-92.0" />
+    </edge>
+    <edge source="pl.szczecin.api.controller.rest.DoctorRestController" target="pl.szczecin.api.dto.mapper.DoctorMapper" relationship="TO_ONE">
+      <point x="146.5" y="-8.986218502982638" />
+      <point x="-101.0" y="0.0" />
+    </edge>
+    <edge source="pl.szczecin.business.DoctorService" target="pl.szczecin.business.dao.DoctorDAO" relationship="TO_ONE">
+      <point x="35.5" y="92.0" />
+      <point x="0.0" y="-55.5" />
+    </edge>
+    <edge source="pl.szczecin.infrastructure.database.repository.DoctorRepository" target="pl.szczecin.infrastructure.database.repository.mapper.DoctorEntityMapper" relationship="TO_ONE">
+      <point x="175.5" y="19.82984098265399" />
+      <point x="-139.5" y="0.0" />
+    </edge>
+    <edge source="pl.szczecin.api.controller.DoctorController" target="pl.szczecin.business.DoctorService" relationship="TO_ONE">
+      <point x="0.0" y="92.0" />
+      <point x="-2736.7544402585263" y="-962.7743982293705" />
+      <point x="-140.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.5846286701208981" showDependencies="true" x="-2150.5" y="-782.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
