@@ -44,7 +44,7 @@ below is a diagram which illustrates a communication between controllers for the
 
 Entity Relationship Diagram illustrates the relationship of entities in the database.
 
-<img src="readmeimages/web_clinic_erd.png">
+<img src="readmeimages/web_clinic_with_security_erd.png">
 
 ## REST API Endpoints
 

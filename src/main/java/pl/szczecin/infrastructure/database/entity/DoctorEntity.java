@@ -1,13 +1,6 @@
 package pl.szczecin.infrastructure.database.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -15,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import pl.szczecin.infrastructure.security.UserEntity;
 
 import java.util.Set;
 
@@ -31,7 +25,7 @@ public class DoctorEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "doctor_id")
+    @Column(name = "doctor_id", unique = true, nullable = false)
     private Integer doctorId;
 
     @Column(name = "name")
@@ -45,4 +39,8 @@ public class DoctorEntity {
 
     @OneToMany(mappedBy = "doctor", fetch = FetchType.EAGER)
     private Set<MedicalAppointmentDateEntity> appointmentsDate;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", unique = true)
+    private UserEntity userEntity;
 }

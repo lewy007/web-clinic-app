@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+import pl.szczecin.infrastructure.database.entity.DoctorEntity;
 import pl.szczecin.infrastructure.database.entity.PatientEntity;
 
 import java.util.Set;
@@ -51,4 +52,7 @@ public class UserEntity {
 
     @OneToOne(mappedBy = "userEntity", fetch = FetchType.LAZY)
     private PatientEntity patient;
+
+    @OneToOne(mappedBy = "userEntity", fetch = FetchType.LAZY)
+    private DoctorEntity doctor;
 }

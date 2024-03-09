@@ -25,7 +25,7 @@ public class PatientEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "patient_id")
+    @Column(name = "patient_id", unique = true, nullable = false)
     private Integer patientId;
 
     @Column(name = "name")
@@ -41,11 +41,11 @@ public class PatientEntity {
     private String email;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = "address_id", unique = true)
     private AddressEntity address;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", unique = true)
     private UserEntity userEntity;
 
     @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
