@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import pl.szczecin.integration.configuration.AbstractIT;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -32,9 +34,12 @@ public class DoctorControllerIT extends AbstractIT {
     void doctorPageWorksCorrectly() {
 
         String url = "http://localhost:%s%s/doctor".formatted(port, basePath);
-        String page = this.testRestTemplate.getForObject(url, String.class);
+        ResponseEntity<String> response = this.testRestTemplate.getForEntity(url, String.class);
 
-        Assertions.assertThat(page).contains("Check the available dates");
+//        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        Assertions.assertThat(response.getBody()).contains("Check the available dates");
+//        Assertions.assertThat(response.getBody()).contains("Could not find a resource");
 
     }
 }

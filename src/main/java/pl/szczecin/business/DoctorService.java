@@ -1,12 +1,14 @@
 package pl.szczecin.business;
 
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import pl.szczecin.business.dao.DoctorDAO;
 import pl.szczecin.domain.Doctor;
 import pl.szczecin.domain.exception.NotFoundException;
@@ -29,31 +31,30 @@ public class DoctorService {
     }
 
 
-    @Transactional
+    @Transactional(
+            propagation = Propagation.REQUIRED,
+            isolation = Isolation.DEFAULT
+    )
     public Doctor findDoctorByEmail(String email) {
-        Optional<Doctor> doctor = doctorDAO.findDoctorByEmail(email);
-        if (doctor.isEmpty()) {
-            throw new NotFoundException("Could not find doctor by email: [%s]".formatted(email));
-        }
-        return doctor.get();
+        return doctorDAO.findDoctorByEmail(email)
+                .orElseThrow(() -> new NotFoundException("Could not find doctor by email: [%s]".formatted(email)));
     }
 
 
     public Doctor findDoctorBySurname(String surname) {
-        Optional<Doctor> doctor = doctorDAO.findDoctorBySurname(surname);
-        if (doctor.isEmpty()) {
-            throw new NotFoundException("Could not find doctor by surname: [%s]".formatted(surname));
-        }
-        return doctor.get();
+        return doctorDAO.findDoctorBySurname(surname)
+                .orElseThrow(() -> new NotFoundException("Could not find doctor by surname: [%s]".formatted(surname)));
     }
 
 
-    // wyciagamy z securityContext emaila zalogowanego doctora
+    // wyciagamy z securityContext emaila zalogowanego pacjenta
     public String getLoggedInDoctorEmail() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
-            return userDetails.getUsername();
-        }
-        return null;
+        return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+                .map(Authentication::getPrincipal)
+                .filter(UserDetails.class::isInstance)
+                .map(UserDetails.class::cast)
+                .map(UserDetails::getUsername)
+//                .orElseThrow(()-> new NotFoundException("Something went wrong because the email for logged-in doctor could not be found."));
+                .orElse(Optional.empty().toString());
     }
 }

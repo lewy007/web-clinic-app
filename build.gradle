@@ -127,9 +127,12 @@ jacocoTestReport {
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude: [
+                    "pl/szczecin/WebClinicApplication.class",
                     "pl/szczecin/**/GlobalExceptionHandler.class",
                     "pl/szczecin/**/GlobalExceptionRestHandler.class",
-                    "pl/szczecin/**/GlobalExceptionRestHandler.class",
+                    "pl/szczecin/api/dto/**",
+                    "pl/szczecin/infrastructure/configuration/**",
+                    "pl/szczecin/domain/**",
                     "**/nfz/*"
             ])
         }))

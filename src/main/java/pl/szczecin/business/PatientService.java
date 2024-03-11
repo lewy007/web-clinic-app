@@ -53,11 +53,8 @@ public class PatientService {
             isolation = Isolation.DEFAULT
     )
     public Patient findPatientByEmail(String email) {
-        Optional<Patient> patient = patientDAO.findPatientByEmail(email);
-        if (patient.isEmpty()) {
-            throw new NotFoundException("Could not find patient by email: [%s]".formatted(email));
-        }
-        return patient.get();
+        return patientDAO.findPatientByEmail(email)
+                .orElseThrow(() -> new NotFoundException("Could not find patient by email: [%s]".formatted(email)));
     }
 
     public PatientHistory findPatientHistoryByEmail(String patientEmail) {
@@ -82,11 +79,13 @@ public class PatientService {
 
     // wyciagamy z securityContext emaila zalogowanego pacjenta
     public String getLoggedInPatientEmail() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
-            return userDetails.getUsername();
-        }
-        return null;
+        return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+                .map(Authentication::getPrincipal)
+                .filter(UserDetails.class::isInstance)
+                .map(UserDetails.class::cast)
+                .map(UserDetails::getUsername)
+                .orElseThrow(() -> new NotFoundException(
+                        "Something went wrong because the email for logged-in patient could not be found."));
     }
 
 

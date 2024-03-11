@@ -9,6 +9,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.szczecin.business.dao.PatientDAO;
 import pl.szczecin.domain.MedicalAppointmentRequest;
@@ -17,6 +23,7 @@ import pl.szczecin.domain.PatientHistory;
 import pl.szczecin.domain.exception.NotFoundException;
 import pl.szczecin.util.EntityFixtures;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +34,8 @@ class PatientServiceTest {
     private PatientDAO patientDAO;
     @Mock
     private PasswordEncoder passwordEncoder;
+    @Mock
+    private SecurityContext securityContext;
 
     @InjectMocks
     private PatientService patientService;
@@ -37,6 +46,7 @@ class PatientServiceTest {
         System.out.println("checking for nulls");
         Assertions.assertNotNull(patientDAO);
         Assertions.assertNotNull(passwordEncoder);
+        Assertions.assertNotNull(securityContext);
     }
 
 
@@ -85,8 +95,8 @@ class PatientServiceTest {
     }
 
     @Test
-    @DisplayName("That method should return correct patient with given email")
-    void shouldReturnCorrectPatientWithGivenPatientEmail() {
+    @DisplayName("That method should return correct patient with given patient email")
+    void shouldReturnCorrectPatientWithGivenEmail() {
         //given
         String patientEmail = "janusz.pacjent@clinic.pl";
         Patient expectedPatient = EntityFixtures.somePatient1();
@@ -107,8 +117,8 @@ class PatientServiceTest {
     }
 
     @Test
-    @DisplayName("That method should return empty patient and throw NotFoundException with given email")
-    void shouldReturnEmptyPatientAndThrowNotFoundExceptionWithGivenPatientEmail() {
+    @DisplayName("That method should return empty patient and throw NotFoundException with given patient email")
+    void shouldReturnEmptyPatientAndThrowNotFoundExceptionWithGivenEmail() {
         //given
         String patientEmail = "janusz.pacjent@clinic.pl";
         Optional<Patient> expectedPatient = Optional.empty();
@@ -124,7 +134,7 @@ class PatientServiceTest {
 
     @Test
     @DisplayName("That method should return correct patient history with given patient email")
-    void shouldReturnCorrectPatientHistoryWithGivenPatientEmail() {
+    void shouldReturnCorrectPatientHistoryWithGivenEmail() {
         //given
         String patientEmail = "janusz.pacjent@clinic.pl";
         PatientHistory expectedPatientHistory = EntityFixtures.somePatientHistory();
@@ -146,7 +156,7 @@ class PatientServiceTest {
 
     @Test
     @DisplayName("That method should return correct patient schedule with given patient email")
-    void shouldReturnCorrectPatientScheduleWithGivenPatientEmail() {
+    void shouldReturnCorrectPatientScheduleWithGivenEmail() {
         //given
         String patientEmail = "janusz.pacjent@clinic.pl";
         PatientHistory expectedPatientSchedule = EntityFixtures.somePatientHistory();
@@ -188,5 +198,56 @@ class PatientServiceTest {
         Mockito.verifyNoInteractions(passwordEncoder);
     }
 
+    @Test
+    @DisplayName("That method should return correct patient email for logged-in patient")
+    void shouldReturnCorrectPatientEmailForLoggedInPatient() {
+        // given
+        UserDetails userDetails = new User(
+                "patient.patient@clinic.pl",
+                "password",
+                Collections.emptyList()); // pusta lista ról
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                userDetails,
+                null);
+        SecurityContextHolder.setContext(securityContext);
+
+        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+
+        // when
+        String result = patientService.getLoggedInPatientEmail();
+
+        // then
+        Assertions.assertEquals("patient.patient@clinic.pl", result);
+        Assertions.assertNotEquals("other.email@clinic.pl", result);
+
+        Mockito.verify(securityContext, Mockito.times(1))
+                .getAuthentication();
+
+        Mockito.verifyNoInteractions(patientDAO);
+        Mockito.verifyNoInteractions(passwordEncoder);
+    }
+
+    @Test
+    @DisplayName("That method should throw NotFoundException when authentication is not present")
+    void shouldThrowNotFoundExceptionWhenAuthenticationIsNotPresent() {
+        // given
+        SecurityContextHolder.setContext(securityContext);
+
+        Mockito.when(securityContext.getAuthentication()).thenReturn(null);
+
+        // when, then
+        NotFoundException exception =
+                Assertions.assertThrows(NotFoundException.class, () -> patientService.getLoggedInPatientEmail());
+        Assertions.assertEquals((
+                        "Something went wrong because the email for logged-in patient could not be found."),
+                exception.getMessage());
+
+        Mockito.verify(securityContext, Mockito.times(1))
+                .getAuthentication();
+
+        Mockito.verifyNoInteractions(patientDAO);
+        Mockito.verifyNoInteractions(passwordEncoder);
+    }
 
 }
