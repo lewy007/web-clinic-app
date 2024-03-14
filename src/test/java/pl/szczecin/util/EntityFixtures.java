@@ -3,15 +3,14 @@ package pl.szczecin.util;
 import lombok.experimental.UtilityClass;
 import pl.szczecin.api.dto.*;
 import pl.szczecin.domain.*;
-import pl.szczecin.infrastructure.database.entity.AddressEntity;
-import pl.szczecin.infrastructure.database.entity.DoctorEntity;
-import pl.szczecin.infrastructure.database.entity.PatientEntity;
+import pl.szczecin.infrastructure.database.entity.*;
 import pl.szczecin.infrastructure.security.UserEntity;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @UtilityClass
 public class EntityFixtures {
@@ -83,6 +82,24 @@ public class EntityFixtures {
                 .surname("Wasilewska")
                 .email("danuta.wasilewska@clinic.pl")
                 .build());
+    }
+
+    public static DoctorEntity someDoctorEntity2() {
+        return DoctorEntity.builder()
+                .doctorId(4)
+                .name("Wanda")
+                .surname("Nowak")
+                .email("wanda.nowak@clinic.pl")
+                .build();
+    }
+
+    public static DoctorEntity someDoctorEntity3() {
+        return DoctorEntity.builder()
+                .doctorId(5)
+                .name("Lucyna")
+                .surname("Tarka")
+                .email("lucyna.tarka@clinic.pl")
+                .build();
     }
 
     public static Patient somePatient1() {
@@ -166,6 +183,14 @@ public class EntityFixtures {
                         .postalCode("50-200")
                         .address("ul. Jana Matejki 13 ")
                         .build())
+                .medicalAppointmentDetails(Set.of(MedicalAppointmentEntity.builder()
+                        .medicalAppointmentId(1)
+                                .medicalAppointmentDateEntity(MedicalAppointmentDateEntity.builder()
+                                        .medicalAppointmentDateId(1)
+                                        .dateTime(OffsetDateTime.of(2023, 11, 16,
+                                                10, 0, 0, 0, ZoneOffset.UTC))
+                                        .build())
+                        .build()))
                 .userEntity(UserEntity.builder()
                         .userName("Janina")
                         .email("janina.pacjentowska@clinic.pl")
@@ -173,6 +198,50 @@ public class EntityFixtures {
                         .active(true)
                         .build())
                 .build();
+    }
+
+    public static PatientEntity somePatientEntity2() {
+
+        return PatientEntity.builder()
+                .name("Alina")
+                .surname("Laskowska")
+                .phone("+48 201 22 37")
+                .email("alina.laskowska@clinic.pl")
+                .address(AddressEntity.builder()
+                        .country("Poland")
+                        .city("Warszawa")
+                        .postalCode("90-300")
+                        .address("ul. Woronicza 11 ")
+                        .build())
+                .userEntity(UserEntity.builder()
+                        .userName("Alina")
+                        .email("alina.laskowska@clinic.pl")
+                        .password("test")
+                        .active(true)
+                        .build())
+                .build();
+    }
+
+    public static Optional<PatientEntity> somePatientEntity3() {
+
+        return Optional.of(PatientEntity.builder()
+                .name("Wanda")
+                .surname("Zaorska")
+                .phone("+48 345 14 21")
+                .email("wanda.zaorska@clinic.pl")
+                .address(AddressEntity.builder()
+                        .country("Poland")
+                        .city("Legnica")
+                        .postalCode("10-120")
+                        .address("ul. Legnicka 19 ")
+                        .build())
+                .userEntity(UserEntity.builder()
+                        .userName("Wanda")
+                        .email("wanda.zaorska@clinic.pl")
+                        .password("test")
+                        .active(true)
+                        .build())
+                .build());
     }
 
     public static UserEntity someUserEntity1() {
@@ -351,7 +420,7 @@ public class EntityFixtures {
                 .dateTime(
                         OffsetDateTime.of(2023, 9, 16,
                                 0, 0, 0, 0, ZoneOffset.UTC))
-                .doctorNote("some test note1")
+                .doctorNote("some test note2")
                 .build();
     }
 

@@ -132,6 +132,7 @@ jacocoTestReport {
                     "pl/szczecin/**/GlobalExceptionRestHandler.class",
                     "pl/szczecin/api/dto/**",
                     "pl/szczecin/infrastructure/configuration/**",
+                    "pl/szczecin/infrastructure/security/**",
                     "pl/szczecin/domain/**",
                     "**/nfz/*"
             ])
