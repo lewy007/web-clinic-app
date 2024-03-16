@@ -4,6 +4,7 @@ import pl.szczecin.domain.MedicalAppointment;
 import pl.szczecin.domain.MedicalAppointmentRequest;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MedicalAppointmentDAO {
     List<MedicalAppointment> findAllMedicalAppointment();
@@ -14,5 +15,5 @@ public interface MedicalAppointmentDAO {
 
     MedicalAppointment cancelMedicalAppointment(Integer medicalAppointmentDate);
 
-    MedicalAppointment addNoteToMedicalAppointment(MedicalAppointmentRequest request);
+    Optional<MedicalAppointment> addNoteToMedicalAppointment(MedicalAppointmentRequest request);
 }

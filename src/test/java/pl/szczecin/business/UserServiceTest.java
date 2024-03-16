@@ -29,7 +29,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("That method should correctly assign role to user")
-    void shouldCorrectlyReturnAvailableDoctors() {
+    void shouldCorrectlyAssignRoleToUser() {
         //given
         int userId = 123;
 

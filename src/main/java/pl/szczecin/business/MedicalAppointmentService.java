@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pl.szczecin.business.dao.MedicalAppointmentDAO;
 import pl.szczecin.domain.*;
+import pl.szczecin.domain.exception.NotFoundException;
 
 import java.util.List;
 
@@ -80,7 +81,9 @@ public class MedicalAppointmentService {
             isolation = Isolation.DEFAULT
     )
     public MedicalAppointment addNoteToMedicalAppointment(MedicalAppointmentRequest request) {
-        return medicalAppointmentDAO.addNoteToMedicalAppointment(request);
+        return medicalAppointmentDAO.addNoteToMedicalAppointment(request)
+                .orElseThrow(() -> new NotFoundException(
+                        "Could not add note to medical appointment with given request: [%s]".formatted(request)));
     }
 
 

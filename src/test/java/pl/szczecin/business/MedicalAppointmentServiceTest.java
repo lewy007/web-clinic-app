@@ -14,11 +14,13 @@ import pl.szczecin.domain.Doctor;
 import pl.szczecin.domain.MedicalAppointment;
 import pl.szczecin.domain.MedicalAppointmentDate;
 import pl.szczecin.domain.MedicalAppointmentRequest;
+import pl.szczecin.domain.exception.NotFoundException;
 import pl.szczecin.util.EntityFixtures;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class MedicalAppointmentServiceTest {
@@ -155,7 +157,7 @@ class MedicalAppointmentServiceTest {
     }
 
     @Test
-    @DisplayName("That method should correctly added note to medical appointment")
+    @DisplayName("That method should correctly added note to medical appointment with given request")
     void shouldCorrectlyAddedNoteToMedicalAppointment() {
         // given
         MedicalAppointmentRequest request = EntityFixtures.someMedicalAppointmentRequest();
@@ -163,7 +165,8 @@ class MedicalAppointmentServiceTest {
         MedicalAppointment expectedMedicalAppointment = EntityFixtures.someMedicalAppointment1();
         MedicalAppointment notExpectedMedicalAppointment = EntityFixtures.someMedicalAppointment2();
 
-        Mockito.when(medicalAppointmentDAO.addNoteToMedicalAppointment(request)).thenReturn(expectedMedicalAppointment);
+        Mockito.when(medicalAppointmentDAO.addNoteToMedicalAppointment(request))
+                .thenReturn(Optional.of(expectedMedicalAppointment));
 
         // when
         MedicalAppointment result = medicalAppointmentService.addNoteToMedicalAppointment(request);
@@ -176,6 +179,30 @@ class MedicalAppointmentServiceTest {
                 .addNoteToMedicalAppointment(Mockito.any(MedicalAppointmentRequest.class));
         Mockito.verify(medicalAppointmentDAO, Mockito.never())
                 .addNoteToMedicalAppointment(request.withDoctorNote("bad note"));
+
+        Mockito.verifyNoInteractions(patientService);
+        Mockito.verifyNoInteractions(doctorService);
+        Mockito.verifyNoInteractions(medicalAppointmentDateService);
+    }
+
+    @Test
+    @DisplayName("That method should return empty Medical Appointment and throw NotFoundException with given request")
+    void shouldReturnEmptyMedicalAppointmentAndThrowNotFoundException() {
+        // given
+        MedicalAppointmentRequest request = EntityFixtures.someMedicalAppointmentRequest();
+
+        Optional<MedicalAppointment> expectedMedicalAppointment = Optional.empty();
+
+        Mockito.when(medicalAppointmentDAO.addNoteToMedicalAppointment(request))
+                .thenReturn(expectedMedicalAppointment);
+
+        // when, then
+        NotFoundException exception =
+                Assertions.assertThrows(NotFoundException.class,
+                        () -> medicalAppointmentService.addNoteToMedicalAppointment(request));
+        Assertions.assertEquals((
+                        "Could not add note to medical appointment with given request: [%s]".formatted(request)),
+                exception.getMessage());
 
         Mockito.verifyNoInteractions(patientService);
         Mockito.verifyNoInteractions(doctorService);

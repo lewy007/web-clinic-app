@@ -11,6 +11,7 @@ import pl.szczecin.infrastructure.database.repository.mapper.MedicalAppointmentE
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
@@ -70,7 +71,7 @@ public class MedicalAppointmentRepository implements MedicalAppointmentDAO {
     }
 
     @Override
-    public MedicalAppointment addNoteToMedicalAppointment(MedicalAppointmentRequest request) {
+    public Optional<MedicalAppointment> addNoteToMedicalAppointment(MedicalAppointmentRequest request) {
 
         OffsetDateTime medicalAppointmentDate = request.getMedicalAppointmentDate();
         String patientName = request.getPatientName();
@@ -93,10 +94,9 @@ public class MedicalAppointmentRepository implements MedicalAppointmentDAO {
             // Zapisz zaktualizowany rekord
             MedicalAppointmentEntity saved = medicalAppointmentJpaRepository.saveAndFlush(requestMedicalAppointment);
 
-            return medicalAppointmentEntityMapper.mapFromEntity(saved);
+            return Optional.of(medicalAppointmentEntityMapper.mapFromEntity(saved));
 
-            // TODO do poprawienia zwracany null
         } else
-            return null;
+            return Optional.empty();
     }
 }

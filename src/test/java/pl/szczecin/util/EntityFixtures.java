@@ -262,6 +262,20 @@ public class EntityFixtures {
                 .build();
     }
 
+    public static MedicalAppointmentEntity someMedicalAppointmentEntity1() {
+        return MedicalAppointmentEntity.builder()
+                .doctorNote("some doctor note 1")
+                .patient(somePatientEntity1())
+                .build();
+    }
+
+    public static MedicalAppointmentEntity someMedicalAppointmentEntity2() {
+        return MedicalAppointmentEntity.builder()
+                .doctorNote("some doctor note 2")
+                .patient(somePatientEntity2())
+                .build();
+    }
+
     public static MedicalAppointment someMedicalAppointment() {
         return MedicalAppointment.builder()
                 .medicalAppointmentDate(someMedicalAppointmentDate1())
@@ -275,8 +289,7 @@ public class EntityFixtures {
                 .doctorNote("some note 1")
                 .patient(somePatient1())
                 .medicalAppointmentDate(
-                        someMedicalAppointmentDate1()
-                )
+                        someMedicalAppointmentDate1())
                 .build();
     }
 
@@ -285,8 +298,7 @@ public class EntityFixtures {
                 .medicalAppointmentId(2)
                 .doctorNote("some note 2")
                 .medicalAppointmentDate(
-                        someMedicalAppointmentDate2()
-                )
+                        someMedicalAppointmentDate2())
                 .build();
     }
 
