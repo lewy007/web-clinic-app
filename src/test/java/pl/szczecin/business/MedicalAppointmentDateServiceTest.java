@@ -178,8 +178,8 @@ class MedicalAppointmentDateServiceTest {
                 Assertions.assertThrows(NotFoundException.class, () -> medicalAppointmentDateService
                         .findMedicalAppointmentDateByDateAndDoctor(dateTime, doctorEmail));
         Assertions.assertEquals((
-                        "Could not find medicalAppointmentDate by date and Doctor: [%s]"
-                                .formatted(expectedMedicalAppointmentDate)),
+                        "Could not find medicalAppointmentDate by date: [%s] and doctor: [%s]"
+                                .formatted(dateTime, doctorEmail)),
                 exception.getMessage());
     }
 

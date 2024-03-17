@@ -52,6 +52,7 @@ public class MedicalAppointmentDateRepository implements MedicalAppointmentDateD
                 .map(medicalAppointmentDateEntityMapper::mapFromEntity);
     }
 
+    //TODO nie uzywana metoda - do weryfikacji, ale testy do niej sa napisane
     @Override
     public MedicalAppointmentDate saveMedicalAppointmentDate(MedicalAppointmentDate medicalAppointmentDate) {
         MedicalAppointmentDateEntity toSave = medicalAppointmentDateEntityMapper.mapToEntity(medicalAppointmentDate);

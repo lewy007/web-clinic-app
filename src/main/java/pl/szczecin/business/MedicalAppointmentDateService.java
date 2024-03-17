@@ -11,7 +11,6 @@ import pl.szczecin.domain.exception.NotFoundException;
 
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -24,14 +23,10 @@ public class MedicalAppointmentDateService {
     public MedicalAppointmentDate findMedicalAppointmentDateByDateAndDoctor(
             OffsetDateTime medicalAppointmentDate,
             String doctorEmail) {
-        Optional<MedicalAppointmentDate> date =
-                medicalAppointmentDateDAO.findMedicalAppointmentDateByDateAndDoctor(
-                        medicalAppointmentDate,
-                        doctorEmail);
-        if (date.isEmpty()) {
-            throw new NotFoundException("Could not find medicalAppointmentDate by date and Doctor: [%s]".formatted(date));
-        }
-        return date.get();
+        return medicalAppointmentDateDAO.findMedicalAppointmentDateByDateAndDoctor(medicalAppointmentDate, doctorEmail)
+                .orElseThrow(() -> new NotFoundException(
+                        "Could not find medicalAppointmentDate by date: [%s] and doctor: [%s]"
+                                .formatted(medicalAppointmentDate, doctorEmail)));
     }
 
 
@@ -59,7 +54,7 @@ public class MedicalAppointmentDateService {
     }
 
 
-    // TODO nie uzywane metody - do weryfikacji, ale testy do niej sa napisane
+    // TODO nie uzywana metoda - do weryfikacji, ale testy do niej sa napisane
     @Transactional
     public MedicalAppointmentDate saveMedicalAppointmentDate(MedicalAppointmentDate medicalAppointmentDate) {
         return medicalAppointmentDateDAO.saveMedicalAppointmentDate(medicalAppointmentDate);

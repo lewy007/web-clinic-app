@@ -185,11 +185,11 @@ public class EntityFixtures {
                         .build())
                 .medicalAppointmentDetails(Set.of(MedicalAppointmentEntity.builder()
                         .medicalAppointmentId(1)
-                                .medicalAppointmentDateEntity(MedicalAppointmentDateEntity.builder()
-                                        .medicalAppointmentDateId(1)
-                                        .dateTime(OffsetDateTime.of(2023, 11, 16,
-                                                10, 0, 0, 0, ZoneOffset.UTC))
-                                        .build())
+                        .medicalAppointmentDateEntity(MedicalAppointmentDateEntity.builder()
+                                .medicalAppointmentDateId(1)
+                                .dateTime(OffsetDateTime.of(2023, 11, 16,
+                                        10, 0, 0, 0, ZoneOffset.UTC))
+                                .build())
                         .build()))
                 .userEntity(UserEntity.builder()
                         .userName("Janina")
@@ -347,6 +347,28 @@ public class EntityFixtures {
                                 someMedicalAppointmentDTO2(),
                                 someMedicalAppointmentDTO3()
                         ))
+                .build();
+    }
+
+    public static MedicalAppointmentDateEntity someMedicalAppointmentDateEntity1() {
+        return MedicalAppointmentDateEntity.builder()
+                .medicalAppointmentDateId(1)
+                .dateTime(OffsetDateTime.of(2025, 11, 15,
+                        10, 0, 0, 0, ZoneOffset.UTC))
+                .status(true)
+                .medicalAppointmentEntity(someMedicalAppointmentEntity1())
+                .doctor(someDoctorEntity2())
+                .build();
+    }
+
+    public static MedicalAppointmentDateEntity someMedicalAppointmentDateEntity2() {
+        return MedicalAppointmentDateEntity.builder()
+                .medicalAppointmentDateId(2)
+                .dateTime(OffsetDateTime.of(2025, 12, 16,
+                        12, 0, 0, 0, ZoneOffset.UTC))
+                .status(true)
+                .medicalAppointmentEntity(someMedicalAppointmentEntity2())
+                .doctor(someDoctorEntity3())
                 .build();
     }
 

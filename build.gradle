@@ -133,6 +133,7 @@ jacocoTestReport {
                     "pl/szczecin/api/dto/**",
                     "pl/szczecin/infrastructure/configuration/**",
                     "pl/szczecin/infrastructure/security/**",
+                    "pl/szczecin/infrastructure/database/repository/mapper/**",
                     "pl/szczecin/domain/**",
                     "**/nfz/*"
             ])
@@ -144,8 +145,12 @@ jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
+                counter = 'CLASS'
+                value = 'COVEREDRATIO'
+                minimum = 0.8
+            }
+            limit {
                 counter = 'LINE'
-//                counter = 'CLASS'
                 value = 'COVEREDRATIO'
                 minimum = 0.45
             }
