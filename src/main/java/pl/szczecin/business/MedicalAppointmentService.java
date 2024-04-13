@@ -43,7 +43,7 @@ public class MedicalAppointmentService {
         Doctor doctor = doctorService.findDoctorByEmail(request.getDoctorEmail());
 
         MedicalAppointmentDate medicalAppointmentDate = medicalAppointmentDateService
-                .findMedicalAppointmentDateByDateAndDoctor(
+                .findMedicalAppointmentDateByDateAndDoctorEmail(
                         request.getMedicalAppointmentDate(),
                         doctor.getEmail());
 
@@ -65,7 +65,7 @@ public class MedicalAppointmentService {
         // tutaj szukam na podstawie daty i lekarza, bo moze byc kilku lekarzy przyjmujacych na te sama godzine
         var medicalAppointmentDateId =
                 medicalAppointmentDateService
-                        .findMedicalAppointmentDateByDateAndDoctor(
+                        .findMedicalAppointmentDateByDateAndDoctorEmail(
                                 request.getMedicalAppointmentDate(),
                                 request.getDoctorEmail())
                         .getMedicalAppointmentDateId();

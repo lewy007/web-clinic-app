@@ -9,6 +9,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import pl.szczecin.domain.Patient;
 import pl.szczecin.domain.PatientHistory;
 import pl.szczecin.infrastructure.database.entity.MedicalAppointmentEntity;
@@ -92,20 +96,29 @@ class PatientRepositoryTest {
                 EntityFixtures.somePatient3()
         );
 
-        Mockito.when(patientJpaRepository.findAll()).thenReturn(patientEntities);
+        // Data to pagination and sorting
+        int pageNumber = 1;
+        int pageSize= 2;
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("surname").ascending()
+                .and(Sort.by("name")).ascending());
+        PageImpl<PatientEntity> pageImplementation = new PageImpl<>(patientEntities);
+
+        Mockito.when(patientJpaRepository.findAll(pageable))
+                .thenReturn(pageImplementation);
         Mockito.when(patientEntityMapper.mapFromEntity(Mockito.any(PatientEntity.class)))
                 .thenReturn(expectedPatients.get(0))
                 .thenReturn(expectedPatients.get(1));
 
         // When
-        List<Patient> result = patientRepository.findAvailablePatients();
+        List<Patient> result = patientRepository.findAvailablePatients(pageNumber,pageSize);
 
         // Then
         Assertions.assertEquals(2, result.size());
         Assertions.assertEquals(expectedPatients, result);
         Assertions.assertNotEquals(notExpectedPatients, result);
 
-        Mockito.verify(patientJpaRepository, Mockito.times(1)).findAll();
+        Mockito.verify(patientJpaRepository, Mockito.times(1))
+                .findAll(Mockito.any(Pageable.class));
         Mockito.verify(patientEntityMapper, Mockito.times(2))
                 .mapFromEntity(Mockito.any(PatientEntity.class));
 

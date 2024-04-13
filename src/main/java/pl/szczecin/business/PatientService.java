@@ -42,8 +42,8 @@ public class PatientService {
         return savedPatient;
     }
 
-    public List<Patient> findAvailablePatients() {
-        List<Patient> availablePatients = patientDAO.findAvailablePatients();
+    public List<Patient> findAvailablePatients(int pageNumber, int pageSize) {
+        List<Patient> availablePatients = patientDAO.findAvailablePatients(pageNumber, pageSize);
         log.info("Available patients: [{}]", availablePatients.size());
         return availablePatients;
     }

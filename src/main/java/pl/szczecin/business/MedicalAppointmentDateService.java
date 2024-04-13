@@ -20,10 +20,10 @@ public class MedicalAppointmentDateService {
     private final MedicalAppointmentDateDAO medicalAppointmentDateDAO;
 
 
-    public MedicalAppointmentDate findMedicalAppointmentDateByDateAndDoctor(
+    public MedicalAppointmentDate findMedicalAppointmentDateByDateAndDoctorEmail(
             OffsetDateTime medicalAppointmentDate,
             String doctorEmail) {
-        return medicalAppointmentDateDAO.findMedicalAppointmentDateByDateAndDoctor(medicalAppointmentDate, doctorEmail)
+        return medicalAppointmentDateDAO.findMedicalAppointmentDateByDateAndDoctorEmail(medicalAppointmentDate, doctorEmail)
                 .orElseThrow(() -> new NotFoundException(
                         "Could not find medicalAppointmentDate by date: [%s] and doctor: [%s]"
                                 .formatted(medicalAppointmentDate, doctorEmail)));

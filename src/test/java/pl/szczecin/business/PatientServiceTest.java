@@ -81,15 +81,15 @@ class PatientServiceTest {
                 EntityFixtures.somePatient2(),
                 EntityFixtures.somePatient3()
         );
-        Mockito.when(patientDAO.findAvailablePatients()).thenReturn(expectedPatients);
+        Mockito.when(patientDAO.findAvailablePatients(2,3)).thenReturn(expectedPatients);
 
         //when
-        List<Patient> resultPatient = patientService.findAvailablePatients();
+        List<Patient> resultPatient = patientService.findAvailablePatients(2,3);
 
         //then
         Assertions.assertEquals(expectedPatients, resultPatient);
 
-        Mockito.verify(patientDAO, Mockito.times(1)).findAvailablePatients();
+        Mockito.verify(patientDAO, Mockito.times(1)).findAvailablePatients(2,3);
 
         Mockito.verifyNoInteractions(passwordEncoder);
     }

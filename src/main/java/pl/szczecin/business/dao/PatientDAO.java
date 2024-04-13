@@ -10,7 +10,7 @@ public interface PatientDAO {
 
     Patient savePatient(Patient patient);
 
-    List<Patient> findAvailablePatients();
+    List<Patient> findAvailablePatients(int pageNumber, int pageSize);
 
     Optional<Patient> findPatientByEmail(String email);
 

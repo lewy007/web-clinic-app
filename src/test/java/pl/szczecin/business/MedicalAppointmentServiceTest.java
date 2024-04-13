@@ -96,7 +96,7 @@ class MedicalAppointmentServiceTest {
         MedicalAppointment notExpectedMedicalAppointment = EntityFixtures.someMedicalAppointment2();
 
         Mockito.when(doctorService.findDoctorByEmail(someDoctor.getEmail())).thenReturn(someDoctor);
-        Mockito.when(medicalAppointmentDateService.findMedicalAppointmentDateByDateAndDoctor(
+        Mockito.when(medicalAppointmentDateService.findMedicalAppointmentDateByDateAndDoctorEmail(
                         request.getMedicalAppointmentDate(),
                         request.getDoctorEmail()))
                 .thenReturn(someMedicalAppointmentDate);
@@ -115,7 +115,7 @@ class MedicalAppointmentServiceTest {
         Mockito.verify(patientService, Mockito.times(1))
                 .findPatientByEmail(Mockito.anyString());
         Mockito.verify(medicalAppointmentDateService, Mockito.times(1))
-                .findMedicalAppointmentDateByDateAndDoctor(Mockito.any(OffsetDateTime.class), Mockito.anyString());
+                .findMedicalAppointmentDateByDateAndDoctorEmail(Mockito.any(OffsetDateTime.class), Mockito.anyString());
         Mockito.verify(medicalAppointmentDAO, Mockito.times(1))
                 .makeAppointment(Mockito.any(MedicalAppointment.class));
 
@@ -131,7 +131,7 @@ class MedicalAppointmentServiceTest {
         MedicalAppointment expectedMedicalAppointment = EntityFixtures.someMedicalAppointment1();
         MedicalAppointment notExpectedMedicalAppointment = EntityFixtures.someMedicalAppointment2();
 
-        Mockito.when(medicalAppointmentDateService.findMedicalAppointmentDateByDateAndDoctor(
+        Mockito.when(medicalAppointmentDateService.findMedicalAppointmentDateByDateAndDoctorEmail(
                         request.getMedicalAppointmentDate(),
                         request.getDoctorEmail()))
                 .thenReturn(someMedicalAppointmentDate);
@@ -146,7 +146,7 @@ class MedicalAppointmentServiceTest {
         Assertions.assertNotEquals(notExpectedMedicalAppointment, result);
 
         Mockito.verify(medicalAppointmentDateService, Mockito.times(1))
-                .findMedicalAppointmentDateByDateAndDoctor(Mockito.any(OffsetDateTime.class), Mockito.anyString());
+                .findMedicalAppointmentDateByDateAndDoctorEmail(Mockito.any(OffsetDateTime.class), Mockito.anyString());
         Mockito.verify(medicalAppointmentDAO, Mockito.times(1))
                 .cancelMedicalAppointment(1);
         Mockito.verify(medicalAppointmentDAO, Mockito.never())

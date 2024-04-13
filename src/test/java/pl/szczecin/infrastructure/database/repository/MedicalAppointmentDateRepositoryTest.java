@@ -171,14 +171,14 @@ class MedicalAppointmentDateRepositoryTest {
         MedicalAppointmentDate expectedMedicalAppointmentDate = EntityFixtures.someMedicalAppointmentDate1();
         MedicalAppointmentDate notExpectedMedicalAppointmentDate = EntityFixtures.someMedicalAppointmentDate2();
 
-        Mockito.when(medicalAppointmentDateJpaRepository.findByDateTimeAndDoctor(dateTime, doctorEmail))
+        Mockito.when(medicalAppointmentDateJpaRepository.findByDateTimeAndDoctorEmail(dateTime, doctorEmail))
                 .thenReturn(Optional.of(someMedicalAppointmentDateEntity));
         Mockito.when(medicalAppointmentDateEntityMapper.mapFromEntity(Mockito.any(MedicalAppointmentDateEntity.class)))
                 .thenReturn(expectedMedicalAppointmentDate);
 
         // When
         Optional<MedicalAppointmentDate> result = medicalAppointmentDateRepository
-                .findMedicalAppointmentDateByDateAndDoctor(dateTime, doctorEmail);
+                .findMedicalAppointmentDateByDateAndDoctorEmail(dateTime, doctorEmail);
 
         // Then
         org.assertj.core.api.Assertions.assertThat(result).isPresent();
@@ -186,7 +186,7 @@ class MedicalAppointmentDateRepositoryTest {
         Assertions.assertNotEquals(notExpectedMedicalAppointmentDate, result.get());
 
         Mockito.verify(medicalAppointmentDateJpaRepository, Mockito.times(1))
-                .findByDateTimeAndDoctor(Mockito.any(OffsetDateTime.class), Mockito.anyString());
+                .findByDateTimeAndDoctorEmail(Mockito.any(OffsetDateTime.class), Mockito.anyString());
         Mockito.verify(medicalAppointmentDateEntityMapper, Mockito.times(1))
                 .mapFromEntity(Mockito.any(MedicalAppointmentDateEntity.class));
     }

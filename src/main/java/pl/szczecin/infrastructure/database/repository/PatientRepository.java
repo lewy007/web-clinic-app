@@ -1,6 +1,9 @@
 package pl.szczecin.infrastructure.database.repository;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import pl.szczecin.business.dao.PatientDAO;
 import pl.szczecin.domain.Patient;
@@ -32,8 +35,13 @@ public class PatientRepository implements PatientDAO {
     }
 
     @Override
-    public List<Patient> findAvailablePatients() {
-        return patientJpaRepository.findAll().stream()
+    public List<Patient> findAvailablePatients(int pageNumber, int pageSize) {
+        Sort sort = Sort.by("surname").ascending()
+                .and(Sort.by("name")).ascending();
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+
+        return patientJpaRepository.findAll(pageable).stream()
                 .map(patientEntityMapper::mapFromEntity)
                 .toList();
     }

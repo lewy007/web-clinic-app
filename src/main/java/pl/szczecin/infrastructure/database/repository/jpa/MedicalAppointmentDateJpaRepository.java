@@ -19,23 +19,22 @@ public interface MedicalAppointmentDateJpaRepository extends JpaRepository<Medic
             WHERE mad.dateTime = :dateTime
             AND mad.doctor.email = :doctorEmail
             """)
-    Optional<MedicalAppointmentDateEntity> findByDateTimeAndDoctor(
+    Optional<MedicalAppointmentDateEntity> findByDateTimeAndDoctorEmail(
             final @Param("dateTime") OffsetDateTime medicalAppointmentDate,
             final @Param("doctorEmail") String doctorEmail);
 
-
     @Query("""
-            SELECT mad FROM MedicalAppointmentDateEntity mad 
-            WHERE mad.status = true 
-            AND mad.doctor.email = :doctorEmail 
-            AND NOT EXISTS (SELECT ma FROM MedicalAppointmentEntity ma 
+            SELECT mad FROM MedicalAppointmentDateEntity mad
+            WHERE mad.status = true
+            AND mad.doctor.email = :doctorEmail
+            AND NOT EXISTS (SELECT ma FROM MedicalAppointmentEntity ma
                            WHERE ma.medicalAppointmentDateEntity = mad)
                            """)
     List<MedicalAppointmentDateEntity> findAvailableDatesByDoctorEmail(final @Param("doctorEmail") String doctorEmail);
 
 
     @Query("""
-            SELECT mad FROM MedicalAppointmentDateEntity mad 
+            SELECT mad FROM MedicalAppointmentDateEntity mad
             WHERE mad.doctor.email = :doctorEmail
             AND (mad.dateTime >= CURRENT_TIMESTAMP OR FUNCTION('DATE', mad.dateTime) = FUNCTION('DATE', CURRENT_TIMESTAMP))
                            """)
@@ -45,7 +44,7 @@ public interface MedicalAppointmentDateJpaRepository extends JpaRepository<Medic
 
     //TODO LOGIKA do przetestowania czy aktualny dzien wejdzie do history czy schedule
     @Query("""
-            SELECT mad FROM MedicalAppointmentDateEntity mad 
+            SELECT mad FROM MedicalAppointmentDateEntity mad
             WHERE mad.doctor.email = :doctorEmail
             AND (mad.dateTime < CURRENT_TIMESTAMP OR FUNCTION('DATE', mad.dateTime) = FUNCTION('DATE', CURRENT_TIMESTAMP))
                            """)

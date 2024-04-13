@@ -141,22 +141,22 @@ class MedicalAppointmentDateServiceTest {
                 10, 0, 0, 0, ZoneOffset.UTC);
         MedicalAppointmentDate expectedMedicalAppointmentDate = EntityFixtures.someMedicalAppointmentDate1();
 
-        Mockito.when(medicalAppointmentDateDAO.findMedicalAppointmentDateByDateAndDoctor(dateTime, doctorEmail))
+        Mockito.when(medicalAppointmentDateDAO.findMedicalAppointmentDateByDateAndDoctorEmail(dateTime, doctorEmail))
                 .thenReturn(Optional.ofNullable(expectedMedicalAppointmentDate));
 
         // when
         MedicalAppointmentDate result = medicalAppointmentDateService
-                .findMedicalAppointmentDateByDateAndDoctor(dateTime, doctorEmail);
+                .findMedicalAppointmentDateByDateAndDoctorEmail(dateTime, doctorEmail);
 
         // then
         Assertions.assertEquals(expectedMedicalAppointmentDate, result);
 
         Mockito.verify(medicalAppointmentDateDAO, Mockito.times(1))
-                .findMedicalAppointmentDateByDateAndDoctor(
+                .findMedicalAppointmentDateByDateAndDoctorEmail(
                         Mockito.any(OffsetDateTime.class),
                         Mockito.anyString());
         Mockito.verify(medicalAppointmentDateDAO, Mockito.never())
-                .findMedicalAppointmentDateByDateAndDoctor(dateTime, "other.email@clinic.pl");
+                .findMedicalAppointmentDateByDateAndDoctorEmail(dateTime, "other.email@clinic.pl");
 
     }
 
@@ -170,13 +170,13 @@ class MedicalAppointmentDateServiceTest {
                 10, 0, 0, 0, ZoneOffset.UTC);
         Optional<MedicalAppointmentDate> expectedMedicalAppointmentDate = Optional.empty();
 
-        Mockito.when(medicalAppointmentDateDAO.findMedicalAppointmentDateByDateAndDoctor(dateTime, doctorEmail))
+        Mockito.when(medicalAppointmentDateDAO.findMedicalAppointmentDateByDateAndDoctorEmail(dateTime, doctorEmail))
                 .thenReturn(expectedMedicalAppointmentDate);
 
         // when, then
         NotFoundException exception =
                 Assertions.assertThrows(NotFoundException.class, () -> medicalAppointmentDateService
-                        .findMedicalAppointmentDateByDateAndDoctor(dateTime, doctorEmail));
+                        .findMedicalAppointmentDateByDateAndDoctorEmail(dateTime, doctorEmail));
         Assertions.assertEquals((
                         "Could not find medicalAppointmentDate by date: [%s] and doctor: [%s]"
                                 .formatted(dateTime, doctorEmail)),

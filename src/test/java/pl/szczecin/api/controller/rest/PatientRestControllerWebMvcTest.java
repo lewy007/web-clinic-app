@@ -16,6 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import pl.szczecin.api.dto.PatientDTO;
 import pl.szczecin.api.dto.PatientsDTO;
 import pl.szczecin.api.dto.mapper.PatientMapper;
@@ -44,6 +46,12 @@ class PatientRestControllerWebMvcTest {
     @DisplayName("That method should return correct DTO List Patients")
     void shouldReturnCorrectListDTOPatients() throws Exception {
         //given
+        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+        parameters.add("pageNumber", "1");
+        parameters.add("pageSize", "3");
+        int pageNumber = 1;
+        int pageSize = 3;
+
         PatientsDTO somePatientListDTO = EntityFixtures.somePatientsDTO();
         String responseBody = objectMapper.writeValueAsString(somePatientListDTO);
 
@@ -60,14 +68,16 @@ class PatientRestControllerWebMvcTest {
         );
 
 
-        Mockito.when(patientService.findAvailablePatients()).thenReturn(patientList);
+        Mockito.when(patientService.findAvailablePatients(pageNumber, pageSize)).thenReturn(patientList);
         Mockito.when(patientMapper.map(Mockito.any(Patient.class)))
                 .thenReturn(patientDTOList.get(0))
                 .thenReturn(patientDTOList.get(1))
                 .thenReturn(patientDTOList.get(2));
 
         //when,then
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(PatientRestController.PATIENT_API)
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(
+                                PatientRestController.PATIENT_API)
+                        .params(parameters)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath(

@@ -24,9 +24,9 @@ public interface MedicalAppointmentJpaRepository extends JpaRepository<MedicalAp
     // posiada wartosc z listy parametrow metody - lista id wyciagnieta z innej metody
     // na podstawie zapytania do bazy danych o wszystkie daty na podstawie meila doctora
     @Query("""
-            SELECT ma FROM MedicalAppointmentEntity ma 
+            SELECT ma FROM MedicalAppointmentEntity ma
             WHERE ma.medicalAppointmentDateEntity.medicalAppointmentDateId IN :dateIds
-            ORDER BY ma.medicalAppointmentDateEntity.dateTime ASC 
+            ORDER BY ma.medicalAppointmentDateEntity.dateTime ASC
             """)
     List<MedicalAppointmentEntity> findAllMedicalAppointmentByMADateID(
             @Param("dateIds") List<Integer> dateIds
@@ -34,7 +34,7 @@ public interface MedicalAppointmentJpaRepository extends JpaRepository<MedicalAp
 
 
     @Query("""
-            SELECT ma FROM MedicalAppointmentEntity ma 
+            SELECT ma FROM MedicalAppointmentEntity ma
             WHERE ma.medicalAppointmentDateEntity.dateTime = :medicalAppointmentDate
             AND ma.patient.name = :patientName
             AND ma.patient.surname = :patientSurname

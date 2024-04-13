@@ -62,13 +62,13 @@ class PatientRestControllerMockitoTest {
                         EntityFixtures.somePatientDTO1()))
                 .build();
 
-        Mockito.when(patientService.findAvailablePatients()).thenReturn(patientList);
+        Mockito.when(patientService.findAvailablePatients(1, 2)).thenReturn(patientList);
         Mockito.when(patientMapper.map(Mockito.any(Patient.class)))
                 .thenReturn(expectedPatientsDTO.getPatientsDTO().get(0))
                 .thenReturn(expectedPatientsDTO.getPatientsDTO().get(1));
 
         // When
-        ResponseEntity<PatientsDTO> result = patientRestController.availablePatients();
+        ResponseEntity<PatientsDTO> result = patientRestController.availablePatients("1", "2");
 
         // Then
         Assertions.assertEquals(Objects.requireNonNull(result.getBody()).getPatientsDTO().size(),
@@ -79,7 +79,7 @@ class PatientRestControllerMockitoTest {
                 notExpectedPatientsDTO.getPatientsDTO().size());
 
         Mockito.verify(patientService, Mockito.times(1))
-                .findAvailablePatients();
+                .findAvailablePatients(1, 2);
         Mockito.verify(patientMapper, Mockito.times(2))
                 .map(Mockito.any(Patient.class));
         Mockito.verify(patientMapper, Mockito.never())
@@ -102,13 +102,13 @@ class PatientRestControllerMockitoTest {
                 EntityFixtures.somePatientDTO1()
         );
 
-        Mockito.when(patientService.findAvailablePatients()).thenReturn(patientList);
+        Mockito.when(patientService.findAvailablePatients(1, 2)).thenReturn(patientList);
         Mockito.when(patientMapper.map(Mockito.any(Patient.class)))
                 .thenReturn(expectedPatientDTOList.get(0))
                 .thenReturn(expectedPatientDTOList.get(1));
 
         // When
-        List<PatientDTO> result = patientService.findAvailablePatients().stream()
+        List<PatientDTO> result = patientService.findAvailablePatients(1, 2).stream()
                 .map(patientMapper::map).toList();
 
         // Then
@@ -118,7 +118,7 @@ class PatientRestControllerMockitoTest {
         Assertions.assertNotEquals(result, notExpectedPatientDTOList);
 
         Mockito.verify(patientService, Mockito.times(1))
-                .findAvailablePatients();
+                .findAvailablePatients(1, 2);
         Mockito.verify(patientMapper, Mockito.times(2))
                 .map(Mockito.any(Patient.class));
         Mockito.verify(patientMapper, Mockito.never())
